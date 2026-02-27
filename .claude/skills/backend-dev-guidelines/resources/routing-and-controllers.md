@@ -751,6 +751,6 @@ export class ActionRepository {
 ---
 
 **관련 파일:**
-- [SKILL.md](SKILL.md) - Main guide
-- [services-and-repositories.md](services-and-repositories.md) - Service layer details
-- [complete-examples.md](complete-examples.md) - Full refactoring examples
+- [SKILL.md](SKILL.md) - 메인 가이드
+- [services-and-repositories.md](services-and-repositories.md) - 서비스 레이어 상세
+- [complete-examples.md](complete-examples.md) - 전체 리팩터링 예시

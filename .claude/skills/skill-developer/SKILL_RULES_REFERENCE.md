@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [File Location](#file-location)
-- [Complete TypeScript Schema](#complete-typescript-schema)
-- [Field Guide](#field-guide)
-- [Example: Guardrail Skill](#example-guardrail-skill)
-- [Example: Domain Skill](#example-domain-skill)
-- [Validation](#validation)
+- [파일 위치](#file-location)
+- [전체 TypeScript 스키마](#complete-typescript-schema)
+- [필드 가이드](#field-guide)
+- [예시: 가드레일 스킬](#example-guardrail-skill)
+- [예시: 도메인 스킬](#example-domain-skill)
+- [검증](#validation)
 
 ---
 

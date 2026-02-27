@@ -335,13 +335,13 @@ router.post(
 ```
 
 **장점:**
-- Quick and simple
-- Good for simple routes
+- 빠르고 단순함
+- 단순한 라우트에 적합
 
 **단점:**
-- Validation logic in routes
-- Harder to test
-- Not reusable
+- 라우트에 검증 로직이 들어감
+- 테스트가 더 어려움
+- 재사용 불가
 
 ---
 
@@ -424,14 +424,14 @@ export class UserController extends BaseController {
 }
 ```
 
-**Pros:**
-- Clean separation
-- Reusable schemas
-- Easy to test
-- Type-safe DTOs
+**장점:**
+- 깔끔한 분리
+- 재사용 가능한 스키마
+- 테스트 용이
+- 타입 안전한 DTO
 
-**Cons:**
-- More files to manage
+**단점:**
+- 관리해야 할 파일이 늘어남
 
 ---
 
@@ -748,7 +748,7 @@ router.post('/users',
 ---
 
 **관련 파일:**
-- [SKILL.md](SKILL.md) - Main guide
-- [routing-and-controllers.md](routing-and-controllers.md) - Using validation in controllers
-- [services-and-repositories.md](services-and-repositories.md) - Using DTOs in services
-- [async-and-errors.md](async-and-errors.md) - Error handling patterns
+- [SKILL.md](SKILL.md) - 메인 가이드
+- [routing-and-controllers.md](routing-and-controllers.md) - 컨트롤러에서 검증 사용
+- [services-and-repositories.md](services-and-repositories.md) - 서비스에서 DTO 사용
+- [async-and-errors.md](async-and-errors.md) - 에러 처리 패턴

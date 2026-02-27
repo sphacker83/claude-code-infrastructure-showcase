@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [Layered Architecture Pattern](#layered-architecture-pattern)
-- [Request Lifecycle](#request-lifecycle)
-- [Service Comparison](#service-comparison)
-- [Directory Structure Rationale](#directory-structure-rationale)
-- [Module Organization](#module-organization)
-- [Separation of Concerns](#separation-of-concerns)
+- [레이어드 아키텍처 패턴](#layered-architecture-pattern)
+- [요청 라이프사이클](#request-lifecycle)
+- [서비스 비교](#service-comparison)
+- [디렉터리 구조의 근거](#directory-structure-rationale)
+- [모듈 구성](#module-organization)
+- [관심사 분리](#separation-of-concerns)
 
 ---
 
@@ -144,12 +144,12 @@ app.use(Sentry.Handlers.errorHandler());     // 8. Sentry errors (LAST)
 ### Email Service (성숙한 패턴 ✅)
 
 **강점:**
-- Comprehensive BaseController with Sentry integration
-- Clean route delegation (no business logic in routes)
-- Consistent dependency injection pattern
-- Good middleware organization
-- Type-safe throughout
-- Excellent error handling
+- Sentry 통합을 포함한 포괄적인 BaseController
+- 깔끔한 라우트 위임(라우트에 비즈니스 로직 없음)
+- 일관된 의존성 주입 패턴
+- 좋은 미들웨어 구성
+- 전반적으로 타입 안전
+- 훌륭한 에러 처리
 
 **예시 구조:**
 ```
@@ -174,16 +174,16 @@ email/src/
 ### Form Service (전환 중 ⚠️)
 
 **강점:**
-- Excellent workflow architecture (event sourcing)
-- Good Sentry integration
-- Innovative audit middleware (AsyncLocalStorage)
-- Comprehensive permission system
+- 훌륭한 워크플로 아키텍처(event sourcing)
+- 좋은 Sentry 통합
+- 혁신적인 audit 미들웨어(AsyncLocalStorage)
+- 포괄적인 권한 시스템
 
 **약점:**
-- Some routes have 200+ lines of business logic
-- Inconsistent controller naming
-- Direct process.env usage (60+ occurrences)
-- Minimal repository pattern usage
+- 일부 라우트에 비즈니스 로직이 200줄 이상 존재
+- 컨트롤러 네이밍이 일관되지 않음
+- process.env 직접 사용(60+회)
+- 리포지토리 패턴 사용이 미미함
 
 **예시:**
 ```
@@ -215,8 +215,8 @@ form/src/
 **목적:** HTTP 요청/응답 관심사 처리
 
 **내용:**
-- `BaseController.ts` - Base class with common methods
-- `{Feature}Controller.ts` - Feature-specific controllers
+- `BaseController.ts` - 공통 메서드가 있는 베이스 클래스
+- `{Feature}Controller.ts` - 기능(feature)별 컨트롤러
 
 **네이밍:** PascalCase + Controller
 
@@ -233,7 +233,7 @@ form/src/
 **목적:** 비즈니스 로직 및 오케스트레이션
 
 **내용:**
-- `{feature}Service.ts` - Feature business logic
+- `{feature}Service.ts` - 기능(feature) 비즈니스 로직
 
 **네이밍:** camelCase + Service (또는 PascalCase + Service)
 
@@ -249,7 +249,7 @@ form/src/
 **목적:** 데이터 접근 추상화
 
 **내용:**
-- `{Entity}Repository.ts` - Database operations for entity
+- `{Entity}Repository.ts` - 엔티티 DB 작업
 
 **네이밍:** PascalCase + Repository
 
@@ -267,7 +267,7 @@ form/src/
 **목적:** 라우트 등록 **전용**
 
 **내용:**
-- `{feature}Routes.ts` - Express router for feature
+- `{feature}Routes.ts` - 기능(feature) Express 라우터
 
 **네이밍:** camelCase + Routes
 
@@ -282,11 +282,11 @@ form/src/
 **목적:** 횡단 관심사(Cross-cutting concerns)
 
 **내용:**
-- Authentication middleware
-- Audit middleware
-- Error boundaries
-- Validation middleware
-- Custom middleware
+- 인증(Authentication) 미들웨어
+- 감사(Audit) 미들웨어
+- 에러 바운더리
+- 검증(Validation) 미들웨어
+- 커스텀 미들웨어
 
 **네이밍:** camelCase
 
@@ -300,8 +300,8 @@ form/src/
 **목적:** 설정(Configuration) 관리
 
 **내용:**
-- `unifiedConfig.ts` - Type-safe configuration
-- Environment-specific configs
+- `unifiedConfig.ts` - 타입 안전한 설정
+- 환경별 설정
 
 **패턴:** 단일 진실 공급원(Single source of truth)
 
@@ -310,10 +310,10 @@ form/src/
 **목적:** TypeScript 타입 정의
 
 **내용:**
-- `{feature}.types.ts` - Feature-specific types
-- DTOs (Data Transfer Objects)
-- Request/Response types
-- Domain models
+- `{feature}.types.ts` - 기능(feature) 전용 타입
+- DTO(데이터 전송 객체, Data Transfer Objects)
+- Request/Response 타입
+- 도메인 모델
 
 ---
 
@@ -362,41 +362,41 @@ src/
 ### 무엇을 어디에 두나
 
 **Routes 레이어:**
-- ✅ Route definitions
-- ✅ Middleware registration
-- ✅ Controller delegation
-- ❌ Business logic
-- ❌ Database operations
+- ✅ 라우트 정의
+- ✅ 미들웨어 등록
+- ✅ 컨트롤러 위임
+- ❌ 비즈니스 로직
+- ❌ DB 작업
 - ❌ 검증 로직(validator 또는 controller에 있어야 함)
 
 **Controllers 레이어:**
-- ✅ Request parsing (params, body, query)
-- ✅ Input validation (Zod)
-- ✅ Service calls
-- ✅ Response formatting
-- ✅ Error handling
-- ❌ Business logic
-- ❌ Database operations
+- ✅ 요청 파싱(params, body, query)
+- ✅ 입력 검증(Zod)
+- ✅ 서비스 호출
+- ✅ 응답 포맷팅
+- ✅ 에러 처리
+- ❌ 비즈니스 로직
+- ❌ DB 작업
 
 **Services 레이어:**
-- ✅ Business logic
-- ✅ Business rules enforcement
-- ✅ Orchestration (multiple repos)
-- ✅ Transaction management
-- ❌ HTTP concerns (Request/Response)
+- ✅ 비즈니스 로직
+- ✅ 비즈니스 규칙 강제
+- ✅ 오케스트레이션(여러 리포지토리)
+- ✅ 트랜잭션 관리
+- ❌ HTTP 관심사(Request/Response)
 - ❌ Prisma 직접 호출(리포지토리 사용)
 
 **Repositories 레이어:**
-- ✅ Prisma operations
-- ✅ Query construction
-- ✅ Database error handling
-- ✅ Caching
-- ❌ Business logic
-- ❌ HTTP concerns
+- ✅ Prisma 작업
+- ✅ 쿼리 구성
+- ✅ DB 에러 처리
+- ✅ 캐싱
+- ❌ 비즈니스 로직
+- ❌ HTTP 관심사
 
 ### 예시: 사용자 생성
 
-**Route:**
+**라우트:**
 ```typescript
 router.post('/users',
     SSOMiddleware.verifyLoginStatus,
@@ -405,7 +405,7 @@ router.post('/users',
 );
 ```
 
-**Controller:**
+**컨트롤러:**
 ```typescript
 async create(req: Request, res: Response): Promise<void> {
     try {
@@ -418,7 +418,7 @@ async create(req: Request, res: Response): Promise<void> {
 }
 ```
 
-**Service:**
+**서비스:**
 ```typescript
 async create(data: CreateUserDTO): Promise<User> {
     // Business rule: check if email already exists
@@ -430,7 +430,7 @@ async create(data: CreateUserDTO): Promise<User> {
 }
 ```
 
-**Repository:**
+**리포지토리:**
 ```typescript
 async create(data: CreateUserDTO): Promise<User> {
     return PrismaService.main.user.create({ data });
@@ -446,6 +446,6 @@ async findByEmail(email: string): Promise<User | null> {
 ---
 
 **관련 파일:**
-- [SKILL.md](SKILL.md) - Main guide
-- [routing-and-controllers.md](routing-and-controllers.md) - Routes and controllers details
-- [services-and-repositories.md](services-and-repositories.md) - Service and repository patterns
+- [SKILL.md](SKILL.md) - 메인 가이드
+- [routing-and-controllers.md](routing-and-controllers.md) - 라우트/컨트롤러 상세
+- [services-and-repositories.md](services-and-repositories.md) - 서비스/리포지토리 패턴

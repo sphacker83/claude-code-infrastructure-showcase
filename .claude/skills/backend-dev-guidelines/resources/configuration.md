@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [UnifiedConfig Overview](#unifiedconfig-overview)
-- [NEVER Use process.env Directly](#never-use-processenv-directly)
-- [Configuration Structure](#configuration-structure)
-- [Environment-Specific Configs](#environment-specific-configs)
-- [Secrets Management](#secrets-management)
-- [Migration Guide](#migration-guide)
+- [UnifiedConfig 개요](#unifiedconfig-overview)
+- [process.env 직접 사용 금지](#never-use-processenv-directly)
+- [설정 구조](#configuration-structure)
+- [환경별 설정](#environment-specific-configs)
+- [시크릿(Secrets) 관리](#secrets-management)
+- [마이그레이션 가이드](#migration-guide)
 
 ---
 

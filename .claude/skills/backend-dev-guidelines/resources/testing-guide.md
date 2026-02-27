@@ -4,12 +4,12 @@ Jest를 사용해 백엔드 서비스를 테스트하는 방법과 모범 사례
 
 ## 목차
 
-- [Unit Testing](#unit-testing)
-- [Integration Testing](#integration-testing)
-- [Mocking Strategies](#mocking-strategies)
-- [Test Data Management](#test-data-management)
-- [Testing Authenticated Routes](#testing-authenticated-routes)
-- [Coverage Targets](#coverage-targets)
+- [유닛 테스트](#unit-testing)
+- [통합 테스트](#integration-testing)
+- [Mocking 전략](#mocking-strategies)
+- [테스트 데이터 관리](#test-data-management)
+- [인증된 라우트 테스트](#testing-authenticated-routes)
+- [커버리지 목표](#coverage-targets)
 
 ---
 

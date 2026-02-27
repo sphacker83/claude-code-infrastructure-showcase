@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [Authentication Middleware](#authentication-middleware)
-- [Audit Middleware with AsyncLocalStorage](#audit-middleware-with-asynclocalstorage)
-- [Error Boundary Middleware](#error-boundary-middleware)
-- [Validation Middleware](#validation-middleware)
-- [Composable Middleware](#composable-middleware)
-- [Middleware Ordering](#middleware-ordering)
+- [인증 미들웨어](#authentication-middleware)
+- [AsyncLocalStorage 감사(Audit) 미들웨어](#audit-middleware-with-asynclocalstorage)
+- [에러 바운더리 미들웨어](#error-boundary-middleware)
+- [검증(Validation) 미들웨어](#validation-middleware)
+- [조합 가능한(Composable) 미들웨어](#composable-middleware)
+- [미들웨어 순서](#middleware-ordering)
 
 ---
 

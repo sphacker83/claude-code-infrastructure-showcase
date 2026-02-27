@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [Skill Not Triggering](#skill-not-triggering)
-  - [UserPromptSubmit Not Suggesting](#userpromptsubmit-not-suggesting)
-  - [PreToolUse Not Blocking](#pretooluse-not-blocking)
-- [False Positives](#false-positives)
-- [Hook Not Executing](#hook-not-executing)
-- [Performance Issues](#performance-issues)
+- [스킬이 트리거되지 않음](#skill-not-triggering)
+  - [UserPromptSubmit이 제안하지 않음](#userpromptsubmit-not-suggesting)
+  - [PreToolUse가 차단하지 않음](#pretooluse-not-blocking)
+- [오탐(False Positives)](#false-positives)
+- [훅이 실행되지 않음](#hook-not-executing)
+- [성능 이슈](#performance-issues)
 
 ---
 

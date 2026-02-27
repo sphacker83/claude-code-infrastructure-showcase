@@ -4,12 +4,12 @@
 
 ## 목차
 
-- [PrismaService Usage](#prismaservice-usage)
-- [Repository Pattern](#repository-pattern)
-- [Transaction Patterns](#transaction-patterns)
-- [Query Optimization](#query-optimization)
-- [N+1 Query Prevention](#n1-query-prevention)
-- [Error Handling](#error-handling)
+- [PrismaService 사용](#prismaservice-usage)
+- [리포지토리 패턴](#repository-pattern)
+- [트랜잭션 패턴](#transaction-patterns)
+- [쿼리 최적화](#query-optimization)
+- [N+1 쿼리 방지](#n1-query-prevention)
+- [에러 처리](#error-handling)
 
 ---
 

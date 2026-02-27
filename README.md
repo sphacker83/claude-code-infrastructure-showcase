@@ -55,7 +55,7 @@
 
 ### 🤖 전용 에이전트를 쓰고 싶어요
 
-복잡한 작업을 위한 실전 검증 에이전트 10종:
+복잡한 작업을 위한 실전 검증 에이전트 11종:
 - 코드 아키텍처 리뷰
 - 리팩터링 지원
 - 문서 생성
@@ -124,11 +124,11 @@ skill-name/
 │   ├── post-tool-use-tracker.sh   (필수)
 │   ├── tsc-check.sh        (선택, 커스터마이징 필요)
 │   └── trigger-build-resolver.sh  (선택)
-├── agents/                 # 전용 에이전트 10개
+├── agents/                 # 전용 에이전트 11개
 │   ├── code-architecture-reviewer.md
 │   ├── refactor-planner.md
 │   ├── frontend-error-fixer.md
-│   └── ... 나머지 7개
+│   └── ... 나머지 8개
 └── commands/               # 슬래시 명령어 3개
     ├── dev-docs.md
     └── ...
@@ -171,7 +171,7 @@ dev/
 
 **👉 [훅 설정 가이드 →](.claude/hooks/README.md)**
 
-### 🤖 에이전트 (10)
+### 🤖 에이전트 (11)
 
 **독립형이라 복사 후 바로 사용 가능합니다.**
 
@@ -180,6 +180,7 @@ dev/
 | code-architecture-reviewer | 코드의 아키텍처 일관성 검토 |
 | code-refactor-master | 리팩터링 계획 및 실행 |
 | documentation-architect | 포괄적 문서 생성 |
+| flutter-developer | Flutter 앱 전문 개발 및 문제 해결 |
 | frontend-error-fixer | 프론트엔드 오류 디버깅 |
 | plan-reviewer | 개발 계획 검토 |
 | refactor-planner | 리팩터링 전략 수립 |

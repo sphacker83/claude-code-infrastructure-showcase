@@ -1,42 +1,42 @@
-# Validation Patterns - Input Validation with Zod
+# 검증(Validation) 패턴 - Zod로 입력 검증
 
-Complete guide to input validation using Zod schemas for type-safe validation.
+타입 안전한 검증을 위해 Zod 스키마를 사용하여 입력을 검증하는 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
-- [Why Zod?](#why-zod)
-- [Basic Zod Patterns](#basic-zod-patterns)
-- [Schema Examples from Codebase](#schema-examples-from-codebase)
-- [Route-Level Validation](#route-level-validation)
-- [Controller Validation](#controller-validation)
-- [DTO Pattern](#dto-pattern)
-- [Error Handling](#error-handling)
-- [Advanced Patterns](#advanced-patterns)
+- [왜 Zod인가?](#why-zod)
+- [기본 Zod 패턴](#basic-zod-patterns)
+- [코드베이스의 스키마 예시](#schema-examples-from-codebase)
+- [라우트 레벨 검증](#route-level-validation)
+- [컨트롤러 검증](#controller-validation)
+- [DTO 패턴](#dto-pattern)
+- [에러 처리](#error-handling)
+- [고급 패턴](#advanced-patterns)
 
 ---
 
-## Why Zod?
+## 왜 Zod인가?
 
-### Benefits Over Joi/Other Libraries
+### Joi/기타 라이브러리 대비 장점
 
-**Type Safety:**
-- ✅ Full TypeScript inference
-- ✅ Runtime + compile-time validation
-- ✅ Automatic type generation
+**타입 안정성(Type Safety):**
+- ✅ 완전한 TypeScript 타입 추론
+- ✅ 런타임 + 컴파일 타임 검증
+- ✅ 자동 타입 생성
 
-**Developer Experience:**
-- ✅ Intuitive API
-- ✅ Composable schemas
-- ✅ Excellent error messages
+**개발자 경험(Developer Experience):**
+- ✅ 직관적인 API
+- ✅ 조합 가능한(Composable) 스키마
+- ✅ 훌륭한 에러 메시지
 
-**Performance:**
-- ✅ Fast validation
-- ✅ Small bundle size
-- ✅ Tree-shakeable
+**성능(Performance):**
+- ✅ 빠른 검증
+- ✅ 작은 번들 크기
+- ✅ 트리 셰이킹(tree-shaking) 가능
 
-### Migration from Joi
+### Joi에서 마이그레이션
 
-Modern validation uses Zod instead of Joi:
+현대적인 검증은 Joi 대신 Zod를 사용합니다:
 
 ```typescript
 // ❌ OLD - Joi (being phased out)
@@ -54,9 +54,9 @@ const schema = z.object({
 
 ---
 
-## Basic Zod Patterns
+## 기본 Zod 패턴
 
-### Primitive Types
+### 기본 타입(Primitive Types)
 
 ```typescript
 import { z } from 'zod';
@@ -86,7 +86,7 @@ const roleSchema = z.enum(['admin', 'operations', 'user']);
 const statusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED']);
 ```
 
-### Objects
+### 객체(Objects)
 
 ```typescript
 // Simple object
@@ -122,7 +122,7 @@ const userSchema = z.object({
 });
 ```
 
-### Arrays
+### 배열(Arrays)
 
 ```typescript
 // Array of primitives
@@ -144,9 +144,9 @@ const nonEmptyArray = z.array(z.string()).nonempty();
 
 ---
 
-## Schema Examples from Codebase
+## 코드베이스의 스키마 예시
 
-### Form Validation Schemas
+### 폼 검증 스키마
 
 **File:** `/form/src/helpers/zodSchemas.ts`
 
@@ -249,7 +249,7 @@ export const updateQuestionValidationSchema = z.object({
 });
 ```
 
-### Proxy Relationship Schema
+### 프록시 관계 스키마
 
 ```typescript
 // Proxy relationship validation
@@ -270,7 +270,7 @@ const createProxySchemaWithValidation = createProxySchema.refine(
 );
 ```
 
-### Workflow Validation
+### 워크플로 검증
 
 ```typescript
 // Workflow start schema
@@ -291,9 +291,9 @@ const completeStepSchema = z.object({
 
 ---
 
-## Route-Level Validation
+## 라우트 레벨 검증
 
-### Pattern 1: Inline Validation
+### 패턴 1: 인라인 검증
 
 ```typescript
 // routes/proxyRoutes.ts
@@ -334,20 +334,20 @@ router.post(
 );
 ```
 
-**Pros:**
+**장점:**
 - Quick and simple
 - Good for simple routes
 
-**Cons:**
+**단점:**
 - Validation logic in routes
 - Harder to test
 - Not reusable
 
 ---
 
-## Controller Validation
+## 컨트롤러 검증
 
-### Pattern 2: Controller Validation (Recommended)
+### 패턴 2: 컨트롤러 검증(권장)
 
 ```typescript
 // validators/userSchemas.ts
@@ -435,9 +435,9 @@ export class UserController extends BaseController {
 
 ---
 
-## DTO Pattern
+## DTO 패턴
 
-### Type Inference from Schemas
+### 스키마에서 타입 추론
 
 ```typescript
 import { z } from 'zod';
@@ -469,7 +469,7 @@ class UserService {
 }
 ```
 
-### Input vs Output Types
+### 입력 타입 vs 출력 타입
 
 ```typescript
 // Input schema (what API receives)
@@ -494,9 +494,9 @@ type UserOutput = z.infer<typeof userOutputSchema>;
 
 ---
 
-## Error Handling
+## 에러 처리
 
-### Zod Error Format
+### Zod 에러 포맷
 
 ```typescript
 try {
@@ -517,7 +517,7 @@ try {
 }
 ```
 
-### Custom Error Messages
+### 커스텀 에러 메시지
 
 ```typescript
 const userSchema = z.object({
@@ -527,7 +527,7 @@ const userSchema = z.object({
 });
 ```
 
-### Formatted Error Response
+### 포맷된 에러 응답
 
 ```typescript
 // Helper function to format Zod errors
@@ -570,9 +570,9 @@ catch (error) {
 
 ---
 
-## Advanced Patterns
+## 고급 패턴
 
-### Conditional Validation
+### 조건부 검증
 
 ```typescript
 // Validate based on other field values
@@ -594,7 +594,7 @@ const submissionSchema = z.object({
 );
 ```
 
-### Transform Data
+### 데이터 변환(Transform)
 
 ```typescript
 // Transform strings to numbers
@@ -610,7 +610,7 @@ const eventSchema = z.object({
 });
 ```
 
-### Preprocess Data
+### 데이터 전처리(Preprocess)
 
 ```typescript
 // Trim strings before validation
@@ -626,7 +626,7 @@ const userSchema = z.object({
 });
 ```
 
-### Union Types
+### 유니온 타입(Union Types)
 
 ```typescript
 // Multiple possible types
@@ -647,7 +647,7 @@ const notificationSchema = z.discriminatedUnion('type', [
 ]);
 ```
 
-### Recursive Schemas
+### 재귀 스키마(Recursive Schemas)
 
 ```typescript
 // For nested structures like trees
@@ -666,7 +666,7 @@ const categorySchema: z.ZodType<Category> = z.lazy(() =>
 );
 ```
 
-### Schema Composition
+### 스키마 합성(Composition)
 
 ```typescript
 // Base schemas
@@ -707,7 +707,7 @@ const userWithoutTimestamps = userSchema.omit({
 });
 ```
 
-### Validation Middleware
+### 검증 미들웨어
 
 ```typescript
 // Create reusable validation middleware
@@ -747,7 +747,7 @@ router.post('/users',
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md) - Main guide
 - [routing-and-controllers.md](routing-and-controllers.md) - Using validation in controllers
 - [services-and-repositories.md](services-and-repositories.md) - Using DTOs in services

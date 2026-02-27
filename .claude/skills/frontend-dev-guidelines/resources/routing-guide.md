@@ -1,22 +1,22 @@
-# Routing Guide
+# 라우팅 가이드
 
-TanStack Router implementation with folder-based routing and lazy loading patterns.
-
----
-
-## TanStack Router Overview
-
-**TanStack Router** with file-based routing:
-- Folder structure defines routes
-- Lazy loading for code splitting
-- Type-safe routing
-- Breadcrumb loaders
+폴더 기반 라우팅과 지연 로딩 패턴을 사용하는 TanStack Router 구현 가이드입니다.
 
 ---
 
-## Folder-Based Routing
+## TanStack Router 개요
 
-### Directory Structure
+파일 기반 라우팅을 사용하는 **TanStack Router**:
+- 폴더 구조로 라우트를 정의
+- 코드 스플리팅을 위한 지연 로딩
+- 타입 안전한 라우팅
+- breadcrumb loader
+
+---
+
+## 폴더 기반 라우팅
+
+### 디렉터리 구조
 
 ```
 routes/
@@ -31,16 +31,16 @@ routes/
     index.tsx                   # /comments
 ```
 
-**Pattern**:
-- `index.tsx` = Route at that path
-- `$param.tsx` = Dynamic parameter
-- Nested folders = Nested routes
+**패턴**:
+- `index.tsx` = 해당 경로의 라우트
+- `$param.tsx` = 동적 파라미터
+- 중첩 폴더 = 중첩 라우트
 
 ---
 
-## Basic Route Pattern
+## 기본 라우트 패턴
 
-### Example from posts/index.tsx
+### posts/index.tsx 예시
 
 ```typescript
 /**
@@ -78,18 +78,18 @@ function PostsPage() {
 export default PostsPage;
 ```
 
-**Key Points:**
-- Lazy load heavy components
-- `createFileRoute` with route path
-- `loader` for breadcrumb data
-- Page component renders content
-- Export both Route and component
+**핵심 포인트:**
+- 무거운 컴포넌트는 지연 로딩
+- 라우트 경로와 함께 `createFileRoute` 사용
+- breadcrumb 데이터는 `loader`에서 제공
+- 페이지 컴포넌트가 콘텐츠를 렌더링
+- Route와 컴포넌트를 모두 export
 
 ---
 
-## Lazy Loading Routes
+## 라우트 지연 로딩
 
-### Named Export Pattern
+### Named export 패턴
 
 ```typescript
 import { lazy } from 'react';
@@ -102,7 +102,7 @@ const MyPage = lazy(() =>
 );
 ```
 
-### Default Export Pattern
+### Default export 패턴
 
 ```typescript
 import { lazy } from 'react';
@@ -111,18 +111,18 @@ import { lazy } from 'react';
 const MyPage = lazy(() => import('@/features/my-feature/components/MyPage'));
 ```
 
-### Why Lazy Load Routes?
+### 라우트를 지연 로딩하는 이유
 
-- Code splitting - smaller initial bundle
-- Faster initial page load
-- Load route code only when navigated to
-- Better performance
+- 코드 스플리팅 - 초기 번들 크기 감소
+- 초기 페이지 로드 속도 향상
+- 해당 라우트로 이동할 때만 코드 로드
+- 전반적인 성능 향상
 
 ---
 
 ## createFileRoute
 
-### Basic Configuration
+### 기본 설정
 
 ```typescript
 export const Route = createFileRoute('/my-route/')({
@@ -134,7 +134,7 @@ function MyRoutePage() {
 }
 ```
 
-### With Breadcrumb Loader
+### Breadcrumb loader 포함
 
 ```typescript
 export const Route = createFileRoute('/my-route/')({
@@ -145,9 +145,9 @@ export const Route = createFileRoute('/my-route/')({
 });
 ```
 
-Breadcrumb appears in navigation/app bar automatically.
+breadcrumb는 내비게이션/앱 바에 자동으로 표시됩니다.
 
-### With Data Loader
+### 데이터 loader 포함
 
 ```typescript
 export const Route = createFileRoute('/my-route/')({
@@ -160,7 +160,7 @@ export const Route = createFileRoute('/my-route/')({
 });
 ```
 
-### With Search Params
+### Search Params 포함
 
 ```typescript
 export const Route = createFileRoute('/search/')({
@@ -181,9 +181,9 @@ function SearchPage() {
 
 ---
 
-## Dynamic Routes
+## 동적 라우트
 
-### Parameter Routes
+### 파라미터 라우트
 
 ```typescript
 // routes/users/$userId.tsx
@@ -199,7 +199,7 @@ function UserPage() {
 }
 ```
 
-### Multiple Parameters
+### 다중 파라미터
 
 ```typescript
 // routes/posts/$postId/comments/$commentId.tsx
@@ -217,9 +217,9 @@ function CommentPage() {
 
 ---
 
-## Navigation
+## 내비게이션
 
-### Programmatic Navigation
+### 프로그래밍 방식 내비게이션
 
 ```typescript
 import { useNavigate } from '@tanstack/react-router';
@@ -235,7 +235,7 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-### With Parameters
+### 파라미터 포함
 
 ```typescript
 const handleNavigate = () => {
@@ -246,7 +246,7 @@ const handleNavigate = () => {
 };
 ```
 
-### With Search Params
+### Search Params 포함
 
 ```typescript
 const handleSearch = () => {
@@ -259,9 +259,9 @@ const handleSearch = () => {
 
 ---
 
-## Route Layout Pattern
+## 라우트 레이아웃 패턴
 
-### Root Layout (__root.tsx)
+### 루트 레이아웃(__root.tsx)
 
 ```typescript
 import { createRootRoute, Outlet } from '@tanstack/react-router';
@@ -284,7 +284,7 @@ function RootLayout() {
 }
 ```
 
-### Nested Layouts
+### 중첩 레이아웃
 
 ```typescript
 // routes/dashboard/index.tsx
@@ -306,7 +306,7 @@ function DashboardLayout() {
 
 ---
 
-## Complete Route Example
+## 완성 라우트 예제
 
 ```typescript
 /**
@@ -347,9 +347,9 @@ export default UserPage;
 
 ---
 
-## Summary
+## 요약
 
-**Routing Checklist:**
+**라우팅 체크리스트:**
 - ✅ Folder-based: `routes/my-route/index.tsx`
 - ✅ Lazy load components: `React.lazy(() => import())`
 - ✅ Use `createFileRoute` with route path
@@ -358,7 +358,7 @@ export default UserPage;
 - ✅ Use `Route.useParams()` for dynamic params
 - ✅ Use `useNavigate()` for programmatic navigation
 
-**See Also:**
+**함께 보기:**
 - [component-patterns.md](component-patterns.md) - Lazy loading patterns
 - [loading-and-error-states.md](loading-and-error-states.md) - SuspenseLoader usage
 - [complete-examples.md](complete-examples.md) - Full route examples

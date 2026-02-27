@@ -1,14 +1,14 @@
-# Styling Guide
+# 스타일링 가이드
 
-Modern styling patterns for using MUI v7 sx prop, inline styles, and theme integration.
+MUI v7의 `sx` prop, 인라인 스타일, 테마 연동을 사용하는 현대적 스타일링 패턴입니다.
 
 ---
 
-## Inline vs Separate Styles
+## 인라인 vs 분리 스타일
 
-### Decision Threshold
+### 판단 기준
 
-**<100 lines: Inline styles at top of component**
+**100줄 미만: 컴포넌트 상단에 인라인 스타일**
 
 ```typescript
 import type { SxProps, Theme } from '@mui/material';
@@ -38,7 +38,7 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-**>100 lines: Separate `.styles.ts` file**
+**100줄 초과: `.styles.ts` 파일로 분리**
 
 ```typescript
 // MyComponent.styles.ts
@@ -58,9 +58,9 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-### Real Example: UnifiedForm.tsx
+### 실제 예시: UnifiedForm.tsx
 
-**Lines 48-126**: 78 lines of inline styles (acceptable)
+**48-126줄**: 인라인 스타일 78줄(허용 가능)
 
 ```typescript
 const formStyles: Record<string, SxProps<Theme>> = {
@@ -78,13 +78,13 @@ const formStyles: Record<string, SxProps<Theme>> = {
 };
 ```
 
-**Guideline**: User is comfortable with ~80 lines inline. Use your judgment around 100 lines.
+**가이드라인**: 인라인 ~80줄은 무리 없는 수준입니다. 100줄 전후로는 상황에 따라 판단하세요.
 
 ---
 
-## sx Prop Patterns
+## sx prop 패턴
 
-### Basic Usage
+### 기본 사용법
 
 ```typescript
 <Box sx={{ p: 2, mb: 3, display: 'flex' }}>
@@ -92,7 +92,7 @@ const formStyles: Record<string, SxProps<Theme>> = {
 </Box>
 ```
 
-### With Theme Access
+### 테마 접근 포함
 
 ```typescript
 <Box
@@ -107,7 +107,7 @@ const formStyles: Record<string, SxProps<Theme>> = {
 </Box>
 ```
 
-### Responsive Styles
+### 반응형 스타일
 
 ```typescript
 <Box
@@ -121,7 +121,7 @@ const formStyles: Record<string, SxProps<Theme>> = {
 </Box>
 ```
 
-### Pseudo-Selectors
+### 의사 선택자(Pseudo-selectors)
 
 ```typescript
 <Box
@@ -144,9 +144,9 @@ const formStyles: Record<string, SxProps<Theme>> = {
 
 ---
 
-## MUI v7 Patterns
+## MUI v7 패턴
 
-### Grid Component (v7 Syntax)
+### Grid 컴포넌트(v7 문법)
 
 ```typescript
 import { Grid } from '@mui/material';
@@ -169,9 +169,9 @@ import { Grid } from '@mui/material';
 </Grid>
 ```
 
-**Key Change**: `size={{ xs: 12, md: 6 }}` instead of `xs={12} md={6}`
+**핵심 변경점**: `xs={12} md={6}` 대신 `size={{ xs: 12, md: 6 }}`
 
-### Responsive Grid
+### 반응형 Grid
 
 ```typescript
 <Grid container spacing={3}>
@@ -181,7 +181,7 @@ import { Grid } from '@mui/material';
 </Grid>
 ```
 
-### Nested Grids
+### 중첩 Grid
 
 ```typescript
 <Grid container spacing={2}>
@@ -204,9 +204,9 @@ import { Grid } from '@mui/material';
 
 ---
 
-## Type-Safe Styles
+## 타입 안전한 스타일
 
-### Style Object Type
+### 스타일 객체 타입
 
 ```typescript
 import type { SxProps, Theme } from '@mui/material';
@@ -226,7 +226,7 @@ const containerStyle: SxProps<Theme> = {
 };
 ```
 
-### Theme-Aware Styles
+### 테마 인지(Theme-aware) 스타일
 
 ```typescript
 const styles: Record<string, SxProps<Theme>> = {
@@ -246,9 +246,9 @@ const styles: Record<string, SxProps<Theme>> = {
 
 ---
 
-## What NOT to Use
+## 사용하지 말아야 할 것
 
-### ❌ makeStyles (MUI v4 pattern)
+### ❌ makeStyles(MUI v4 패턴)
 
 ```typescript
 // ❌ AVOID - Old Material-UI v4 pattern
@@ -261,9 +261,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 ```
 
-**Why avoid**: Deprecated, v7 doesn't support it well
+**피해야 하는 이유**: Deprecated 되었고, v7에서 지원이 좋지 않습니다.
 
-### ❌ styled() Components
+### ❌ styled() 컴포넌트
 
 ```typescript
 // ❌ AVOID - styled-components pattern
@@ -274,9 +274,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }));
 ```
 
-**Why avoid**: sx prop is more flexible and doesn't create new components
+**피해야 하는 이유**: `sx` prop이 더 유연하고, 불필요한 새 컴포넌트를 만들지 않습니다.
 
-### ✅ Use sx Prop Instead
+### ✅ 대신 sx prop 사용
 
 ```typescript
 // ✅ PREFERRED
@@ -292,11 +292,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 ---
 
-## Code Style Standards
+## 코드 스타일 표준
 
-### Indentation
+### 들여쓰기
 
-**4 spaces** (not 2, not tabs)
+**스페이스 4칸**(2칸 금지, 탭 금지)
 
 ```typescript
 const styles: Record<string, SxProps<Theme>> = {
@@ -308,9 +308,9 @@ const styles: Record<string, SxProps<Theme>> = {
 };
 ```
 
-### Quotes
+### 따옴표
 
-**Single quotes** for strings (project standard)
+문자열은 **싱글 쿼트** 사용(프로젝트 표준)
 
 ```typescript
 // ✅ CORRECT
@@ -322,9 +322,9 @@ const color = "primary.main";
 import { Box } from "@mui/material";
 ```
 
-### Trailing Commas
+### 트레일링 콤마
 
-**Always use trailing commas** in objects and arrays
+객체/배열에는 **항상 트레일링 콤마**를 사용하세요.
 
 ```typescript
 // ✅ CORRECT
@@ -347,9 +347,9 @@ const styles = {
 
 ---
 
-## Common Style Patterns
+## 자주 쓰는 스타일 패턴
 
-### Flexbox Layout
+### Flexbox 레이아웃
 
 ```typescript
 const styles = {
@@ -372,7 +372,7 @@ const styles = {
 };
 ```
 
-### Spacing
+### 여백(Spacing)
 
 ```typescript
 // Padding
@@ -389,7 +389,7 @@ p: 2  // = 16px
 p: 0.5  // = 4px
 ```
 
-### Positioning
+### 위치 지정(Positioning)
 
 ```typescript
 const styles = {
@@ -411,9 +411,9 @@ const styles = {
 
 ---
 
-## Summary
+## 요약
 
-**Styling Checklist:**
+**스타일링 체크리스트:**
 - ✅ Use `sx` prop for MUI styling
 - ✅ Type-safe with `SxProps<Theme>`
 - ✅ <100 lines: inline; >100 lines: separate file
@@ -423,6 +423,6 @@ const styles = {
 - ✅ Trailing commas
 - ❌ No makeStyles or styled()
 
-**See Also:**
+**함께 보기:**
 - [component-patterns.md](component-patterns.md) - Component structure
 - [complete-examples.md](complete-examples.md) - Full styling examples

@@ -1,20 +1,20 @@
-# Component Patterns
+# 컴포넌트 패턴
 
-Modern React component architecture for the application emphasizing type safety, lazy loading, and Suspense boundaries.
+타입 안정성, 지연 로딩(lazy loading), Suspense 경계를 강조하는 애플리케이션용 현대적 React 컴포넌트 아키텍처입니다.
 
 ---
 
-## React.FC Pattern (PREFERRED)
+## React.FC 패턴(권장)
 
-### Why React.FC
+### React.FC를 쓰는 이유
 
-All components use the `React.FC<Props>` pattern for:
-- Explicit type safety for props
-- Consistent component signatures
-- Clear prop interface documentation
-- Better IDE autocomplete
+모든 컴포넌트는 다음 이유로 `React.FC<Props>` 패턴을 사용합니다:
+- props에 대한 명시적 타입 안정성
+- 일관된 컴포넌트 시그니처
+- 명확한 props 인터페이스 문서화
+- 더 나은 IDE 자동완성
 
-### Basic Pattern
+### 기본 패턴
 
 ```typescript
 import React from 'react';
@@ -37,25 +37,25 @@ export const MyComponent: React.FC<MyComponentProps> = ({ userId, onAction }) =>
 export default MyComponent;
 ```
 
-**Key Points:**
-- Props interface defined separately with JSDoc comments
-- `React.FC<Props>` provides type safety
-- Destructure props in parameters
-- Default export at bottom
+**핵심 포인트:**
+- JSDoc 주석과 함께 props 인터페이스를 별도로 정의
+- `React.FC<Props>`가 타입 안정성을 제공
+- 파라미터에서 props를 구조 분해
+- 기본 export는 파일 하단에 위치
 
 ---
 
-## Lazy Loading Pattern
+## 지연 로딩 패턴
 
-### When to Lazy Load
+### 지연 로딩이 필요한 경우
 
-Lazy load components that are:
-- Heavy (DataGrid, charts, rich text editors)
-- Route-level components
-- Modal/dialog content (not shown initially)
-- Below-the-fold content
+다음과 같은 컴포넌트는 지연 로딩하세요:
+- 무거운 컴포넌트(DataGrid, 차트, 리치 텍스트 에디터)
+- 라우트 레벨 컴포넌트
+- 모달/다이얼로그 콘텐츠(초기에는 보이지 않음)
+- 첫 화면 아래(below-the-fold) 콘텐츠
 
-### How to Lazy Load
+### 지연 로딩 방법
 
 ```typescript
 import React from 'react';
@@ -73,7 +73,7 @@ const MyComponent = React.lazy(() =>
 );
 ```
 
-**Example from PostTable.tsx:**
+**PostTable.tsx 예시:**
 
 ```typescript
 /**
@@ -102,9 +102,9 @@ export default PostTable;
 
 ---
 
-## Suspense Boundaries
+## Suspense 경계(Boundaries)
 
-### SuspenseLoader Component
+### SuspenseLoader 컴포넌트
 
 **Import:**
 ```typescript
@@ -113,22 +113,22 @@ import { SuspenseLoader } from '~components/SuspenseLoader';
 import { SuspenseLoader } from '@/components/SuspenseLoader';
 ```
 
-**Usage:**
+**사용법:**
 ```typescript
 <SuspenseLoader>
     <LazyLoadedComponent />
 </SuspenseLoader>
 ```
 
-**What it does:**
-- Shows loading indicator while lazy component loads
-- Smooth fade-in animation
-- Consistent loading experience
-- Prevents layout shift
+**하는 일:**
+- 지연 로딩 컴포넌트가 로드되는 동안 로딩 인디케이터 표시
+- 부드러운 fade-in 애니메이션
+- 일관된 로딩 경험
+- 레이아웃 시프트 방지
 
-### Where to Place Suspense Boundaries
+### Suspense 경계를 둘 위치
 
-**Route Level:**
+**라우트 레벨:**
 ```typescript
 // routes/my-route/index.tsx
 const MyPage = lazy(() => import('@/features/my-feature/components/MyPage'));
@@ -142,7 +142,7 @@ function Route() {
 }
 ```
 
-**Component Level:**
+**컴포넌트 레벨:**
 ```typescript
 function ParentComponent() {
     return (
@@ -156,7 +156,7 @@ function ParentComponent() {
 }
 ```
 
-**Multiple Boundaries:**
+**여러 경계:**
 ```typescript
 function Page() {
     return (
@@ -177,13 +177,13 @@ function Page() {
 }
 ```
 
-Each section loads independently, better UX.
+각 섹션이 독립적으로 로드되어 UX가 더 좋아집니다.
 
 ---
 
-## Component Structure Template
+## 컴포넌트 구조 템플릿
 
-### Recommended Order
+### 권장 순서
 
 ```typescript
 /**
@@ -302,17 +302,17 @@ export default MyComponent;
 
 ---
 
-## Component Separation
+## 컴포넌트 분리
 
-### When to Split Components
+### 컴포넌트를 분리해야 하는 경우
 
-**Split into multiple components when:**
-- Component exceeds 300 lines
-- Multiple distinct responsibilities
-- Reusable sections
-- Complex nested JSX
+**다음이라면 여러 컴포넌트로 분리하세요:**
+- 컴포넌트가 300줄을 초과함
+- 서로 다른 책임이 여러 개 존재함
+- 재사용 가능한 섹션이 있음
+- 중첩 JSX가 복잡함
 
-**Example:**
+**예시:**
 
 ```typescript
 // ❌ AVOID - Monolithic
@@ -336,19 +336,19 @@ function ParentContainer() {
 }
 ```
 
-### When to Keep Together
+### 함께 두어도 되는 경우
 
-**Keep in same file when:**
-- Component < 200 lines
-- Tightly coupled logic
-- Not reusable elsewhere
-- Simple presentation component
+**다음이라면 같은 파일에 두어도 됩니다:**
+- 컴포넌트가 200줄 미만
+- 로직이 강하게 결합되어 있음
+- 다른 곳에서 재사용되지 않음
+- 단순한 프레젠테이션 컴포넌트
 
 ---
 
-## Export Patterns
+## Export 패턴
 
-### Named Const + Default Export (PREFERRED)
+### 이름 있는 const + default export(권장)
 
 ```typescript
 export const MyComponent: React.FC<Props> = ({ ... }) => {
@@ -358,12 +358,12 @@ export const MyComponent: React.FC<Props> = ({ ... }) => {
 export default MyComponent;
 ```
 
-**Why:**
-- Named export for testing/refactoring
-- Default export for lazy loading convenience
-- Both options available to consumers
+**이유:**
+- 테스트/리팩터링을 위한 named export
+- 지연 로딩 편의를 위한 default export
+- 소비자(사용처)에서 두 옵션을 모두 선택 가능
 
-### Lazy Loading Named Exports
+### 이름 있는 export 지연 로딩
 
 ```typescript
 const MyComponent = React.lazy(() =>
@@ -375,9 +375,9 @@ const MyComponent = React.lazy(() =>
 
 ---
 
-## Component Communication
+## 컴포넌트 간 통신
 
-### Props Down, Events Up
+### Props는 아래로, 이벤트는 위로
 
 ```typescript
 // Parent
@@ -407,9 +407,9 @@ export const Child: React.FC<ChildProps> = ({ data, onSelect }) => {
 };
 ```
 
-### Avoid Prop Drilling
+### Prop Drilling 피하기
 
-**Use context for deep nesting:**
+**깊은 중첩에는 context를 사용하세요:**
 ```typescript
 // ❌ AVOID - Prop drilling 5+ levels
 <A prop={x}>
@@ -438,9 +438,9 @@ function DeepChild() {
 
 ---
 
-## Advanced Patterns
+## 고급 패턴
 
-### Compound Components
+### 컴파운드 컴포넌트(Compound Components)
 
 ```typescript
 // Card.tsx
@@ -464,7 +464,7 @@ Card.Footer = CardFooter;
 </Card>
 ```
 
-### Render Props (Rare, but useful)
+### 렌더 프롭스(Render Props) (드물지만 유용)
 
 ```typescript
 interface DataProviderProps {
@@ -484,9 +484,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
 ---
 
-## Summary
+## 요약
 
-**Modern Component Recipe:**
+**현대적 컴포넌트 레시피:**
 1. `React.FC<Props>` with TypeScript
 2. Lazy load if heavy: `React.lazy(() => import())`
 3. Wrap in `<SuspenseLoader>` for loading
@@ -496,7 +496,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 7. Default export at bottom
 8. No early returns for loading states
 
-**See Also:**
+**함께 보기:**
 - [data-fetching.md](data-fetching.md) - useSuspenseQuery details
 - [loading-and-error-states.md](loading-and-error-states.md) - Suspense best practices
 - [complete-examples.md](complete-examples.md) - Full working examples

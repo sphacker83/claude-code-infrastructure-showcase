@@ -1,35 +1,35 @@
-# Advanced Topics & Future Enhancements
+# 고급 주제 & 향후 개선 아이디어
 
-Ideas and concepts for future improvements to the skill system.
+스킬 시스템을 향후 개선하기 위한 아이디어와 개념 모음입니다.
 
 ---
 
-## Dynamic Rule Updates
+## 동적 규칙 업데이트
 
-**Current State:** Requires Claude Code restart to pick up changes to skill-rules.json
+**현재 상태:** skill-rules.json 변경 사항을 반영하려면 Claude Code 재시작이 필요함
 
-**Future Enhancement:** Hot-reload configuration without restart
+**향후 개선:** 재시작 없이 설정을 핫 리로드(hot-reload)
 
-**Implementation Ideas:**
+**구현 아이디어:**
 - Watch skill-rules.json for changes
 - Reload on file modification
 - Invalidate cached compiled regexes
 - Notify user of reload
 
-**Benefits:**
+**장점:**
 - Faster iteration during skill development
 - No need to restart Claude Code
 - Better developer experience
 
 ---
 
-## Skill Dependencies
+## 스킬 의존성
 
-**Current State:** Skills are independent
+**현재 상태:** 스킬은 서로 독립적
 
-**Future Enhancement:** Specify skill dependencies and load order
+**향후 개선:** 스킬 의존성과 로드 순서를 지정
 
-**Configuration Idea:**
+**설정 아이디어:**
 ```json
 {
   "my-advanced-skill": {
@@ -40,25 +40,25 @@ Ideas and concepts for future improvements to the skill system.
 }
 ```
 
-**Use Cases:**
+**사용 사례:**
 - Advanced skill builds on base skill knowledge
 - Ensure foundational skills loaded first
 - Chain skills for complex workflows
 
-**Benefits:**
+**장점:**
 - Better skill composition
 - Clearer skill relationships
 - Progressive disclosure
 
 ---
 
-## Conditional Enforcement
+## 조건부 Enforcement
 
-**Current State:** Enforcement level is static
+**현재 상태:** enforcement 레벨이 고정
 
-**Future Enhancement:** Enforce based on context or environment
+**향후 개선:** 컨텍스트/환경에 따라 enforcement 적용
 
-**Configuration Idea:**
+**설정 아이디어:**
 ```json
 {
   "enforcement": {
@@ -72,25 +72,25 @@ Ideas and concepts for future improvements to the skill system.
 }
 ```
 
-**Use Cases:**
+**사용 사례:**
 - Stricter enforcement in production
 - Relaxed rules during development
 - CI/CD pipeline requirements
 
-**Benefits:**
+**장점:**
 - Environment-appropriate enforcement
 - Flexible rule application
 - Context-aware guardrails
 
 ---
 
-## Skill Analytics
+## 스킬 분석(Analytics)
 
-**Current State:** No usage tracking
+**현재 상태:** 사용 추적 없음
 
-**Future Enhancement:** Track skill usage patterns and effectiveness
+**향후 개선:** 스킬 사용 패턴 및 효과 추적
 
-**Metrics to Collect:**
+**수집할 지표:**
 - Skill trigger frequency
 - False positive rate
 - False negative rate
@@ -98,26 +98,26 @@ Ideas and concepts for future improvements to the skill system.
 - User override rate (skip markers, env vars)
 - Performance metrics (execution time)
 
-**Dashbord Ideas:**
+**대시보드 아이디어:**
 - Most/least used skills
 - Skills with highest false positive rate
 - Performance bottlenecks
 - Skill effectiveness scores
 
-**Benefits:**
+**장점:**
 - Data-driven skill improvement
 - Identify problems early
 - Optimize patterns based on real usage
 
 ---
 
-## Skill Versioning
+## 스킬 버저닝(Versioning)
 
-**Current State:** No version tracking
+**현재 상태:** 버전 추적 없음
 
-**Future Enhancement:** Version skills and track compatibility
+**향후 개선:** 스킬 버전과 호환성 추적
 
-**Configuration Idea:**
+**설정 아이디어:**
 ```json
 {
   "my-skill": {
@@ -129,7 +129,7 @@ Ideas and concepts for future improvements to the skill system.
 }
 ```
 
-**Benefits:**
+**장점:**
 - Track skill evolution
 - Ensure compatibility
 - Document changes
@@ -137,37 +137,37 @@ Ideas and concepts for future improvements to the skill system.
 
 ---
 
-## Multi-Language Support
+## 다국어 지원
 
-**Current State:** English only
+**현재 상태:** 영어만 지원
 
-**Future Enhancement:** Support multiple languages for skill content
+**향후 개선:** 스킬 콘텐츠 다국어 지원
 
-**Implementation Ideas:**
+**구현 아이디어:**
 - Language-specific SKILL.md variants
 - Automatic language detection
 - Fallback to English
 
-**Use Cases:**
+**사용 사례:**
 - International teams
 - Localized documentation
 - Multi-language projects
 
 ---
 
-## Skill Testing Framework
+## 스킬 테스트 프레임워크
 
-**Current State:** Manual testing with npx tsx commands
+**현재 상태:** npx tsx 명령으로 수동 테스트
 
-**Future Enhancement:** Automated skill testing
+**향후 개선:** 자동화된 스킬 테스트
 
-**Features:**
+**기능:**
 - Test cases for trigger patterns
 - Assertion framework
 - CI/CD integration
 - Coverage reports
 
-**Example Test:**
+**예시 테스트:**
 ```typescript
 describe('database-verification', () => {
   it('triggers on Prisma imports', () => {
@@ -183,14 +183,14 @@ describe('database-verification', () => {
 });
 ```
 
-**Benefits:**
+**장점:**
 - Prevent regressions
 - Validate patterns before deployment
 - Confidence in changes
 
 ---
 
-## Related Files
+## 관련 파일
 
 - [SKILL.md](SKILL.md) - Main skill guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Current debugging guide

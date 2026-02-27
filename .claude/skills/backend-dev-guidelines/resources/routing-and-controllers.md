@@ -1,36 +1,36 @@
-# Routing and Controllers - Best Practices
+# 라우팅과 컨트롤러 - 모범 사례
 
-Complete guide to clean route definitions and controller patterns.
+깔끔한 라우트 정의와 컨트롤러 패턴을 위한 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
-- [Routes: Routing Only](#routes-routing-only)
-- [BaseController Pattern](#basecontroller-pattern)
-- [Good Examples](#good-examples)
-- [Anti-Patterns](#anti-patterns)
-- [Refactoring Guide](#refactoring-guide)
-- [Error Handling](#error-handling)
-- [HTTP Status Codes](#http-status-codes)
+- [라우트: 라우팅만](#routes-routing-only)
+- [BaseController 패턴](#basecontroller-pattern)
+- [좋은 예시](#good-examples)
+- [안티패턴](#anti-patterns)
+- [리팩터링 가이드](#refactoring-guide)
+- [에러 처리](#error-handling)
+- [HTTP 상태 코드](#http-status-codes)
 
 ---
 
-## Routes: Routing Only
+## 라우트: 라우팅만
 
-### The Golden Rule
+### 황금 규칙
 
-**Routes should ONLY:**
-- ✅ Define route paths
-- ✅ Register middleware
-- ✅ Delegate to controllers
+**라우트가 해야 하는 것(ONLY):**
+- ✅ 라우트 경로 정의
+- ✅ 미들웨어 등록
+- ✅ 컨트롤러로 위임
 
-**Routes should NEVER:**
-- ❌ Contain business logic
-- ❌ Access database directly
-- ❌ Implement validation logic (use Zod + controller)
-- ❌ Format complex responses
-- ❌ Handle complex error scenarios
+**라우트가 하면 안 되는 것(NEVER):**
+- ❌ 비즈니스 로직 포함
+- ❌ DB 직접 접근
+- ❌ 검증 로직 구현(Zod + 컨트롤러 사용)
+- ❌ 복잡한 응답 포맷팅
+- ❌ 복잡한 에러 시나리오 처리
 
-### Clean Route Pattern
+### 깔끔한 라우트 패턴
 
 ```typescript
 // routes/userRoutes.ts
@@ -64,27 +64,27 @@ router.put('/:id',
 export default router;
 ```
 
-**Key Points:**
-- Each route: method, path, middleware chain, controller delegation
-- No try-catch needed (controller handles errors)
-- Clean, readable, maintainable
-- Easy to see all endpoints at a glance
+**핵심 포인트:**
+- 각 라우트는: 메서드, 경로, 미들웨어 체인, 컨트롤러 위임만 포함
+- try-catch 불필요(컨트롤러에서 에러 처리)
+- 깔끔하고 읽기 쉽고 유지보수하기 쉬움
+- 전체 엔드포인트를 한눈에 파악 가능
 
 ---
 
-## BaseController Pattern
+## BaseController 패턴
 
-### Why BaseController?
+### 왜 BaseController인가?
 
-**Benefits:**
-- Consistent error handling across all controllers
-- Automatic Sentry integration
-- Standardized response formats
-- Reusable helper methods
-- Performance tracking utilities
-- Logging and breadcrumb helpers
+**장점:**
+- 모든 컨트롤러에서 일관된 에러 처리
+- Sentry 자동 통합
+- 표준화된 응답 포맷
+- 재사용 가능한 헬퍼 메서드
+- 성능 추적 유틸리티
+- 로깅 및 breadcrumb 헬퍼
 
-### BaseController Pattern (Template)
+### BaseController 패턴(템플릿)
 
 **File:** `/email/src/controllers/BaseController.ts`
 
@@ -225,7 +225,7 @@ export abstract class BaseController {
 }
 ```
 
-### Using BaseController
+### BaseController 사용
 
 ```typescript
 // controllers/UserController.ts
@@ -293,18 +293,18 @@ export class UserController extends BaseController {
 }
 ```
 
-**Benefits:**
-- Consistent error handling
-- Automatic Sentry integration
-- Performance tracking
-- Clean, readable code
-- Easy to test
+**장점:**
+- 일관된 에러 처리
+- Sentry 자동 통합
+- 성능 추적
+- 깔끔하고 읽기 쉬운 코드
+- 테스트 용이
 
 ---
 
-## Good Examples
+## 좋은 예시
 
-### Example 1: Email Notification Routes (Excellent ✅)
+### 예시 1: 이메일 알림 라우트(매우 좋음 ✅)
 
 **File:** `/email/src/routes/notificationRoutes.ts`
 
@@ -335,13 +335,13 @@ router.put('/:id/read',
 export default router;
 ```
 
-**What Makes This Excellent:**
-- Zero business logic in routes
-- Clear middleware chain
-- Consistent pattern
-- Easy to understand
+**이 예시가 매우 좋은 이유:**
+- 라우트에 비즈니스 로직이 전혀 없음
+- 미들웨어 체인이 명확함
+- 패턴이 일관됨
+- 이해하기 쉬움
 
-### Example 2: Proxy Routes with Validation (Good ✅)
+### 예시 2: 검증이 있는 프록시 라우트(좋음 ✅)
 
 **File:** `/form/src/routes/proxyRoutes.ts`
 
@@ -369,21 +369,21 @@ router.post('/',
 );
 ```
 
-**What Makes This Good:**
-- Zod validation
-- Delegates to service
-- Proper HTTP status codes
-- Error handling
+**이 예시가 좋은 이유:**
+- Zod 검증
+- 서비스로 위임
+- 올바른 HTTP 상태 코드 사용
+- 에러 처리
 
-**Could Be Better:**
-- Move validation to controller
-- Use BaseController
+**개선점:**
+- 검증을 컨트롤러로 이동
+- BaseController 사용
 
 ---
 
-## Anti-Patterns
+## 안티패턴
 
-### Anti-Pattern 1: Business Logic in Routes (Bad ❌)
+### 안티패턴 1: 라우트에 비즈니스 로직(나쁨 ❌)
 
 **File:** `/form/src/routes/responseRoutes.ts` (actual production code)
 
@@ -439,17 +439,17 @@ router.post('/:formID/submit', async (req: Request, res: Response) => {
 });
 ```
 
-**Why This Is Terrible:**
-- 200+ lines of business logic
-- Hard to test (requires HTTP mocking)
-- Hard to reuse (tied to route)
-- Mixed responsibilities
-- Difficult to debug
-- Performance tracking difficult
+**이 예시가 최악인 이유:**
+- 200줄 이상의 비즈니스 로직
+- 테스트가 어려움(HTTP mocking 필요)
+- 재사용이 어려움(라우트에 결합됨)
+- 책임이 섞여 있음
+- 디버깅이 어려움
+- 성능 추적이 어려움
 
-### How to Refactor (Step-by-Step)
+### 리팩터링 방법(단계별)
 
-**Step 1: Create Controller**
+**1단계: 컨트롤러 생성**
 
 ```typescript
 // controllers/PostController.ts
@@ -480,7 +480,7 @@ export class PostController extends BaseController {
 }
 ```
 
-**Step 2: Create Service**
+**2단계: 서비스 생성**
 
 ```typescript
 // services/postService.ts
@@ -524,7 +524,7 @@ export class PostService {
 }
 ```
 
-**Step 3: Update Route**
+**3단계: 라우트 업데이트**
 
 ```typescript
 // routes/postRoutes.ts
@@ -541,17 +541,17 @@ router.post('/',
 );
 ```
 
-**Result:**
-- Route: 8 lines (was 200+)
-- Controller: 25 lines (request handling)
-- Service: 50 lines (business logic)
-- Testable, reusable, maintainable!
+**결과:**
+- 라우트: 8줄(기존 200줄+)
+- 컨트롤러: 25줄(요청 처리)
+- 서비스: 50줄(비즈니스 로직)
+- 테스트/재사용/유지보수 가능!
 
 ---
 
-## Error Handling
+## 에러 처리
 
-### Controller Error Handling
+### 컨트롤러 에러 처리
 
 ```typescript
 async createUser(req: Request, res: Response): Promise<void> {
@@ -568,7 +568,7 @@ async createUser(req: Request, res: Response): Promise<void> {
 }
 ```
 
-### Custom Error Status Codes
+### 커스텀 에러 상태 코드
 
 ```typescript
 async getUser(req: Request, res: Response): Promise<void> {
@@ -592,7 +592,7 @@ async getUser(req: Request, res: Response): Promise<void> {
 }
 ```
 
-### Validation Errors
+### 검증 에러
 
 ```typescript
 async createUser(req: Request, res: Response): Promise<void> {
@@ -612,24 +612,24 @@ async createUser(req: Request, res: Response): Promise<void> {
 
 ---
 
-## HTTP Status Codes
+## HTTP 상태 코드
 
-### Standard Codes
+### 표준 코드
 
-| Code | Use Case | Example |
+| 코드 | 사용 사례 | 예시 |
 |------|----------|---------|
-| 200 | Success (GET, PUT) | User retrieved, Updated |
-| 201 | Created (POST) | User created |
-| 204 | No Content (DELETE) | User deleted |
-| 400 | Bad Request | Invalid input data |
-| 401 | Unauthorized | Not authenticated |
-| 403 | Forbidden | No permission |
-| 404 | Not Found | Resource doesn't exist |
-| 409 | Conflict | Duplicate resource |
-| 422 | Unprocessable Entity | Validation failed |
-| 500 | Internal Server Error | Unexpected error |
+| 200 | 성공(GET, PUT) | 사용자 조회, 업데이트 |
+| 201 | 생성됨(POST) | 사용자 생성 |
+| 204 | 콘텐츠 없음(DELETE) | 사용자 삭제 |
+| 400 | 잘못된 요청 | 유효하지 않은 입력 데이터 |
+| 401 | 인증 필요 | 인증되지 않음 |
+| 403 | 권한 없음 | 권한 부족 |
+| 404 | 찾을 수 없음 | 리소스가 존재하지 않음 |
+| 409 | 충돌 | 중복 리소스 |
+| 422 | 처리할 수 없는 엔티티 | 검증 실패 |
+| 500 | 내부 서버 오류 | 예기치 않은 오류 |
 
-### Usage Examples
+### 사용 예시
 
 ```typescript
 // 200 - Success (default)
@@ -650,29 +650,29 @@ this.handleError(new ForbiddenError('No permission'), res, 'operation', 403);
 
 ---
 
-## Refactoring Guide
+## 리팩터링 가이드
 
-### Identify Routes Needing Refactoring
+### 리팩터링이 필요한 라우트 찾기
 
-**Red Flags:**
-- Route file > 100 lines
-- Multiple try-catch blocks in one route
-- Direct database access (Prisma calls)
-- Complex business logic (if statements, loops)
-- Permission checks in routes
+**레드 플래그:**
+- 라우트 파일이 100줄 초과
+- 한 라우트에 try-catch 블록이 여러 개
+- DB 직접 접근(Prisma 호출)
+- 복잡한 비즈니스 로직(if, loop 등)
+- 라우트에서 권한 체크
 
-**Check your routes:**
+**라우트를 점검하세요:**
 ```bash
-# Find large route files
+# 큰 라우트 파일 찾기
 wc -l form/src/routes/*.ts | sort -n
 
-# Find routes with Prisma usage
+# Prisma를 사용하는 라우트 찾기
 grep -r "PrismaService" form/src/routes/
 ```
 
-### Refactoring Process
+### 리팩터링 프로세스
 
-**1. Extract to Controller:**
+**1. 컨트롤러로 추출:**
 ```typescript
 // Before: Route with logic
 router.post('/action', async (req, res) => {
@@ -697,7 +697,7 @@ async performAction(req: Request, res: Response): Promise<void> {
 }
 ```
 
-**2. Extract to Service:**
+**2. 서비스로 추출:**
 ```typescript
 // Controller stays thin
 async performAction(req: Request, res: Response): Promise<void> {
@@ -722,7 +722,7 @@ export class ActionService {
 }
 ```
 
-**3. Add Repository (if needed):**
+**3. 리포지토리 추가(필요 시):**
 ```typescript
 // Service calls repository
 export class ActionService {
@@ -750,7 +750,7 @@ export class ActionRepository {
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md) - Main guide
 - [services-and-repositories.md](services-and-repositories.md) - Service layer details
 - [complete-examples.md](complete-examples.md) - Full refactoring examples

@@ -1,58 +1,58 @@
-# Services and Repositories - Business Logic Layer
+# 서비스와 리포지토리 - 비즈니스 로직 레이어
 
-Complete guide to organizing business logic with services and data access with repositories.
+서비스로 비즈니스 로직을 구성하고, 리포지토리로 데이터 접근을 구성하는 방법에 대한 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
-- [Service Layer Overview](#service-layer-overview)
-- [Dependency Injection Pattern](#dependency-injection-pattern)
-- [Singleton Pattern](#singleton-pattern)
-- [Repository Pattern](#repository-pattern)
-- [Service Design Principles](#service-design-principles)
-- [Caching Strategies](#caching-strategies)
-- [Testing Services](#testing-services)
-
----
-
-## Service Layer Overview
-
-### Purpose of Services
-
-**Services contain business logic** - the 'what' and 'why' of your application:
-
-```
-Controller asks: "Should I do this?"
-Service answers: "Yes/No, here's why, and here's what happens"
-Repository executes: "Here's the data you requested"
-```
-
-**Services are responsible for:**
-- ✅ Business rules enforcement
-- ✅ Orchestrating multiple repositories
-- ✅ Transaction management
-- ✅ Complex calculations
-- ✅ External service integration
-- ✅ Business validations
-
-**Services should NOT:**
-- ❌ Know about HTTP (Request/Response)
-- ❌ Direct Prisma access (use repositories)
-- ❌ Handle route-specific logic
-- ❌ Format HTTP responses
+- [서비스 레이어 개요](#service-layer-overview)
+- [의존성 주입 패턴](#dependency-injection-pattern)
+- [싱글턴 패턴](#singleton-pattern)
+- [리포지토리 패턴](#repository-pattern)
+- [서비스 설계 원칙](#service-design-principles)
+- [캐싱 전략](#caching-strategies)
+- [서비스 테스트](#testing-services)
 
 ---
 
-## Dependency Injection Pattern
+## 서비스 레이어 개요
 
-### Why Dependency Injection?
+### 서비스의 목적
 
-**Benefits:**
-- Easy to test (inject mocks)
-- Clear dependencies
-- Flexible configuration
-- Promotes loose coupling
+**서비스는 비즈니스 로직을 담습니다** - 애플리케이션에서 “무엇을/왜”에 해당하는 부분입니다:
 
-### Excellent Example: NotificationService
+```
+컨트롤러의 질문: "이걸 해야 하나요?"
+서비스의 답: "예/아니오. 이유는 이렇고, 이렇게 동작합니다"
+리포지토리의 실행: "요청한 데이터는 여기 있습니다"
+```
+
+**서비스의 책임:**
+- ✅ 비즈니스 규칙 강제
+- ✅ 여러 리포지토리 오케스트레이션
+- ✅ 트랜잭션 관리
+- ✅ 복잡한 계산
+- ✅ 외부 서비스 연동
+- ✅ 비즈니스 검증
+
+**서비스가 하면 안 되는 것:**
+- ❌ HTTP(Request/Response)를 알아야 함
+- ❌ Prisma를 직접 접근(리포지토리 사용)
+- ❌ 라우트 전용 로직 처리
+- ❌ HTTP 응답 포맷팅
+
+---
+
+## 의존성 주입(Dependency Injection) 패턴
+
+### 왜 의존성 주입인가?
+
+**장점:**
+- 테스트가 쉬움(mock 주입)
+- 의존성이 명확함
+- 유연한 설정
+- 느슨한 결합(loose coupling) 촉진
+
+### 훌륭한 예시: NotificationService
 
 **File:** `/blog-api/src/services/NotificationService.ts`
 
@@ -199,7 +199,7 @@ export class NotificationService {
 }
 ```
 
-**Usage in Controller:**
+**컨트롤러에서 사용:**
 
 ```typescript
 // Instantiate with dependencies
@@ -217,27 +217,27 @@ const notification = await notificationService.createNotification({
 });
 ```
 
-**Key Takeaways:**
-- Dependencies passed via constructor
-- Clear interface defines required dependencies
-- Easy to test (inject mocks)
-- Encapsulated caching logic
-- Business rules isolated from HTTP
+**핵심 정리:**
+- 의존성은 생성자(constructor)로 전달
+- 필요한 의존성을 명확한 인터페이스로 정의
+- 테스트가 쉬움(mock 주입)
+- 캐싱 로직이 캡슐화됨
+- 비즈니스 규칙이 HTTP로부터 분리됨
 
 ---
 
-## Singleton Pattern
+## 싱글턴(Singleton) 패턴
 
-### When to Use Singletons
+### 싱글턴을 사용해야 하는 경우
 
-**Use for:**
-- Services with expensive initialization
-- Services with shared state (caching)
-- Services accessed from many places
-- Permission services
-- Configuration services
+**사용 대상:**
+- 초기화 비용이 큰 서비스
+- 공유 상태(캐싱)가 있는 서비스
+- 여러 곳에서 접근하는 서비스
+- 권한(permissions) 서비스
+- 설정(configuration) 서비스
 
-### Example: PermissionService (Singleton)
+### 예시: PermissionService(싱글턴)
 
 **File:** `/blog-api/src/services/permissionService.ts`
 
@@ -332,7 +332,7 @@ class PermissionService {
 export const permissionService = PermissionService.getInstance();
 ```
 
-**Usage:**
+**사용법:**
 
 ```typescript
 import { permissionService } from '../services/permissionService';
@@ -347,30 +347,30 @@ if (!canComplete) {
 
 ---
 
-## Repository Pattern
+## 리포지토리 패턴
 
-### Purpose of Repositories
+### 리포지토리의 목적
 
-**Repositories abstract data access** - the 'how' of data operations:
+**리포지토리는 데이터 접근을 추상화합니다** - 데이터 작업에서 “어떻게”에 해당하는 부분입니다:
 
 ```
 Service: "Get me all active users sorted by name"
 Repository: "Here's the Prisma query that does that"
 ```
 
-**Repositories are responsible for:**
-- ✅ All Prisma operations
-- ✅ Query construction
-- ✅ Query optimization (select, include)
-- ✅ Database error handling
-- ✅ Caching database results
+**리포지토리의 책임:**
+- ✅ 모든 Prisma 작업
+- ✅ 쿼리 구성
+- ✅ 쿼리 최적화(select, include)
+- ✅ DB 에러 처리
+- ✅ DB 결과 캐싱
 
-**Repositories should NOT:**
-- ❌ Contain business logic
-- ❌ Know about HTTP
-- ❌ Make decisions (that's service layer)
+**리포지토리가 하면 안 되는 것:**
+- ❌ 비즈니스 로직 포함
+- ❌ HTTP를 앎
+- ❌ 의사결정을 함(그건 서비스 레이어)
 
-### Repository Template
+### 리포지토리 템플릿
 
 ```typescript
 // repositories/UserRepository.ts
@@ -498,7 +498,7 @@ export class UserRepository {
 export const userRepository = new UserRepository();
 ```
 
-**Using Repository in Service:**
+**서비스에서 리포지토리 사용:**
 
 ```typescript
 // services/userService.ts
@@ -549,11 +549,11 @@ export class UserService {
 
 ---
 
-## Service Design Principles
+## 서비스 설계 원칙
 
-### 1. Single Responsibility
+### 1. 단일 책임(Single Responsibility)
 
-Each service should have ONE clear purpose:
+각 서비스는 명확한 단 하나의 목적을 가져야 합니다:
 
 ```typescript
 // ✅ GOOD - Single responsibility
@@ -577,9 +577,9 @@ class UserService {
 }
 ```
 
-### 2. Clear Method Names
+### 2. 명확한 메서드 이름
 
-Method names should describe WHAT they do:
+메서드 이름은 “무엇을 하는지”를 설명해야 합니다:
 
 ```typescript
 // ✅ GOOD - Clear intent
@@ -595,9 +595,9 @@ async doIt()
 async execute()
 ```
 
-### 3. Return Types
+### 3. 반환 타입
 
-Always use explicit return types:
+항상 명시적인 반환 타입을 사용하세요:
 
 ```typescript
 // ✅ GOOD - Explicit types
@@ -609,9 +609,9 @@ async deleteUser(id: string): Promise<void> {}
 async createUser(data) {}  // No types!
 ```
 
-### 4. Error Handling
+### 4. 에러 처리
 
-Services should throw meaningful errors:
+서비스는 의미 있는 에러를 던져야 합니다:
 
 ```typescript
 // ✅ GOOD - Meaningful errors
@@ -629,9 +629,9 @@ if (!user) {
 }
 ```
 
-### 5. Avoid God Services
+### 5. God Service 피하기
 
-Don't create services that do everything:
+모든 일을 다 하는 서비스를 만들지 마세요:
 
 ```typescript
 // ❌ BAD - God service
@@ -665,9 +665,9 @@ class WorkflowService {
 
 ---
 
-## Caching Strategies
+## 캐싱 전략
 
-### 1. In-Memory Caching
+### 1. 인메모리 캐싱
 
 ```typescript
 class UserService {
@@ -698,7 +698,7 @@ class UserService {
 }
 ```
 
-### 2. Cache Invalidation
+### 2. 캐시 무효화
 
 ```typescript
 class UserService {
@@ -716,9 +716,9 @@ class UserService {
 
 ---
 
-## Testing Services
+## 서비스 테스트
 
-### Unit Tests
+### 유닛 테스트
 
 ```typescript
 // tests/userService.test.ts
@@ -782,8 +782,8 @@ describe('UserService', () => {
 
 ---
 
-**Related Files:**
-- [SKILL.md](SKILL.md) - Main guide
-- [routing-and-controllers.md](routing-and-controllers.md) - Controllers that use services
-- [database-patterns.md](database-patterns.md) - Prisma and repository patterns
-- [complete-examples.md](complete-examples.md) - Full service/repository examples
+**관련 파일:**
+- [SKILL.md](SKILL.md) - 메인 가이드
+- [routing-and-controllers.md](routing-and-controllers.md) - 서비스를 사용하는 컨트롤러
+- [database-patterns.md](database-patterns.md) - Prisma 및 리포지토리 패턴
+- [complete-examples.md](complete-examples.md) - 서비스/리포지토리 전체 예제

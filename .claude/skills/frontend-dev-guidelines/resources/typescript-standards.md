@@ -1,14 +1,14 @@
-# TypeScript Standards
+# TypeScript 표준
 
-TypeScript best practices for type safety and maintainability in React frontend code.
+React 프론트엔드 코드에서 타입 안정성과 유지보수성을 높이기 위한 TypeScript 모범 사례입니다.
 
 ---
 
-## Strict Mode
+## Strict 모드
 
-### Configuration
+### 설정
 
-TypeScript strict mode is **enabled** in the project:
+이 프로젝트에서는 TypeScript strict 모드가 **활성화**되어 있습니다:
 
 ```json
 // tsconfig.json
@@ -21,16 +21,16 @@ TypeScript strict mode is **enabled** in the project:
 }
 ```
 
-**This means:**
-- No implicit `any` types
-- Null/undefined must be handled explicitly
-- Type safety enforced
+**의미:**
+- 암묵적 `any` 타입 금지
+- null/undefined는 명시적으로 처리해야 함
+- 타입 안정성 강제
 
 ---
 
-## No `any` Type
+## `any` 타입 금지
 
-### The Rule
+### 규칙
 
 ```typescript
 // ❌ NEVER use any
@@ -55,16 +55,16 @@ function handleUnknown(data: unknown) {
 }
 ```
 
-**If you truly don't know the type:**
-- Use `unknown` (forces type checking)
-- Use type guards to narrow
-- Document why type is unknown
+**정말로 타입을 모르는 경우:**
+- `unknown` 사용(타입 체크를 강제)
+- 타입 가드로 좁히기(narrow)
+- 왜 타입이 unknown인지 문서화
 
 ---
 
-## Explicit Return Types
+## 명시적 반환 타입
 
-### Function Return Types
+### 함수 반환 타입
 
 ```typescript
 // ✅ CORRECT - Explicit return type
@@ -82,15 +82,15 @@ function getUser(id: number) {
 }
 ```
 
-### Component Return Types
+### 컴포넌트 반환 타입
 
 ```typescript
-// React.FC already provides return type (ReactElement)
+// React.FC는 이미 반환 타입(ReactElement)을 제공합니다
 export const MyComponent: React.FC<Props> = ({ prop }) => {
     return <div>{prop}</div>;
 };
 
-// For custom hooks
+// 커스텀 훅
 function useMyData(id: number): { data: Data; isLoading: boolean } {
     const [data, setData] = useState<Data | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -101,9 +101,9 @@ function useMyData(id: number): { data: Data; isLoading: boolean } {
 
 ---
 
-## Type Imports
+## 타입 import
 
-### Use 'type' Keyword
+### 'type' 키워드 사용
 
 ```typescript
 // ✅ CORRECT - Explicitly mark as type import
@@ -115,17 +115,17 @@ import type { SxProps, Theme } from '@mui/material';
 import { User } from '~types/user';  // Unclear if type or value
 ```
 
-**Benefits:**
-- Clearly separates types from values
-- Better tree-shaking
-- Prevents circular dependencies
-- TypeScript compiler optimization
+**장점:**
+- 타입과 값을 명확히 분리
+- 더 나은 트리 셰이킹(tree-shaking)
+- 순환 의존성 방지
+- TypeScript 컴파일러 최적화
 
 ---
 
-## Component Prop Interfaces
+## 컴포넌트 props 인터페이스
 
-### Interface Pattern
+### 인터페이스 패턴
 
 ```typescript
 /**
@@ -155,13 +155,13 @@ export const MyComponent: React.FC<MyComponentProps> = ({
 };
 ```
 
-**Key Points:**
-- Separate interface for props
-- JSDoc comments for each prop
-- Optional props use `?`
-- Provide defaults in destructuring
+**핵심 포인트:**
+- props를 위한 인터페이스를 분리
+- 각 prop에 JSDoc 주석 작성
+- 선택 prop은 `?` 사용
+- 구조 분해에서 기본값 제공
 
-### Props with Children
+### children이 있는 props
 
 ```typescript
 interface ContainerProps {
@@ -169,7 +169,7 @@ interface ContainerProps {
     title: string;
 }
 
-// React.FC automatically includes children type, but be explicit
+// React.FC는 children 타입을 자동 포함하지만, 가능하면 명시적으로 작성
 export const Container: React.FC<ContainerProps> = ({ children, title }) => {
     return (
         <div>
@@ -182,12 +182,12 @@ export const Container: React.FC<ContainerProps> = ({ children, title }) => {
 
 ---
 
-## Utility Types
+## 유틸리티 타입
 
 ### Partial<T>
 
 ```typescript
-// Make all properties optional
+// 모든 프로퍼티를 optional로 만들기
 type UserUpdate = Partial<User>;
 
 function updateUser(id: number, updates: Partial<User>) {
@@ -198,48 +198,48 @@ function updateUser(id: number, updates: Partial<User>) {
 ### Pick<T, K>
 
 ```typescript
-// Select specific properties
+// 특정 프로퍼티만 선택
 type UserPreview = Pick<User, 'id' | 'name' | 'email'>;
 
 const preview: UserPreview = {
     id: 1,
     name: 'John',
     email: 'john@example.com',
-    // Other User properties not allowed
+// 다른 User 프로퍼티는 허용되지 않음
 };
 ```
 
 ### Omit<T, K>
 
 ```typescript
-// Exclude specific properties
+// 특정 프로퍼티 제외
 type UserWithoutPassword = Omit<User, 'password' | 'passwordHash'>;
 
 const publicUser: UserWithoutPassword = {
     id: 1,
     name: 'John',
     email: 'john@example.com',
-    // password and passwordHash not allowed
+// password와 passwordHash는 허용되지 않음
 };
 ```
 
 ### Required<T>
 
 ```typescript
-// Make all properties required
+// 모든 프로퍼티를 required로 만들기
 type RequiredConfig = Required<Config>;  // All optional props become required
 ```
 
 ### Record<K, V>
 
 ```typescript
-// Type-safe object/map
+// 타입 안전한 object/map
 const userMap: Record<string, User> = {
     'user1': { id: 1, name: 'John' },
     'user2': { id: 2, name: 'Jane' },
 };
 
-// For styles
+// 스타일용
 import type { SxProps, Theme } from '@mui/material';
 
 const styles: Record<string, SxProps<Theme>> = {
@@ -250,9 +250,9 @@ const styles: Record<string, SxProps<Theme>> = {
 
 ---
 
-## Type Guards
+## 타입 가드(Type Guards)
 
-### Basic Type Guards
+### 기본 타입 가드
 
 ```typescript
 function isUser(data: unknown): data is User {
@@ -264,13 +264,13 @@ function isUser(data: unknown): data is User {
     );
 }
 
-// Usage
+// 사용 예시
 if (isUser(response)) {
     console.log(response.name);  // TypeScript knows it's User
 }
 ```
 
-### Discriminated Unions
+### 구분 가능한 유니온(Discriminated Unions)
 
 ```typescript
 type LoadingState =
@@ -280,7 +280,7 @@ type LoadingState =
     | { status: 'error'; error: Error };
 
 function Component({ state }: { state: LoadingState }) {
-    // TypeScript narrows type based on status
+    // TypeScript는 status에 따라 타입을 좁힙니다
     if (state.status === 'success') {
         return <Display data={state.data} />;  // data available here
     }
@@ -295,21 +295,21 @@ function Component({ state }: { state: LoadingState }) {
 
 ---
 
-## Generic Types
+## 제네릭 타입(Generic Types)
 
-### Generic Functions
+### 제네릭 함수
 
 ```typescript
 function getById<T>(items: T[], id: number): T | undefined {
     return items.find(item => (item as any).id === id);
 }
 
-// Usage with type inference
+// 타입 추론과 함께 사용
 const users: User[] = [...];
 const user = getById(users, 123);  // Type: User | undefined
 ```
 
-### Generic Components
+### 제네릭 컴포넌트
 
 ```typescript
 interface ListProps<T> {
@@ -327,7 +327,7 @@ export function List<T>({ items, renderItem }: ListProps<T>): React.ReactElement
     );
 }
 
-// Usage
+// 사용 예시
 <List<User>
     items={users}
     renderItem={(user) => <UserCard user={user} />}
@@ -336,33 +336,33 @@ export function List<T>({ items, renderItem }: ListProps<T>): React.ReactElement
 
 ---
 
-## Type Assertions (Use Sparingly)
+## 타입 단언(Type Assertions) (최소한으로 사용)
 
-### When to Use
+### 사용해도 되는 경우
 
 ```typescript
-// ✅ OK - When you know more than TypeScript
+// ✅ OK - TypeScript보다 더 많은 정보를 알고 있을 때
 const element = document.getElementById('my-element') as HTMLInputElement;
 const value = element.value;
 
-// ✅ OK - API response that you've validated
+// ✅ OK - 이미 검증한 API 응답
 const response = await api.getData();
 const user = response.data as User;  // You know the shape
 ```
 
-### When NOT to Use
+### 사용하면 안 되는 경우
 
 ```typescript
-// ❌ AVOID - Circumventing type safety
+// ❌ 피하기 - 타입 안정성을 우회함
 const data = getData() as any;  // WRONG - defeats TypeScript
 
-// ❌ AVOID - Unsafe assertion
+// ❌ 피하기 - 안전하지 않은 단언
 const value = unknownValue as string;  // Might not actually be string
 ```
 
 ---
 
-## Null/Undefined Handling
+## Null/Undefined 처리
 
 ### Optional Chaining
 
@@ -370,7 +370,7 @@ const value = unknownValue as string;  // Might not actually be string
 // ✅ CORRECT
 const name = user?.profile?.name;
 
-// Equivalent to:
+// 아래와 동일:
 const name = user && user.profile && user.profile.name;
 ```
 
@@ -380,18 +380,18 @@ const name = user && user.profile && user.profile.name;
 // ✅ CORRECT
 const displayName = user?.name ?? 'Anonymous';
 
-// Only uses default if null or undefined
-// (Different from || which triggers on '', 0, false)
+// null 또는 undefined일 때만 기본값을 사용
+// ('' , 0, false에서도 동작하는 || 와 다름)
 ```
 
-### Non-Null Assertion (Use Carefully)
+### Non-Null 단언(주의해서 사용)
 
 ```typescript
-// ✅ OK - When you're certain value exists
+// ✅ OK - 값이 반드시 존재한다고 확신할 때
 const data = queryClient.getQueryData<Data>(['data'])!;
 
-// ⚠️ CAREFUL - Only use when you KNOW it's not null
-// Better to check explicitly:
+// ⚠️ 주의 - null이 아님을 확실히 아는 경우에만 사용
+// 더 나은 방법: 명시적으로 체크
 const data = queryClient.getQueryData<Data>(['data']);
 if (data) {
     // Use data
@@ -400,9 +400,9 @@ if (data) {
 
 ---
 
-## Summary
+## 요약
 
-**TypeScript Checklist:**
+**TypeScript 체크리스트:**
 - ✅ Strict mode enabled
 - ✅ No `any` type (use `unknown` if needed)
 - ✅ Explicit return types on functions
@@ -413,6 +413,6 @@ if (data) {
 - ✅ Optional chaining and nullish coalescing
 - ❌ Avoid type assertions unless necessary
 
-**See Also:**
+**함께 보기:**
 - [component-patterns.md](component-patterns.md) - Component typing
 - [data-fetching.md](data-fetching.md) - API typing

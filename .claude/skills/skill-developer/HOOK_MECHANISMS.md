@@ -1,8 +1,8 @@
-# Hook Mechanisms - Deep Dive
+# 훅 메커니즘 - 딥 다이브
 
-Technical deep dive into how the UserPromptSubmit and PreToolUse hooks work.
+UserPromptSubmit 및 PreToolUse 훅이 어떻게 동작하는지에 대한 기술적 딥 다이브 문서입니다.
 
-## Table of Contents
+## 목차
 
 - [UserPromptSubmit Hook Flow](#userpromptsubmit-hook-flow)
 - [PreToolUse Hook Flow](#pretooluse-hook-flow)
@@ -12,9 +12,9 @@ Technical deep dive into how the UserPromptSubmit and PreToolUse hooks work.
 
 ---
 
-## UserPromptSubmit Hook Flow
+## UserPromptSubmit 훅 플로우
 
-### Execution Sequence
+### 실행 순서
 
 ```
 User submits prompt
@@ -40,15 +40,15 @@ stdout becomes context for Claude (injected before prompt)
 Claude sees: [skill suggestion] + user's prompt
 ```
 
-### Key Points
+### 핵심 포인트
 
-- **Exit code**: Always 0 (allow)
-- **stdout**: → Claude's context (injected as system message)
-- **Timing**: Runs BEFORE Claude processes prompt
-- **Behavior**: Non-blocking, advisory only
-- **Purpose**: Make Claude aware of relevant skills
+- **종료 코드(Exit code)**: 항상 0(허용)
+- **stdout**: → Claude 컨텍스트(시스템 메시지로 주입)
+- **타이밍**: Claude가 프롬프트를 처리하기 *이전*에 실행
+- **동작**: 비차단, 안내(advisory) 전용
+- **목적**: 관련 스킬을 Claude가 인지하도록 함
 
-### Input Format
+### 입력 포맷
 
 ```json
 {
@@ -61,7 +61,7 @@ Claude sees: [skill suggestion] + user's prompt
 }
 ```
 
-### Output Format (to stdout)
+### 출력 포맷(stdout)
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -75,13 +75,13 @@ ACTION: Use Skill tool BEFORE responding
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Claude sees this output as additional context before processing the user's prompt.
+Claude는 이 출력을 사용자 프롬프트 처리 전에 추가 컨텍스트로 받습니다.
 
 ---
 
-## PreToolUse Hook Flow
+## PreToolUse 훅 플로우
 
-### Execution Sequence
+### 실행 순서
 
 ```
 Claude calls Edit/Write tool
@@ -119,16 +119,16 @@ IF ALLOWED:
   Tool executes normally
 ```
 
-### Key Points
+### 핵심 포인트
 
-- **Exit code 2**: BLOCK (stderr → Claude)
-- **Exit code 0**: ALLOW
-- **Timing**: Runs BEFORE tool execution
-- **Session tracking**: Prevents repeated blocks in same session
-- **Fail open**: On errors, allows operation (don't break workflow)
-- **Purpose**: Enforce critical guardrails
+- **종료 코드 2**: 차단(BLOCK) (stderr → Claude)
+- **종료 코드 0**: 허용(ALLOW)
+- **타이밍**: 툴 실행 *이전*에 실행
+- **세션 추적**: 같은 세션에서 반복 차단을 방지
+- **Fail open**: 오류가 나면 작업을 허용(워크플로를 깨지 않음)
+- **목적**: 핵심 가드레일을 강제
 
-### Input Format
+### 입력 포맷
 
 ```json
 {
@@ -146,7 +146,7 @@ IF ALLOWED:
 }
 ```
 
-### Output Format (to stderr when blocked)
+### 출력 포맷(차단 시 stderr)
 
 ```
 ⚠️ BLOCKED - Database Operation Detected
@@ -163,24 +163,24 @@ File: form/src/services/user.ts
 💡 TIP: Add '// @skip-validation' comment to skip future checks
 ```
 
-Claude receives this message and understands it needs to use the skill before retrying the edit.
+Claude는 이 메시지를 보고, 편집을 재시도하기 전에 스킬을 사용해야 한다고 이해합니다.
 
 ---
 
-## Exit Code Behavior (CRITICAL)
+## 종료 코드 동작(중요)
 
-### Exit Code Reference Table
+### 종료 코드 레퍼런스 테이블
 
-| Exit Code | stdout | stderr | Tool Execution | Claude Sees |
+| Exit Code | stdout | stderr | 툴 실행 | Claude가 보는 것 |
 |-----------|--------|--------|----------------|-------------|
 | 0 (UserPromptSubmit) | → Context | → User only | N/A | stdout content |
 | 0 (PreToolUse) | → User only | → User only | **Proceeds** | Nothing |
 | 2 (PreToolUse) | → User only | → **CLAUDE** | **BLOCKED** | stderr content |
 | Other | → User only | → User only | Blocked | Nothing |
 
-### Why Exit Code 2 Matters
+### 종료 코드 2가 중요한 이유
 
-This is THE critical mechanism for enforcement:
+이는 enforcement를 위한 가장 핵심 메커니즘입니다:
 
 1. **Only way** to send message to Claude from PreToolUse
 2. stderr content is "fed back to Claude automatically"
@@ -188,7 +188,7 @@ This is THE critical mechanism for enforcement:
 4. Tool execution is prevented
 5. Critical for enforcement of guardrails
 
-### Example Conversation Flow
+### 대화 플로우 예시
 
 ```
 User: "Add a new user service with Prisma"
@@ -208,17 +208,17 @@ Claude sees error, responds:
 
 ---
 
-## Session State Management
+## 세션 상태 관리
 
-### Purpose
+### 목적
 
-Prevent repeated nagging in the same session - once Claude uses a skill, don't block again.
+같은 세션에서 반복적으로 잔소리하듯 차단하지 않기 위해, Claude가 한 번 스킬을 사용하면 다시 차단하지 않도록 합니다.
 
-### State File Location
+### 상태 파일 위치
 
 `.claude/hooks/state/skills-used-{session_id}.json`
 
-### State File Structure
+### 상태 파일 구조
 
 ```json
 {
@@ -230,7 +230,7 @@ Prevent repeated nagging in the same session - once Claude uses a skill, don't b
 }
 ```
 
-### How It Works
+### 동작 방식
 
 1. **First edit** of file with Prisma:
    - Hook blocks with exit code 2
@@ -247,24 +247,24 @@ Prevent repeated nagging in the same session - once Claude uses a skill, don't b
    - New session ID = new state file
    - Hook blocks again
 
-### Limitation
+### 한계
 
-The hook cannot detect when the skill is *actually* invoked - it just blocks once per session per skill. This means:
+훅은 스킬이 *실제로* 실행되었는지 감지할 수 없습니다. 스킬당/세션당 한 번만 차단합니다. 즉:
 
-- If Claude doesn't use the skill but makes a different edit, it won't block again
-- Trust that Claude follows the instruction
-- Future enhancement: detect actual Skill tool usage
+- Claude가 스킬을 쓰지 않고 다른 편집을 해도 다시 차단하지 않을 수 있음
+- Claude가 지시를 따를 것이라는 전제를 둠
+- 향후 개선: 실제 Skill tool 사용을 감지
 
 ---
 
-## Performance Considerations
+## 성능 고려사항
 
-### Target Metrics
+### 목표 지표
 
 - **UserPromptSubmit**: < 100ms
 - **PreToolUse**: < 200ms
 
-### Performance Bottlenecks
+### 성능 병목
 
 1. **Loading skill-rules.json** (every execution)
    - Future: Cache in memory
@@ -284,23 +284,23 @@ The hook cannot detect when the skill is *actually* invoked - it just blocks onc
    - Content patterns (PreToolUse)
    - Future: Lazy compile, cache compiled regexes
 
-### Optimization Strategies
+### 최적화 전략
 
-**Reduce patterns:**
+**패턴 수 줄이기:**
 - Use more specific patterns (fewer to check)
 - Combine similar patterns where possible
 
-**File path patterns:**
+**파일 경로 패턴:**
 - More specific = fewer files to check
 - Example: `form/src/services/**` better than `form/**`
 
-**Content patterns:**
+**콘텐츠 패턴:**
 - Only add when truly necessary
 - Simpler regex = faster matching
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md) - Main skill guide
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debug hook issues
 - [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) - Configuration reference

@@ -1,27 +1,27 @@
-# File Organization
+# 파일 구성
 
-Proper file and directory structure for maintainable, scalable frontend code in the the application.
+유지보수 가능하고 확장 가능한 프론트엔드 코드를 위해, 애플리케이션의 파일/디렉터리 구조를 올바르게 구성하는 방법입니다.
 
 ---
 
-## features/ vs components/ Distinction
+## features/ vs components/ 구분
 
-### features/ Directory
+### features/ 디렉터리
 
-**Purpose**: Domain-specific features with their own logic, API, and components
+**목적**: 자체 로직, API, 컴포넌트를 포함하는 도메인 중심 기능(feature) 단위
 
-**When to use:**
+**사용 시점:**
 - Feature has multiple related components
 - Feature has its own API endpoints
 - Feature has domain-specific logic
 - Feature has custom hooks/utilities
 
-**Examples:**
+**예시:**
 - `features/posts/` - Project catalog/post management
 - `features/blogs/` - Blog builder and rendering
 - `features/auth/` - Authentication flows
 
-**Structure:**
+**구조:**
 ```
 features/
   my-feature/
@@ -40,22 +40,22 @@ features/
     index.ts                  # Public exports
 ```
 
-### components/ Directory
+### components/ 디렉터리
 
-**Purpose**: Truly reusable components used across multiple features
+**목적**: 여러 기능(feature)에서 공통으로 사용하는, 진짜 재사용 컴포넌트
 
-**When to use:**
+**사용 시점:**
 - Component is used in 3+ places
 - Component is generic (no feature-specific logic)
 - Component is a UI primitive or pattern
 
-**Examples:**
+**예시:**
 - `components/SuspenseLoader/` - Loading wrapper
 - `components/CustomAppBar/` - Application header
 - `components/ErrorBoundary/` - Error handling
 - `components/LoadingOverlay/` - Loading overlay
 
-**Structure:**
+**구조:**
 ```
 components/
   SuspenseLoader/
@@ -68,11 +68,11 @@ components/
 
 ---
 
-## Feature Directory Structure (Detailed)
+## 기능(Feature) 디렉터리 구조(상세)
 
-### Complete Feature Example
+### 완전한 기능(Feature) 예시
 
-Based on `features/posts/` structure:
+`features/posts/` 구조를 기반으로 한 예시:
 
 ```
 features/
@@ -118,16 +118,16 @@ features/
     index.ts                        # Public API exports
 ```
 
-### Subdirectory Guidelines
+### 하위 디렉터리 가이드
 
-#### api/ Directory
+#### api/ 디렉터리
 
-**Purpose**: Centralized API calls for the feature
+**목적**: 기능(feature)별 API 호출을 중앙화
 
-**Files:**
+**파일:**
 - `{feature}Api.ts` - Main API service
 
-**Pattern:**
+**패턴:**
 ```typescript
 // features/my-feature/api/myFeatureApi.ts
 import apiClient from '@/lib/apiClient';
@@ -144,15 +144,15 @@ export const myFeatureApi = {
 };
 ```
 
-#### components/ Directory
+#### components/ 디렉터리
 
-**Purpose**: Feature-specific components
+**목적**: 기능(feature) 전용 컴포넌트
 
-**Organization:**
+**구성:**
 - Flat structure if <5 components
 - Subdirectories by responsibility if >5 components
 
-**Examples:**
+**예시:**
 ```
 components/
   MyFeatureMain.tsx           # Main component
@@ -168,15 +168,15 @@ components/
     MyFeatureBlog.tsx
 ```
 
-#### hooks/ Directory
+#### hooks/ 디렉터리
 
-**Purpose**: Custom hooks for the feature
+**목적**: 기능(feature)용 커스텀 훅
 
-**Naming:**
+**네이밍:**
 - `use` prefix (camelCase)
 - Descriptive of what they do
 
-**Examples:**
+**예시:**
 ```
 hooks/
   useMyFeature.ts               # Main hook
@@ -185,11 +185,11 @@ hooks/
   useMyFeatureFilters.ts        # Filters/search
 ```
 
-#### helpers/ Directory
+#### helpers/ 디렉터리
 
-**Purpose**: Utility functions specific to the feature
+**목적**: 기능(feature) 전용 유틸리티 함수
 
-**Examples:**
+**예시:**
 ```
 helpers/
   myFeatureHelpers.ts           # General utilities
@@ -198,11 +198,11 @@ helpers/
   constants.ts                  # Constants
 ```
 
-#### types/ Directory
+#### types/ 디렉터리
 
-**Purpose**: TypeScript types and interfaces
+**목적**: TypeScript 타입과 인터페이스
 
-**Files:**
+**파일:**
 ```
 types/
   index.ts                      # Main types, exported
@@ -211,20 +211,20 @@ types/
 
 ---
 
-## Import Aliases (Vite Configuration)
+## Import 별칭(Vite 설정)
 
-### Available Aliases
+### 사용 가능한 별칭
 
-From `vite.config.ts` lines 180-185:
+`vite.config.ts` 180-185줄 기준:
 
-| Alias | Resolves To | Use For |
+| 별칭 | 해석 경로 | 용도 |
 |-------|-------------|---------|
-| `@/` | `src/` | Absolute imports from src root |
-| `~types` | `src/types` | Shared TypeScript types |
-| `~components` | `src/components` | Reusable components |
-| `~features` | `src/features` | Feature imports |
+| `@/` | `src/` | src 루트 기준 절대 import |
+| `~types` | `src/types` | 공용 TypeScript 타입 |
+| `~components` | `src/components` | 재사용 컴포넌트 |
+| `~features` | `src/features` | 기능(feature) import |
 
-### Usage Examples
+### 사용 예시
 
 ```typescript
 // ✅ PREFERRED - Use aliases for absolute imports
@@ -238,7 +238,7 @@ import { apiClient } from '../../../lib/apiClient';
 import { SuspenseLoader } from '../../../components/SuspenseLoader';
 ```
 
-### When to Use Which Alias
+### 어떤 별칭을 언제 쓰나
 
 **@/ (General)**:
 - Lib utilities: `@/lib/apiClient`
@@ -267,11 +267,11 @@ import { useAuth } from '~features/auth/hooks/useAuth';
 
 ---
 
-## File Naming Conventions
+## 파일 네이밍 컨벤션
 
-### Components
+### 컴포넌트
 
-**Pattern**: PascalCase with `.tsx` extension
+**패턴**: PascalCase + `.tsx` 확장자
 
 ```
 MyComponent.tsx
@@ -279,14 +279,14 @@ PostDataGrid.tsx
 CustomAppBar.tsx
 ```
 
-**Avoid:**
+**피하기:**
 - camelCase: `myComponent.tsx` ❌
 - kebab-case: `my-component.tsx` ❌
 - All caps: `MYCOMPONENT.tsx` ❌
 
-### Hooks
+### 훅(Hooks)
 
-**Pattern**: camelCase with `use` prefix, `.ts` extension
+**패턴**: `use` 접두사 + camelCase + `.ts` 확장자
 
 ```
 useMyFeature.ts
@@ -295,9 +295,9 @@ useAuth.ts
 useGridLayout.ts
 ```
 
-### API Services
+### API 서비스
 
-**Pattern**: camelCase with `Api` suffix, `.ts` extension
+**패턴**: `Api` 접미사 + camelCase + `.ts` 확장자
 
 ```
 myFeatureApi.ts
@@ -305,9 +305,9 @@ postApi.ts
 userApi.ts
 ```
 
-### Helpers/Utilities
+### 헬퍼/유틸리티
 
-**Pattern**: camelCase with descriptive name, `.ts` extension
+**패턴**: 설명적인 이름의 camelCase + `.ts` 확장자
 
 ```
 myFeatureHelpers.ts
@@ -316,9 +316,9 @@ transblogers.ts
 constants.ts
 ```
 
-### Types
+### 타입(Types)
 
-**Pattern**: camelCase, `index.ts` or descriptive name
+**패턴**: camelCase, `index.ts` 또는 설명적인 파일명
 
 ```
 types/index.ts
@@ -328,9 +328,9 @@ types/user.ts
 
 ---
 
-## When to Create a New Feature
+## 새 기능(Feature)을 만들어야 하는 경우
 
-### Create New Feature When:
+### 새 기능을 만들 때:
 
 - Multiple related components (>3)
 - Has own API endpoints
@@ -344,7 +344,7 @@ types/user.ts
 - Complex state management
 - Used in multiple routes
 
-### Add to Existing Feature When:
+### 기존 기능에 추가할 때:
 
 - Related to existing feature
 - Shares same API
@@ -353,7 +353,7 @@ types/user.ts
 
 **Example:** Adding export dialog to posts feature
 
-### Create Reusable Component When:
+### 재사용 컴포넌트를 만들 때:
 
 - Used across 3+ features
 - Generic, no domain logic
@@ -364,9 +364,9 @@ types/user.ts
 
 ---
 
-## Import Organization
+## Import 정리
 
-### Import Order (Recommended)
+### Import 순서(권장)
 
 ```typescript
 // 1. React and React-related
@@ -396,15 +396,15 @@ import { useMyFeature } from '../hooks/useMyFeature';
 import { myFeatureHelpers } from '../helpers/myFeatureHelpers';
 ```
 
-**Use single quotes** for all imports (project standard)
+모든 import는 **싱글 쿼트**를 사용하세요(프로젝트 표준).
 
 ---
 
-## Public API Pattern
+## Public API 패턴
 
 ### feature/index.ts
 
-Export public API from feature for clean imports:
+깔끔한 import를 위해 기능(feature)에서 public API를 export 하세요:
 
 ```typescript
 // features/my-feature/index.ts
@@ -424,7 +424,7 @@ export { myFeatureApi } from './api/myFeatureApi';
 export type { MyFeatureData, MyFeatureConfig } from './types';
 ```
 
-**Usage:**
+**사용법:**
 ```typescript
 // ✅ Clean import from feature index
 import { MyFeatureMain, useMyFeature } from '~features/my-feature';
@@ -435,7 +435,7 @@ import { MyFeatureMain } from '~features/my-feature/components/MyFeatureMain';
 
 ---
 
-## Directory Structure Visualization
+## 디렉터리 구조 시각화
 
 ```
 src/
@@ -486,9 +486,9 @@ src/
 
 ---
 
-## Summary
+## 요약
 
-**Key Principles:**
+**핵심 원칙:**
 1. **features/** for domain-specific code
 2. **components/** for truly reusable UI
 3. Use subdirectories: api/, components/, hooks/, helpers/, types/
@@ -496,7 +496,7 @@ src/
 5. Consistent naming: PascalCase components, camelCase utilities
 6. Export public API from feature index.ts
 
-**See Also:**
+**함께 보기:**
 - [component-patterns.md](component-patterns.md) - Component structure
 - [data-fetching.md](data-fetching.md) - API service patterns
 - [complete-examples.md](complete-examples.md) - Full feature example

@@ -1,55 +1,55 @@
 ---
 name: skill-developer
-description: Create and manage Claude Code skills following Anthropic best practices. Use when creating new skills, modifying skill-rules.json, understanding trigger patterns, working with hooks, debugging skill activation, or implementing progressive disclosure. Covers skill structure, YAML frontmatter, trigger types (keywords, intent patterns, file paths, content patterns), enforcement levels (block, suggest, warn), hook mechanisms (UserPromptSubmit, PreToolUse), session tracking, and the 500-line rule.
+description: Anthropic 모범 사례에 따라 Claude Code 스킬을 만들고 관리합니다. 새 스킬 생성, skill-rules.json 수정, 트리거 패턴 이해, 훅 작업, 스킬 활성화 디버깅, 점진적 공개(progressive disclosure) 구현 시 사용하세요. 스킬 구조, YAML 프론트매터, 트리거 유형(키워드, 의도 패턴, 파일 경로, 콘텐츠 패턴), enforcement 레벨(block/suggest/warn), 훅 메커니즘(UserPromptSubmit/PreToolUse), 세션 추적, 500줄 규칙을 다룹니다.
 ---
 
-# Skill Developer Guide
+# 스킬 개발자 가이드
 
-## Purpose
+## 목적
 
-Comprehensive guide for creating and managing skills in Claude Code with auto-activation system, following Anthropic's official best practices including the 500-line rule and progressive disclosure pattern.
+자동 활성화 시스템이 있는 Claude Code에서 스킬을 만들고 관리하기 위한 포괄 가이드입니다. 500줄 규칙과 점진적 공개(progressive disclosure) 패턴을 포함한 Anthropic 공식 모범 사례를 따릅니다.
 
-## When to Use This Skill
+## 이 스킬을 사용해야 하는 경우
 
-Automatically activates when you mention:
-- Creating or adding skills
-- Modifying skill triggers or rules
-- Understanding how skill activation works
-- Debugging skill activation issues
-- Working with skill-rules.json
-- Hook system mechanics
-- Claude Code best practices
-- Progressive disclosure
-- YAML frontmatter
-- 500-line rule
+다음 내용을 언급하면 자동으로 활성화됩니다:
+- 스킬 생성/추가
+- 스킬 트리거/규칙 수정
+- 스킬 활성화 동작 방식 이해
+- 스킬 활성화 이슈 디버깅
+- skill-rules.json 작업
+- 훅 시스템 메커니즘
+- Claude Code 모범 사례
+- 점진적 공개(progressive disclosure)
+- YAML 프론트매터
+- 500줄 규칙
 
 ---
 
-## System Overview
+## 시스템 개요
 
-### Two-Hook Architecture
+### 2-훅 아키텍처
 
-**1. UserPromptSubmit Hook** (Proactive Suggestions)
+**1. UserPromptSubmit 훅** (선제적 제안)
 - **File**: `.claude/hooks/skill-activation-prompt.ts`
 - **Trigger**: BEFORE Claude sees user's prompt
-- **Purpose**: Suggest relevant skills based on keywords + intent patterns
+- **목적**: 키워드 + 의도 패턴을 기반으로 관련 스킬 제안
 - **Method**: Injects formatted reminder as context (stdout → Claude's input)
 - **Use Cases**: Topic-based skills, implicit work detection
 
-**2. Stop Hook - Error Handling Reminder** (Gentle Reminders)
+**2. Stop 훅 - 에러 처리 리마인더** (부드러운 리마인더)
 - **File**: `.claude/hooks/error-handling-reminder.ts`
 - **Trigger**: AFTER Claude finishes responding
-- **Purpose**: Gentle reminder to self-assess error handling in code written
+- **목적**: 작성한 코드의 에러 처리를 스스로 점검하도록 부드럽게 리마인드
 - **Method**: Analyzes edited files for risky patterns, displays reminder if needed
 - **Use Cases**: Error handling awareness without blocking friction
 
-**Philosophy Change (2025-10-27):** We moved away from blocking PreToolUse for Sentry/error handling. Instead, use gentle post-response reminders that don't block workflow but maintain code quality awareness.
+**철학 변경(2025-10-27):** Sentry/에러 처리에 대해 PreToolUse로 차단하던 방식에서 벗어났습니다. 대신 워크플로를 막지 않으면서 코드 품질 인식을 유지하는, 응답 이후의 부드러운 리마인더를 사용합니다.
 
-### Configuration File
+### 설정 파일
 
 **Location**: `.claude/skills/skill-rules.json`
 
-Defines:
+정의 내용:
 - All skills and their trigger conditions
 - Enforcement levels (block, suggest, warn)
 - File path patterns (glob)
@@ -58,13 +58,13 @@ Defines:
 
 ---
 
-## Skill Types
+## 스킬 유형
 
-### 1. Guardrail Skills
+### 1. 가드레일(Guardrail) 스킬
 
-**Purpose:** Enforce critical best practices that prevent errors
+**목적:** 오류를 방지하는 핵심 모범 사례를 강제
 
-**Characteristics:**
+**특징:**
 - Type: `"guardrail"`
 - Enforcement: `"block"`
 - Priority: `"critical"` or `"high"`
@@ -72,20 +72,20 @@ Defines:
 - Prevent common mistakes (column names, critical errors)
 - Session-aware (don't repeat nag in same session)
 
-**Examples:**
+**예시:**
 - `database-verification` - Verify table/column names before Prisma queries
 - `frontend-dev-guidelines` - Enforce React/TypeScript patterns
 
-**When to Use:**
+**사용 시점:**
 - Mistakes that cause runtime errors
 - Data integrity concerns
 - Critical compatibility issues
 
-### 2. Domain Skills
+### 2. 도메인(Domain) 스킬
 
-**Purpose:** Provide comprehensive guidance for specific areas
+**목적:** 특정 영역에 대한 포괄적인 가이드를 제공
 
-**Characteristics:**
+**특징:**
 - Type: `"domain"`
 - Enforcement: `"suggest"`
 - Priority: `"high"` or `"medium"`
@@ -93,12 +93,12 @@ Defines:
 - Topic or domain-specific
 - Comprehensive documentation
 
-**Examples:**
+**예시:**
 - `backend-dev-guidelines` - Node.js/Express/TypeScript patterns
 - `frontend-dev-guidelines` - React/TypeScript best practices
 - `error-tracking` - Sentry integration guidance
 
-**When to Use:**
+**사용 시점:**
 - Complex systems requiring deep knowledge
 - Best practices documentation
 - Architectural patterns
@@ -106,13 +106,13 @@ Defines:
 
 ---
 
-## Quick Start: Creating a New Skill
+## 빠른 시작: 새 스킬 만들기
 
-### Step 1: Create Skill File
+### 1단계: 스킬 파일 만들기
 
-**Location:** `.claude/skills/{skill-name}/SKILL.md`
+**위치:** `.claude/skills/{skill-name}/SKILL.md`
 
-**Template:**
+**템플릿:**
 ```markdown
 ---
 name: my-new-skill
@@ -131,14 +131,14 @@ Specific scenarios and conditions
 The actual guidance, documentation, patterns, examples
 ```
 
-**Best Practices:**
+**모범 사례:**
 - ✅ **Name**: Lowercase, hyphens, gerund form (verb + -ing) preferred
 - ✅ **Description**: Include ALL trigger keywords/phrases (max 1024 chars)
 - ✅ **Content**: Under 500 lines - use reference files for details
 - ✅ **Examples**: Real code examples
 - ✅ **Structure**: Clear headings, lists, code blocks
 
-### Step 2: Add to skill-rules.json
+### 2단계: skill-rules.json에 추가
 
 See [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) for complete schema.
 
@@ -157,7 +157,7 @@ See [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) for complete schema.
 }
 ```
 
-### Step 3: Test Triggers
+### 3단계: 트리거 테스트
 
 **Test UserPromptSubmit:**
 ```bash
@@ -172,15 +172,15 @@ cat <<'EOF' | npx tsx .claude/hooks/skill-verification-guard.ts
 EOF
 ```
 
-### Step 4: Refine Patterns
+### 4단계: 패턴 개선
 
-Based on testing:
+테스트 결과를 바탕으로:
 - Add missing keywords
 - Refine intent patterns to reduce false positives
 - Adjust file path patterns
 - Test content patterns against actual files
 
-### Step 5: Follow Anthropic Best Practices
+### 5단계: Anthropic 모범 사례 준수
 
 ✅ Keep SKILL.md under 500 lines
 ✅ Use progressive disclosure with reference files
@@ -191,41 +191,41 @@ Based on testing:
 
 ---
 
-## Enforcement Levels
+## Enforcement 레벨
 
-### BLOCK (Critical Guardrails)
+### BLOCK(핵심 가드레일)
 
 - Physically prevents Edit/Write tool execution
 - Exit code 2 from hook, stderr → Claude
 - Claude sees message and must use skill to proceed
 - **Use For**: Critical mistakes, data integrity, security issues
 
-**Example:** Database column name verification
+**예시:** DB 컬럼명 검증
 
-### SUGGEST (Recommended)
+### SUGGEST(권장)
 
 - Reminder injected before Claude sees prompt
 - Claude is aware of relevant skills
 - Not enforced, just advisory
 - **Use For**: Domain guidance, best practices, how-to guides
 
-**Example:** Frontend development guidelines
+**예시:** 프론트엔드 개발 가이드라인
 
-### WARN (Optional)
+### WARN(선택)
 
 - Low priority suggestions
 - Advisory only, minimal enforcement
 - **Use For**: Nice-to-have suggestions, informational reminders
 
-**Rarely used** - most skills are either BLOCK or SUGGEST.
+**거의 사용하지 않음** - 대부분의 스킬은 BLOCK 또는 SUGGEST입니다.
 
 ---
 
-## Skip Conditions & User Control
+## 스킵 조건 & 사용자 제어
 
-### 1. Session Tracking
+### 1. 세션 추적
 
-**Purpose:** Don't nag repeatedly in same session
+**목적:** 같은 세션에서 반복 차단/잔소리 방지
 
 **How it works:**
 - First edit → Hook blocks, updates session state
@@ -234,9 +234,9 @@ Based on testing:
 
 **State File:** `.claude/hooks/state/skills-used-{session_id}.json`
 
-### 2. File Markers
+### 2. 파일 마커
 
-**Purpose:** Permanent skip for verified files
+**목적:** 검증된 파일은 영구적으로 스킵
 
 **Marker:** `// @skip-validation`
 
@@ -247,11 +247,11 @@ import { PrismaService } from './prisma';
 // This file has been manually verified
 ```
 
-**NOTE:** Use sparingly - defeats the purpose if overused
+**주의:** 남용하면 목적을 무력화합니다. 필요한 경우에만 사용하세요.
 
-### 3. Environment Variables
+### 3. 환경 변수
 
-**Purpose:** Emergency disable, temporary override
+**목적:** 긴급 비활성화, 임시 오버라이드
 
 **Global disable:**
 ```bash
@@ -266,7 +266,7 @@ export SKIP_ERROR_REMINDER=true
 
 ---
 
-## Testing Checklist
+## 테스트 체크리스트
 
 When creating a new skill, verify:
 
@@ -290,12 +290,12 @@ When creating a new skill, verify:
 
 ---
 
-## Reference Files
+## 레퍼런스 파일
 
 For detailed information on specific topics, see:
 
 ### [TRIGGER_TYPES.md](TRIGGER_TYPES.md)
-Complete guide to all trigger types:
+모든 트리거 유형에 대한 완전한 가이드:
 - Keyword triggers (explicit topic matching)
 - Intent patterns (implicit action detection)
 - File path triggers (glob patterns)
@@ -328,7 +328,7 @@ Comprehensive debugging guide:
 - Performance issues
 
 ### [PATTERNS_LIBRARY.md](PATTERNS_LIBRARY.md)
-Ready-to-use pattern collection:
+바로 사용할 수 있는 패턴 모음:
 - Intent pattern library (regex)
 - File path pattern library (glob)
 - Content pattern library (regex)
@@ -345,9 +345,9 @@ Future enhancements and ideas:
 
 ---
 
-## Quick Reference Summary
+## 빠른 참조 요약
 
-### Create New Skill (5 Steps)
+### 새 스킬 만들기(5단계)
 
 1. Create `.claude/skills/{name}/SKILL.md` with frontmatter
 2. Add entry to `.claude/skills/skill-rules.json`
@@ -355,7 +355,7 @@ Future enhancements and ideas:
 4. Refine patterns based on testing
 5. Keep SKILL.md under 500 lines
 
-### Trigger Types
+### 트리거 유형
 
 - **Keywords**: Explicit topic mentions
 - **Intent**: Implicit action detection
@@ -370,13 +370,13 @@ See [TRIGGER_TYPES.md](TRIGGER_TYPES.md) for complete details.
 - **SUGGEST**: Inject context, most common
 - **WARN**: Advisory, rarely used
 
-### Skip Conditions
+### 스킵 조건
 
 - **Session tracking**: Automatic (prevents repeated nags)
 - **File markers**: `// @skip-validation` (permanent skip)
 - **Env vars**: `SKIP_SKILL_GUARDRAILS` (emergency disable)
 
-### Anthropic Best Practices
+### Anthropic 모범 사례
 
 ✅ **500-line rule**: Keep SKILL.md under 500 lines
 ✅ **Progressive disclosure**: Use reference files for details
@@ -386,7 +386,7 @@ See [TRIGGER_TYPES.md](TRIGGER_TYPES.md) for complete details.
 ✅ **Test first**: Build 3+ evaluations before extensive documentation
 ✅ **Gerund naming**: Prefer verb + -ing (e.g., "processing-pdfs")
 
-### Troubleshoot
+### 트러블슈팅
 
 Test hooks manually:
 ```bash
@@ -403,7 +403,7 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for complete debugging guide.
 
 ---
 
-## Related Files
+## 관련 파일
 
 **Configuration:**
 - `.claude/skills/skill-rules.json` - Master configuration

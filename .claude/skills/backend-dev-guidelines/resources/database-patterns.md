@@ -1,8 +1,8 @@
-# Database Patterns - Prisma Best Practices
+# 데이터베이스 패턴 - Prisma 모범 사례
 
-Complete guide to database access patterns using Prisma in backend microservices.
+백엔드 마이크로서비스에서 Prisma를 사용한 DB 접근 패턴의 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [PrismaService Usage](#prismaservice-usage)
 - [Repository Pattern](#repository-pattern)
@@ -13,9 +13,9 @@ Complete guide to database access patterns using Prisma in backend microservices
 
 ---
 
-## PrismaService Usage
+## PrismaService 사용
 
-### Basic Pattern
+### 기본 패턴
 
 ```typescript
 import { PrismaService } from '@project-lifecycle-portal/database';
@@ -24,7 +24,7 @@ import { PrismaService } from '@project-lifecycle-portal/database';
 const users = await PrismaService.main.user.findMany();
 ```
 
-### Check Availability
+### 사용 가능 여부 확인
 
 ```typescript
 if (!PrismaService.isAvailable) {
@@ -36,21 +36,21 @@ const user = await PrismaService.main.user.findUnique({ where: { id } });
 
 ---
 
-## Repository Pattern
+## 리포지토리 패턴
 
-### Why Use Repositories
+### 리포지토리를 사용하는 이유
 
-✅ **Use repositories when:**
+✅ **다음일 때 리포지토리 사용:**
 - Complex queries with joins/includes
 - Query used in multiple places
 - Need caching layer
 - Want to mock for testing
 
-❌ **Skip repositories for:**
+❌ **다음일 때는 리포지토리 생략 가능:**
 - Simple one-off queries
 - Prototyping (can refactor later)
 
-### Repository Template
+### 리포지토리 템플릿
 
 ```typescript
 export class UserRepository {
@@ -76,9 +76,9 @@ export class UserRepository {
 
 ---
 
-## Transaction Patterns
+## 트랜잭션 패턴
 
-### Simple Transaction
+### 단순 트랜잭션
 
 ```typescript
 const result = await PrismaService.main.$transaction(async (tx) => {
@@ -88,7 +88,7 @@ const result = await PrismaService.main.$transaction(async (tx) => {
 });
 ```
 
-### Interactive Transaction
+### 인터랙티브 트랜잭션
 
 ```typescript
 const result = await PrismaService.main.$transaction(
@@ -110,9 +110,9 @@ const result = await PrismaService.main.$transaction(
 
 ---
 
-## Query Optimization
+## 쿼리 최적화
 
-### Use select to Limit Fields
+### select로 필드 제한
 
 ```typescript
 // ❌ Fetches all fields
@@ -128,7 +128,7 @@ const users = await PrismaService.main.user.findMany({
 });
 ```
 
-### Use include Carefully
+### include는 신중하게 사용
 
 ```typescript
 // ❌ Excessive includes
@@ -150,9 +150,9 @@ const user = await PrismaService.main.user.findUnique({
 
 ---
 
-## N+1 Query Prevention
+## N+1 쿼리 방지
 
-### Problem: N+1 Queries
+### 문제: N+1 쿼리
 
 ```typescript
 // ❌ N+1 Query Problem
@@ -166,7 +166,7 @@ for (const user of users) {
 }
 ```
 
-### Solution: Use include or Batching
+### 해결: include 또는 배치 처리(Batching)
 
 ```typescript
 // ✅ Single query with include
@@ -183,9 +183,9 @@ const profiles = await PrismaService.main.userProfile.findMany({
 
 ---
 
-## Error Handling
+## 에러 처리
 
-### Prisma Error Types
+### Prisma 에러 타입
 
 ```typescript
 import { Prisma } from '@prisma/client';
@@ -218,7 +218,7 @@ try {
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md)
 - [services-and-repositories.md](services-and-repositories.md)
 - [async-and-errors.md](async-and-errors.md)

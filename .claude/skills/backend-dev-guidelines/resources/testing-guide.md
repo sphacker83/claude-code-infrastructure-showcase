@@ -1,8 +1,8 @@
-# Testing Guide - Backend Testing Strategies
+# 테스트 가이드 - 백엔드 테스트 전략
 
-Complete guide to testing backend services with Jest and best practices.
+Jest를 사용해 백엔드 서비스를 테스트하는 방법과 모범 사례를 다루는 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [Unit Testing](#unit-testing)
 - [Integration Testing](#integration-testing)
@@ -13,9 +13,9 @@ Complete guide to testing backend services with Jest and best practices.
 
 ---
 
-## Unit Testing
+## 유닛 테스트(Unit Testing)
 
-### Test Structure
+### 테스트 구조
 
 ```typescript
 // services/userService.test.ts
@@ -74,9 +74,9 @@ describe('UserService', () => {
 
 ---
 
-## Integration Testing
+## 통합 테스트(Integration Testing)
 
-### Test with Real Database
+### 실제 DB로 테스트
 
 ```typescript
 import { PrismaService } from '@project-lifecycle-portal/database';
@@ -109,9 +109,9 @@ describe('UserService Integration', () => {
 
 ---
 
-## Mocking Strategies
+## Mocking 전략
 
-### Mock PrismaService
+### PrismaService Mock
 
 ```typescript
 jest.mock('@project-lifecycle-portal/database', () => ({
@@ -129,7 +129,7 @@ jest.mock('@project-lifecycle-portal/database', () => ({
 }));
 ```
 
-### Mock Services
+### 서비스 Mock
 
 ```typescript
 const mockUserService = {
@@ -141,9 +141,9 @@ const mockUserService = {
 
 ---
 
-## Test Data Management
+## 테스트 데이터 관리
 
-### Setup and Teardown
+### Setup 및 Teardown
 
 ```typescript
 describe('PermissionService', () => {
@@ -182,9 +182,9 @@ describe('PermissionService', () => {
 
 ---
 
-## Testing Authenticated Routes
+## 인증된 라우트 테스트
 
-### Using test-auth-route.js
+### test-auth-route.js 사용
 
 ```bash
 # Test authenticated endpoint
@@ -194,7 +194,7 @@ node scripts/test-auth-route.js http://localhost:3002/form/api/users
 node scripts/test-auth-route.js http://localhost:3002/form/api/users POST '{"email":"test@test.com"}'
 ```
 
-### Mock Authentication in Tests
+### 테스트에서 인증 Mock
 
 ```typescript
 // Mock auth middleware
@@ -213,15 +213,15 @@ jest.mock('../middleware/SSOMiddleware', () => ({
 
 ---
 
-## Coverage Targets
+## 커버리지 목표
 
-### Recommended Coverage
+### 권장 커버리지
 
 - **Unit Tests**: 70%+ coverage
 - **Integration Tests**: Critical paths covered
 - **E2E Tests**: Happy paths covered
 
-### Run Coverage
+### 커버리지 실행
 
 ```bash
 npm test -- --coverage
@@ -229,7 +229,7 @@ npm test -- --coverage
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md)
 - [services-and-repositories.md](services-and-repositories.md)
 - [complete-examples.md](complete-examples.md)

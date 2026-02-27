@@ -1,8 +1,8 @@
-# Sentry Integration and Monitoring
+# Sentry 통합 및 모니터링
 
-Complete guide to error tracking and performance monitoring with Sentry v8.
+Sentry v8을 사용한 에러 트래킹과 성능 모니터링의 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [Core Principles](#core-principles)
 - [Sentry Initialization](#sentry-initialization)
@@ -14,21 +14,21 @@ Complete guide to error tracking and performance monitoring with Sentry v8.
 
 ---
 
-## Core Principles
+## 핵심 원칙
 
-**MANDATORY**: All errors MUST be captured to Sentry. No exceptions.
+**필수(MANDATORY)**: 모든 에러는 예외 없이 Sentry로 캡처해야 합니다.
 
-**ALL ERRORS MUST BE CAPTURED** - Use Sentry v8 with comprehensive error tracking across all services.
+**모든 에러는 반드시 캡처되어야 합니다** - 모든 서비스에서 Sentry v8을 사용해 포괄적으로 에러를 트래킹하세요.
 
 ---
 
-## Sentry Initialization
+## Sentry 초기화
 
-### instrument.ts Pattern
+### instrument.ts 패턴
 
-**Location:** `src/instrument.ts` (MUST be first import in server.ts and all cron jobs)
+**위치:** `src/instrument.ts` (server.ts 및 모든 크론 잡에서 첫 번째 import여야 함)
 
-**Template for Microservices:**
+**마이크로서비스 템플릿:**
 
 ```typescript
 import * as Sentry from '@sentry/node';
@@ -104,18 +104,18 @@ Sentry.setContext('runtime', {
 });
 ```
 
-**Critical Points:**
-- PII protection built-in (beforeSend)
-- Filter non-critical errors
-- Comprehensive integrations
-- Prisma instrumentation
-- Service-specific tagging
+**중요 포인트:**
+- PII 보호 내장(beforeSend)
+- 중요하지 않은 에러 필터링
+- 포괄적인 integration 구성
+- Prisma 계측(instrumentation)
+- 서비스별 태깅
 
 ---
 
-## Error Capture Patterns
+## 에러 캡처 패턴
 
-### 1. BaseController Pattern
+### 1. BaseController 패턴
 
 ```typescript
 // Use BaseController.handleError
@@ -134,7 +134,7 @@ protected handleError(error: unknown, res: Response, context: string, statusCode
 }
 ```
 
-### 2. Workflow Error Handling
+### 2. 워크플로 에러 처리
 
 ```typescript
 import { SentryHelper } from '../utils/sentryHelper';
@@ -152,7 +152,7 @@ try {
 }
 ```
 
-### 3. Service Layer Error Handling
+### 3. 서비스 레이어 에러 처리
 
 ```typescript
 try {
@@ -174,9 +174,9 @@ try {
 
 ---
 
-## Performance Monitoring
+## 성능 모니터링
 
-### Database Performance Tracking
+### DB 성능 추적
 
 ```typescript
 import { DatabasePerformanceMonitor } from '../utils/databasePerformance';
@@ -190,7 +190,7 @@ const result = await DatabasePerformanceMonitor.withPerformanceTracking(
 );
 ```
 
-### API Endpoint Spans
+### API 엔드포인트 스팬(Spans)
 
 ```typescript
 router.post('/operation', async (req, res) => {
@@ -210,9 +210,9 @@ router.post('/operation', async (req, res) => {
 
 ---
 
-## Cron Job Monitoring
+## 크론 잡 모니터링
 
-### Mandatory Pattern
+### 필수 패턴
 
 ```typescript
 #!/usr/bin/env node
@@ -254,9 +254,9 @@ main().then(() => {
 
 ---
 
-## Error Context Best Practices
+## 에러 컨텍스트 모범 사례
 
-### Rich Context Example
+### 풍부한 컨텍스트 예시
 
 ```typescript
 Sentry.withScope((scope) => {
@@ -293,7 +293,7 @@ Sentry.withScope((scope) => {
 
 ---
 
-## Common Mistakes
+## 흔한 실수
 
 ```typescript
 // ❌ Swallowing errors
@@ -330,7 +330,7 @@ async function good() {
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md)
 - [routing-and-controllers.md](routing-and-controllers.md)
 - [async-and-errors.md](async-and-errors.md)

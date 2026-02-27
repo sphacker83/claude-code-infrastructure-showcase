@@ -1,8 +1,8 @@
-# Async Patterns and Error Handling
+# 비동기 패턴과 에러 처리
 
-Complete guide to async/await patterns and custom error handling.
+async/await 패턴과 커스텀 에러 처리를 위한 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [Async/Await Best Practices](#asyncawait-best-practices)
 - [Promise Error Handling](#promise-error-handling)
@@ -13,9 +13,9 @@ Complete guide to async/await patterns and custom error handling.
 
 ---
 
-## Async/Await Best Practices
+## Async/Await 모범 사례
 
-### Always Use Try-Catch
+### 항상 try-catch 사용
 
 ```typescript
 // ❌ NEVER: Unhandled async errors
@@ -36,7 +36,7 @@ async function fetchData() {
 }
 ```
 
-### Avoid .then() Chains
+### .then() 체인 피하기
 
 ```typescript
 // ❌ AVOID: Promise chains
@@ -64,9 +64,9 @@ async function processData() {
 
 ---
 
-## Promise Error Handling
+## Promise 에러 처리
 
-### Parallel Operations
+### 병렬 작업
 
 ```typescript
 // ✅ Handle errors in Promise.all
@@ -100,9 +100,9 @@ results.forEach((result, index) => {
 
 ---
 
-## Custom Error Types
+## 커스텀 에러 타입
 
-### Define Custom Errors
+### 커스텀 에러 정의
 
 ```typescript
 // Base error class
@@ -145,7 +145,7 @@ export class ConflictError extends AppError {
 }
 ```
 
-### Usage
+### 사용법
 
 ```typescript
 // Throw specific errors
@@ -176,9 +176,9 @@ function errorBoundary(error, req, res, next) {
 
 ---
 
-## asyncErrorWrapper Utility
+## asyncErrorWrapper 유틸리티
 
-### Pattern
+### 패턴
 
 ```typescript
 export function asyncErrorWrapper(
@@ -194,7 +194,7 @@ export function asyncErrorWrapper(
 }
 ```
 
-### Usage
+### 사용법
 
 ```typescript
 // Without wrapper - error can be unhandled
@@ -212,9 +212,9 @@ router.get('/users', asyncErrorWrapper(async (req, res) => {
 
 ---
 
-## Error Propagation
+## 에러 전파
 
-### Proper Error Chains
+### 올바른 에러 체인
 
 ```typescript
 // ✅ Propagate errors up the stack
@@ -248,9 +248,9 @@ async function controllerMethod(req, res) {
 
 ---
 
-## Common Async Pitfalls
+## 흔한 비동기 함정
 
-### Fire and Forget (Bad)
+### Fire and Forget(나쁨)
 
 ```typescript
 // ❌ NEVER: Fire and forget
@@ -279,7 +279,7 @@ async function processRequest(req, res) {
 }
 ```
 
-### Unhandled Rejections
+### 처리되지 않은 Rejection
 
 ```typescript
 // ✅ Global handler for unhandled rejections
@@ -301,7 +301,7 @@ process.on('uncaughtException', (error) => {
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md)
 - [sentry-and-monitoring.md](sentry-and-monitoring.md)
 - [complete-examples.md](complete-examples.md)

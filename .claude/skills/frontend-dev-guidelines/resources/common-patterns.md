@@ -1,12 +1,12 @@
-# Common Patterns
+# 공통 패턴
 
-Frequently used patterns for forms, authentication, DataGrid, dialogs, and other common UI elements.
+폼, 인증, DataGrid, 다이얼로그 등 자주 쓰는 UI 요소를 위한 반복 사용 패턴 모음입니다.
 
 ---
 
-## Authentication with useAuth
+## useAuth를 이용한 인증
 
-### Getting Current User
+### 현재 사용자 가져오기
 
 ```typescript
 import { useAuth } from '@/hooks/useAuth';
@@ -14,7 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 export const MyComponent: React.FC = () => {
     const { user } = useAuth();
 
-    // Available properties:
+    // 사용 가능한 프로퍼티:
     // - user.id: string
     // - user.email: string
     // - user.username: string
@@ -22,21 +22,21 @@ export const MyComponent: React.FC = () => {
 
     return (
         <div>
-            <p>Logged in as: {user.email}</p>
-            <p>Username: {user.username}</p>
-            <p>Roles: {user.roles.join(', ')}</p>
+            <p>로그인 계정: {user.email}</p>
+            <p>사용자명: {user.username}</p>
+            <p>역할: {user.roles.join(', ')}</p>
         </div>
     );
 };
 ```
 
-**NEVER make direct API calls for auth** - always use `useAuth` hook.
+**인증을 위해 직접 API를 호출하지 마세요** - 항상 `useAuth` 훅을 사용하세요.
 
 ---
 
-## Forms with React Hook Form
+## React Hook Form을 사용한 폼
 
-### Basic Form
+### 기본 폼
 
 ```typescript
 import { useForm } from 'react-hook-form';
@@ -45,11 +45,11 @@ import { z } from 'zod';
 import { TextField, Button } from '@mui/material';
 import { useMuiSnackbar } from '@/hooks/useMuiSnackbar';
 
-// Zod schema for validation
+// 검증을 위한 Zod 스키마
 const formSchema = z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters'),
-    email: z.string().email('Invalid email address'),
-    age: z.number().min(18, 'Must be 18 or older'),
+    username: z.string().min(3, '사용자명은 최소 3자 이상이어야 합니다'),
+    email: z.string().email('유효하지 않은 이메일 주소입니다'),
+    age: z.number().min(18, '18세 이상이어야 합니다'),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -69,9 +69,9 @@ export const MyForm: React.FC = () => {
     const onSubmit = async (data: FormData) => {
         try {
             await api.submitForm(data);
-            showSuccess('Form submitted successfully');
+            showSuccess('폼 제출에 성공했습니다');
         } catch (error) {
-            showError('Failed to submit form');
+            showError('폼 제출에 실패했습니다');
         }
     };
 
@@ -79,14 +79,14 @@ export const MyForm: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
                 {...register('username')}
-                label='Username'
+                label='사용자명'
                 error={!!errors.username}
                 helperText={errors.username?.message}
             />
 
             <TextField
                 {...register('email')}
-                label='Email'
+                label='이메일'
                 error={!!errors.email}
                 helperText={errors.email?.message}
                 type='email'
@@ -94,14 +94,14 @@ export const MyForm: React.FC = () => {
 
             <TextField
                 {...register('age', { valueAsNumber: true })}
-                label='Age'
+                label='나이'
                 error={!!errors.age}
                 helperText={errors.age?.message}
                 type='number'
             />
 
             <Button type='submit' variant='contained'>
-                Submit
+                제출
             </Button>
         </form>
     );
@@ -110,14 +110,14 @@ export const MyForm: React.FC = () => {
 
 ---
 
-## Dialog Component Pattern
+## 다이얼로그 컴포넌트 패턴
 
-### Standard Dialog Structure
+### 표준 다이얼로그 구조
 
-From BEST_PRACTICES.md - All dialogs should have:
-- Icon in title
-- Close button (X)
-- Action buttons at bottom
+BEST_PRACTICES.md 기준 - 모든 다이얼로그는 다음을 포함해야 합니다:
+- 제목에 아이콘
+- 닫기 버튼(X)
+- 하단의 액션 버튼들
 
 ```typescript
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton } from '@mui/material';
@@ -136,7 +136,7 @@ export const MyDialog: React.FC<MyDialogProps> = ({ open, onClose, onConfirm }) 
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Info color='primary' />
-                        Dialog Title
+                        다이얼로그 제목
                     </Box>
                     <IconButton onClick={onClose} size='small'>
                         <Close />
@@ -145,13 +145,13 @@ export const MyDialog: React.FC<MyDialogProps> = ({ open, onClose, onConfirm }) 
             </DialogTitle>
 
             <DialogContent>
-                {/* Content here */}
+                {/* 내용 */}
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={onClose}>Cancel</Button>
+                <Button onClick={onClose}>취소</Button>
                 <Button onClick={onConfirm} variant='contained'>
-                    Confirm
+                    확인
                 </Button>
             </DialogActions>
         </Dialog>
@@ -161,21 +161,21 @@ export const MyDialog: React.FC<MyDialogProps> = ({ open, onClose, onConfirm }) 
 
 ---
 
-## DataGrid Wrapper Pattern
+## DataGrid 래퍼 패턴
 
-### Wrapper Component Contract
+### 래퍼 컴포넌트 계약(Contract)
 
-From BEST_PRACTICES.md - DataGrid wrappers should accept:
+BEST_PRACTICES.md 기준 - DataGrid 래퍼는 다음을 받도록 설계합니다:
 
-**Required Props:**
-- `rows`: Data array
-- `columns`: Column definitions
-- Loading/error states
+**필수 Props:**
+- `rows`: 데이터 배열
+- `columns`: 컬럼 정의
+- 로딩/에러 상태
 
-**Optional Props:**
-- Toolbar components
-- Custom actions
-- Initial state
+**선택 Props:**
+- 툴바 컴포넌트
+- 커스텀 액션
+- 초기 상태
 
 ```typescript
 import { DataGridPro } from '@mui/x-data-grid-pro';
@@ -203,7 +203,7 @@ export const DataGridWrapper: React.FC<DataGridWrapperProps> = ({
             loading={loading}
             slots={{ toolbar: toolbar ? () => toolbar : undefined }}
             onRowClick={(params) => onRowClick?.(params.row)}
-            // Standard configuration
+            // 표준 설정
             pagination
             pageSizeOptions={[25, 50, 100]}
             initialState={{
@@ -216,9 +216,9 @@ export const DataGridWrapper: React.FC<DataGridWrapperProps> = ({
 
 ---
 
-## Mutation Patterns
+## Mutation 패턴
 
-### Update with Cache Invalidation
+### 캐시 무효화를 포함한 업데이트
 
 ```typescript
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -233,20 +233,20 @@ export const useUpdateEntity = () => {
             api.updateEntity(id, data),
 
         onSuccess: (result, variables) => {
-            // Invalidate affected queries
+            // 영향을 받는 쿼리 무효화
             queryClient.invalidateQueries({ queryKey: ['entity', variables.id] });
             queryClient.invalidateQueries({ queryKey: ['entities'] });
 
-            showSuccess('Entity updated');
+            showSuccess('엔티티가 업데이트되었습니다');
         },
 
         onError: () => {
-            showError('Failed to update entity');
+            showError('엔티티 업데이트에 실패했습니다');
         },
     });
 };
 
-// Usage
+// 사용 예시
 const updateEntity = useUpdateEntity();
 
 const handleSave = () => {
@@ -256,44 +256,44 @@ const handleSave = () => {
 
 ---
 
-## State Management Patterns
+## 상태 관리 패턴
 
-### TanStack Query for Server State (PRIMARY)
+### 서버 상태는 TanStack Query 사용(기본/Primary)
 
-Use TanStack Query for **all server data**:
+서버 데이터는 **전부 TanStack Query**로 처리하세요:
 - Fetching: useSuspenseQuery
 - Mutations: useMutation
-- Caching: Automatic
-- Synchronization: Built-in
+- Caching: 자동
+- Synchronization: 내장
 
 ```typescript
-// ✅ CORRECT - TanStack Query for server data
+// ✅ 올바름 - 서버 데이터는 TanStack Query
 const { data: users } = useSuspenseQuery({
     queryKey: ['users'],
     queryFn: () => userApi.getUsers(),
 });
 ```
 
-### useState for UI State
+### UI 상태는 useState 사용
 
-Use `useState` for **local UI state only**:
-- Form inputs (uncontrolled)
-- Modal open/closed
-- Selected tab
-- Temporary UI flags
+`useState`는 **로컬 UI 상태에만** 사용하세요:
+- 폼 입력(비제어)
+- 모달 열림/닫힘
+- 탭 선택
+- 임시 UI 플래그
 
 ```typescript
-// ✅ CORRECT - useState for UI state
+// ✅ 올바름 - UI 상태는 useState
 const [modalOpen, setModalOpen] = useState(false);
 const [selectedTab, setSelectedTab] = useState(0);
 ```
 
-### Zustand for Global Client State (Minimal)
+### 글로벌 클라이언트 상태는 Zustand(최소)
 
-Use Zustand only for **global client state**:
-- Theme preference
-- Sidebar collapsed state
-- User preferences (not from server)
+Zustand는 **글로벌 클라이언트 상태에만** 제한적으로 사용하세요:
+- 테마 선호
+- 사이드바 접힘 상태
+- 사용자 선호(서버에서 오지 않는 값)
 
 ```typescript
 import { create } from 'zustand';
@@ -309,23 +309,24 @@ export const useAppState = create<AppState>((set) => ({
 }));
 ```
 
-**Avoid prop drilling** - use context or Zustand instead.
+**prop drilling은 피하세요** - 대신 context 또는 Zustand를 사용하세요.
 
 ---
 
-## Summary
+## 요약
 
-**Common Patterns:**
-- ✅ useAuth hook for current user (id, email, roles, username)
-- ✅ React Hook Form + Zod for forms
-- ✅ Dialog with icon + close button
-- ✅ DataGrid wrapper contracts
-- ✅ Mutations with cache invalidation
-- ✅ TanStack Query for server state
-- ✅ useState for UI state
-- ✅ Zustand for global client state (minimal)
+**공통 패턴:**
+- ✅ 현재 사용자 조회는 useAuth 훅(id, email, roles, username)
+- ✅ 폼은 React Hook Form + Zod
+- ✅ 아이콘 + 닫기 버튼이 있는 다이얼로그
+- ✅ DataGrid 래퍼 계약(contracts)
+- ✅ 캐시 무효화를 포함한 mutations
+- ✅ 서버 상태는 TanStack Query
+- ✅ UI 상태는 useState
+- ✅ 글로벌 클라이언트 상태는 Zustand(최소)
 
-**See Also:**
-- [data-fetching.md](data-fetching.md) - TanStack Query patterns
-- [component-patterns.md](component-patterns.md) - Component structure
-- [loading-and-error-states.md](loading-and-error-states.md) - Error handling
+**함께 보기:**
+- [data-fetching.md](data-fetching.md) - TanStack Query 패턴
+- [component-patterns.md](component-patterns.md) - 컴포넌트 구조
+- [loading-and-error-states.md](loading-and-error-states.md) - 에러 처리
+

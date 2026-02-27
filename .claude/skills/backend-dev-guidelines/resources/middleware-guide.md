@@ -1,8 +1,8 @@
-# Middleware Guide - Express Middleware Patterns
+# 미들웨어 가이드 - Express 미들웨어 패턴
 
-Complete guide to creating and using middleware in backend microservices.
+백엔드 마이크로서비스에서 미들웨어를 만들고 사용하는 방법에 대한 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [Authentication Middleware](#authentication-middleware)
 - [Audit Middleware with AsyncLocalStorage](#audit-middleware-with-asynclocalstorage)
@@ -13,9 +13,9 @@ Complete guide to creating and using middleware in backend microservices.
 
 ---
 
-## Authentication Middleware
+## 인증(Authentication) 미들웨어
 
-### SSOMiddleware Pattern
+### SSOMiddleware 패턴
 
 **File:** `/form/src/middleware/SSOMiddleware.ts`
 
@@ -42,9 +42,9 @@ export class SSOMiddlewareClient {
 
 ---
 
-## Audit Middleware with AsyncLocalStorage
+## AsyncLocalStorage를 사용하는 감사(Audit) 미들웨어
 
-### Excellent Pattern from Blog API
+### Blog API의 훌륭한 패턴
 
 **File:** `/form/src/middleware/auditMiddleware.ts`
 
@@ -82,13 +82,13 @@ export function getAuditContext(): AuditContext | null {
 }
 ```
 
-**Benefits:**
-- Context propagates through entire request
-- No need to pass context through every function
-- Automatically available in services, repositories
-- Type-safe context access
+**장점:**
+- 컨텍스트가 요청 전체에 전파됨
+- 모든 함수에 컨텍스트를 전달할 필요가 없음
+- 서비스/리포지토리에서 자동으로 사용 가능
+- 타입 안전한 컨텍스트 접근
 
-**Usage in Services:**
+**서비스에서 사용 예시:**
 ```typescript
 import { getAuditContext } from '../middleware/auditMiddleware';
 
@@ -100,9 +100,9 @@ async function someOperation() {
 
 ---
 
-## Error Boundary Middleware
+## 에러 바운더리(Error Boundary) 미들웨어
 
-### Comprehensive Error Handler
+### 포괄적인 에러 핸들러
 
 **File:** `/form/src/middleware/errorBoundary.ts`
 
@@ -154,9 +154,9 @@ export function asyncErrorWrapper(
 
 ---
 
-## Composable Middleware
+## 조합 가능한(Composable) 미들웨어
 
-### withAuthAndAudit Pattern
+### withAuthAndAudit 패턴
 
 ```typescript
 export function withAuthAndAudit(...authMiddleware: any[]) {
@@ -175,9 +175,9 @@ router.post('/:formID/submit',
 
 ---
 
-## Middleware Ordering
+## 미들웨어 순서
 
-### Critical Order (Must Follow)
+### 필수 순서(반드시 준수)
 
 ```typescript
 // 1. Sentry request handler (FIRST)
@@ -203,11 +203,11 @@ app.use(errorBoundary);
 app.use(Sentry.Handlers.errorHandler());
 ```
 
-**Rule:** Error handlers MUST be registered AFTER all routes!
+**규칙:** 에러 핸들러는 모든 라우트 등록 **이후**에 반드시 등록해야 합니다!
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md)
 - [routing-and-controllers.md](routing-and-controllers.md)
 - [async-and-errors.md](async-and-errors.md)

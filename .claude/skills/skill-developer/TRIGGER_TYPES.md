@@ -1,8 +1,8 @@
-# Trigger Types - Complete Guide
+# 트리거 유형 - 완전 가이드
 
-Complete reference for configuring skill triggers in Claude Code's skill auto-activation system.
+Claude Code 스킬 자동 활성화 시스템에서 스킬 트리거를 설정하기 위한 완전 레퍼런스입니다.
 
-## Table of Contents
+## 목차
 
 - [Keyword Triggers (Explicit)](#keyword-triggers-explicit)
 - [Intent Pattern Triggers (Implicit)](#intent-pattern-triggers-implicit)
@@ -12,17 +12,17 @@ Complete reference for configuring skill triggers in Claude Code's skill auto-ac
 
 ---
 
-## Keyword Triggers (Explicit)
+## 키워드 트리거(명시적)
 
-### How It Works
+### 동작 방식
 
-Case-insensitive substring matching in user's prompt.
+사용자 프롬프트에서 대소문자 구분 없이 부분 문자열을 매칭합니다.
 
-### Use For
+### 사용 목적
 
-Topic-based activation where user explicitly mentions the subject.
+사용자가 주제를 명시적으로 언급하는 경우의 주제 기반 활성화에 사용합니다.
 
-### Configuration
+### 설정
 
 ```json
 "promptTriggers": {
@@ -30,13 +30,13 @@ Topic-based activation where user explicitly mentions the subject.
 }
 ```
 
-### Example
+### 예시
 
 - User prompt: "how does the **layout** system work?"
 - Matches: "layout" keyword
 - Activates: `project-catalog-developer`
 
-### Best Practices
+### 모범 사례
 
 - Use specific, unambiguous terms
 - Include common variations ("layout", "layout system", "grid layout")
@@ -45,17 +45,17 @@ Topic-based activation where user explicitly mentions the subject.
 
 ---
 
-## Intent Pattern Triggers (Implicit)
+## 의도 패턴 트리거(암묵적)
 
-### How It Works
+### 동작 방식
 
-Regex pattern matching to detect user's intent even when they don't mention the topic explicitly.
+사용자가 주제를 명시적으로 언급하지 않아도, 정규식 패턴 매칭으로 의도를 감지합니다.
 
-### Use For
+### 사용 목적
 
-Action-based activation where user describes what they want to do rather than the specific topic.
+특정 주제보다 “무엇을 하고 싶은지”를 설명하는 경우의 액션 기반 활성화에 사용합니다.
 
-### Configuration
+### 설정
 
 ```json
 "promptTriggers": {
@@ -66,7 +66,7 @@ Action-based activation where user describes what they want to do rather than th
 }
 ```
 
-### Examples
+### 예시
 
 **Database Work:**
 - User prompt: "add user tracking feature"
@@ -78,7 +78,7 @@ Action-based activation where user describes what they want to do rather than th
 - Matches: `(create).*?(component)` (if component in pattern)
 - Activates: `frontend-dev-guidelines`
 
-### Best Practices
+### 모범 사례
 
 - Capture common action verbs: `(create|add|modify|build|implement)`
 - Include domain-specific nouns: `(feature|endpoint|component|workflow)`
@@ -87,7 +87,7 @@ Action-based activation where user describes what they want to do rather than th
 - Don't make patterns too broad (causes false positives)
 - Don't make patterns too specific (causes false negatives)
 
-### Common Pattern Examples
+### 자주 쓰는 패턴 예시
 
 ```regex
 # Database Work
@@ -108,17 +108,17 @@ Action-based activation where user describes what they want to do rather than th
 
 ---
 
-## File Path Triggers
+## 파일 경로 트리거
 
-### How It Works
+### 동작 방식
 
-Glob pattern matching against the file path being edited.
+편집 중인 파일 경로에 대해 glob 패턴 매칭을 수행합니다.
 
-### Use For
+### 사용 목적
 
-Domain/area-specific activation based on file location in the project.
+프로젝트 내 파일 위치를 기반으로, 도메인/영역별 활성화에 사용합니다.
 
-### Configuration
+### 설정
 
 ```json
 "fileTriggers": {
@@ -133,7 +133,7 @@ Domain/area-specific activation based on file location in the project.
 }
 ```
 
-### Glob Pattern Syntax
+### Glob 패턴 문법
 
 - `**` = Any number of directories (including zero)
 - `*` = Any characters within a directory name
@@ -142,13 +142,13 @@ Domain/area-specific activation based on file location in the project.
   - `**/schema.prisma` = schema.prisma anywhere in project
   - `form/src/**/*.ts` = All .ts files in form/src subdirs
 
-### Example
+### 예시
 
 - File being edited: `frontend/src/components/Dashboard.tsx`
 - Matches: `frontend/src/**/*.tsx`
 - Activates: `frontend-dev-guidelines`
 
-### Best Practices
+### 모범 사례
 
 - Be specific to avoid false positives
 - Use exclusions for test files: `**/*.test.ts`
@@ -156,7 +156,7 @@ Domain/area-specific activation based on file location in the project.
 - Test patterns with actual file paths
 - Use narrower patterns when possible: `form/src/services/**` not `form/**`
 
-### Common Path Patterns
+### 자주 쓰는 경로 패턴
 
 ```glob
 # Frontend
@@ -186,17 +186,17 @@ form/src/workflow-definitions/**/*.json # Workflow definitions
 
 ---
 
-## Content Pattern Triggers
+## 콘텐츠 패턴 트리거
 
-### How It Works
+### 동작 방식
 
-Regex pattern matching against the file's actual content (what's inside the file).
+파일의 실제 내용(파일 안의 코드)에 대해 정규식 패턴 매칭을 수행합니다.
 
-### Use For
+### 사용 목적
 
-Technology-specific activation based on what the code imports or uses (Prisma, controllers, specific libraries).
+코드가 import/사용하는 기술(Prisma, 컨트롤러, 특정 라이브러리 등)에 기반한 기술별 활성화에 사용합니다.
 
-### Configuration
+### 설정
 
 ```json
 "fileTriggers": {
@@ -209,7 +209,7 @@ Technology-specific activation based on what the code imports or uses (Prisma, c
 }
 ```
 
-### Examples
+### 예시
 
 **Prisma Detection:**
 - File contains: `import { PrismaService } from '@project/database'`
@@ -221,7 +221,7 @@ Technology-specific activation based on what the code imports or uses (Prisma, c
 - Matches: `export class.*Controller`
 - Activates: `error-tracking`
 
-### Best Practices
+### 모범 사례
 
 - Match imports: `import.*[Pp]risma` (case-insensitive with [Pp])
 - Escape special regex chars: `\\.findMany\\(` not `.findMany(`
@@ -229,7 +229,7 @@ Technology-specific activation based on what the code imports or uses (Prisma, c
 - Test against real file content
 - Make patterns specific enough to avoid false matches
 
-### Common Content Patterns
+### 자주 쓰는 콘텐츠 패턴
 
 ```regex
 # Prisma/Database
@@ -259,9 +259,9 @@ useState|useEffect              # React hooks
 
 ---
 
-## Best Practices Summary
+## 모범 사례 요약
 
-### DO:
+### 할 것(DO):
 ✅ Use specific, unambiguous keywords
 ✅ Test all patterns with real examples
 ✅ Include common variations
@@ -270,7 +270,7 @@ useState|useEffect              # React hooks
 ✅ Add exclusions for test files
 ✅ Make file path patterns narrow and specific
 
-### DON'T:
+### 하지 말 것(DON'T):
 ❌ Use overly generic keywords ("system", "work")
 ❌ Make intent patterns too broad (false positives)
 ❌ Make patterns too specific (false negatives)
@@ -278,15 +278,15 @@ useState|useEffect              # React hooks
 ❌ Use greedy regex: `.*` instead of `.*?`
 ❌ Match too broadly in file paths
 
-### Testing Your Triggers
+### 트리거 테스트하기
 
-**Test keyword/intent triggers:**
+**키워드/의도 트리거 테스트:**
 ```bash
 echo '{"session_id":"test","prompt":"your test prompt"}' | \
   npx tsx .claude/hooks/skill-activation-prompt.ts
 ```
 
-**Test file path/content triggers:**
+**파일 경로/콘텐츠 트리거 테스트:**
 ```bash
 cat <<'EOF' | npx tsx .claude/hooks/skill-verification-guard.ts
 {
@@ -299,7 +299,7 @@ EOF
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md) - Main skill guide
 - [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) - Complete skill-rules.json schema
-- [PATTERNS_LIBRARY.md](PATTERNS_LIBRARY.md) - Ready-to-use pattern library
+- [PATTERNS_LIBRARY.md](PATTERNS_LIBRARY.md) - 바로 사용할 수 있는 패턴 라이브러리

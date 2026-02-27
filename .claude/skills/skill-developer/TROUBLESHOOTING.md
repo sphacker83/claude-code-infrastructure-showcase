@@ -1,8 +1,8 @@
-# Troubleshooting - Skill Activation Issues
+# 트러블슈팅 - 스킬 활성화 이슈
 
-Complete debugging guide for skill activation problems.
+스킬 활성화 문제를 디버깅하기 위한 완전한 가이드입니다.
 
-## Table of Contents
+## 목차
 
 - [Skill Not Triggering](#skill-not-triggering)
   - [UserPromptSubmit Not Suggesting](#userpromptsubmit-not-suggesting)
@@ -13,22 +13,22 @@ Complete debugging guide for skill activation problems.
 
 ---
 
-## Skill Not Triggering
+## 스킬이 트리거되지 않음
 
-### UserPromptSubmit Not Suggesting
+### UserPromptSubmit이 제안하지 않음
 
-**Symptoms:** Ask a question, but no skill suggestion appears in output.
+**증상:** 질문했는데 출력에 스킬 제안이 나타나지 않습니다.
 
-**Common Causes:**
+**흔한 원인:**
 
-####  1. Keywords Don't Match
+####  1. 키워드가 매칭되지 않음
 
-**Check:**
+**확인:**
 - Look at `promptTriggers.keywords` in skill-rules.json
 - Are the keywords actually in your prompt?
 - Remember: case-insensitive substring matching
 
-**Example:**
+**예시:**
 ```json
 "keywords": ["layout", "grid"]
 ```
@@ -37,9 +37,9 @@ Complete debugging guide for skill activation problems.
 - "how do layouts work?" → ✅ Matches "layout"
 - "how does it work?" → ❌ No match
 
-**Fix:** Add more keyword variations to skill-rules.json
+**해결:** skill-rules.json에 더 많은 키워드 변형을 추가하세요.
 
-#### 2. Intent Patterns Too Specific
+#### 2. 의도 패턴이 너무 구체적임
 
 **Check:**
 - Look at `promptTriggers.intentPatterns`
@@ -55,14 +55,14 @@ Complete debugging guide for skill activation problems.
 - "create a database table" → ✅ Matches
 - "add new table" → ❌ Doesn't match (missing "database")
 
-**Fix:** Broaden the pattern:
+**해결:** 패턴을 더 넓히세요:
 ```json
 "intentPatterns": [
   "(create|add).*?(table|database)"  // Better
 ]
 ```
 
-#### 3. Typo in Skill Name
+#### 3. 스킬 이름 오타
 
 **Check:**
 - Skill name in SKILL.md frontmatter
@@ -81,45 +81,45 @@ name: project-catalog-developer
 }
 ```
 
-**Fix:** Make names match exactly
+**해결:** 이름이 정확히 일치하도록 맞추세요.
 
-#### 4. JSON Syntax Error
+#### 4. JSON 문법 오류
 
 **Check:**
 ```bash
 cat .claude/skills/skill-rules.json | jq .
 ```
 
-If invalid JSON, jq will show the error.
+JSON이 유효하지 않으면 jq가 오류를 표시합니다.
 
-**Common errors:**
+**흔한 오류:**
 - Trailing commas
 - Missing quotes
 - Single quotes instead of double
 - Unescaped characters in strings
 
-**Fix:** Correct JSON syntax, validate with jq
+**해결:** JSON 문법을 수정하고 jq로 검증하세요.
 
-#### Debug Command
+#### 디버그 명령
 
-Test the hook manually:
+훅을 수동으로 테스트하세요:
 
 ```bash
 echo '{"session_id":"debug","prompt":"your test prompt here"}' | \
   npx tsx .claude/hooks/skill-activation-prompt.ts
 ```
 
-Expected: Your skill should appear in the output.
+기대 결과: 출력에 해당 스킬이 나타나야 합니다.
 
 ---
 
-### PreToolUse Not Blocking
+### PreToolUse가 차단하지 않음
 
-**Symptoms:** Edit a file that should trigger a guardrail, but no block occurs.
+**증상:** 가드레일이 트리거되어야 하는 파일을 편집했는데 차단이 발생하지 않습니다.
 
 **Common Causes:**
 
-#### 1. File Path Doesn't Match Patterns
+#### 1. 파일 경로가 패턴과 매칭되지 않음
 
 **Check:**
 - File path being edited
@@ -136,7 +136,7 @@ Expected: Your skill should appear in the output.
 - Editing: `frontend/tests/Dashboard.test.tsx` → ✅ Matches (add exclusion!)
 - Editing: `backend/src/app.ts` → ❌ Doesn't match
 
-**Fix:** Adjust glob patterns or add the missing path
+**해결:** glob 패턴을 조정하거나 누락된 경로를 추가하세요.
 
 #### 2. Excluded by pathExclusions
 
@@ -174,7 +174,7 @@ Expected: Your skill should appear in the output.
 
 **Debug:**
 ```bash
-# Check if pattern exists in file
+# 파일에 패턴이 존재하는지 확인
 grep -i "prisma" path/to/file.ts
 ```
 
@@ -250,7 +250,7 @@ Expected:
 
 ---
 
-## False Positives
+## 오탐(False Positives)
 
 **Symptoms:** Skill triggers when it shouldn't.
 
@@ -347,7 +347,7 @@ This makes it advisory instead of blocking.
 
 ---
 
-## Hook Not Executing
+## 훅이 실행되지 않음
 
 **Symptoms:** Hook doesn't run at all - no suggestion, no block.
 
@@ -435,7 +435,7 @@ Expected: No output (no errors)
 
 ---
 
-## Performance Issues
+## 성능 이슈
 
 **Symptoms:** Hooks are slow, noticeable delay before prompt/edit.
 
@@ -490,7 +490,7 @@ Content pattern matching reads entire file - slow for large files.
 - Only use content patterns when necessary
 - Consider file size limits (future enhancement)
 
-### Measure Performance
+### 성능 측정
 
 ```bash
 # UserPromptSubmit

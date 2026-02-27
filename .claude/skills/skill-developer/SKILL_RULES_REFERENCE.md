@@ -1,8 +1,8 @@
-# skill-rules.json - Complete Reference
+# skill-rules.json - 완전 레퍼런스
 
-Complete schema and configuration reference for `.claude/skills/skill-rules.json`.
+`.claude/skills/skill-rules.json`의 스키마와 설정에 대한 완전 레퍼런스입니다.
 
-## Table of Contents
+## 목차
 
 - [File Location](#file-location)
 - [Complete TypeScript Schema](#complete-typescript-schema)
@@ -13,15 +13,15 @@ Complete schema and configuration reference for `.claude/skills/skill-rules.json
 
 ---
 
-## File Location
+## 파일 위치
 
 **Path:** `.claude/skills/skill-rules.json`
 
-This JSON file defines all skills and their trigger conditions for the auto-activation system.
+이 JSON 파일은 자동 활성화 시스템을 위해, 모든 스킬과 트리거 조건을 정의합니다.
 
 ---
 
-## Complete TypeScript Schema
+## 전체 TypeScript 스키마
 
 ```typescript
 interface SkillRules {
@@ -58,60 +58,60 @@ interface SkillRule {
 
 ---
 
-## Field Guide
+## 필드 가이드
 
-### Top Level
+### 최상위(Top Level)
 
-| Field | Type | Required | Description |
+| 필드 | 타입 | 필수 | 설명 |
 |-------|------|----------|-------------|
-| `version` | string | Yes | Schema version (currently "1.0") |
-| `skills` | object | Yes | Map of skill name → SkillRule |
+| `version` | string | 예 | 스키마 버전(현재 "1.0") |
+| `skills` | object | 예 | 스킬 이름 → SkillRule 매핑 |
 
-### SkillRule Fields
+### SkillRule 필드
 
-| Field | Type | Required | Description |
+| 필드 | 타입 | 필수 | 설명 |
 |-------|------|----------|-------------|
-| `type` | string | Yes | "guardrail" (enforced) or "domain" (advisory) |
-| `enforcement` | string | Yes | "block" (PreToolUse), "suggest" (UserPromptSubmit), or "warn" |
-| `priority` | string | Yes | "critical", "high", "medium", or "low" |
-| `promptTriggers` | object | Optional | Triggers for UserPromptSubmit hook |
-| `fileTriggers` | object | Optional | Triggers for PreToolUse hook |
-| `blockMessage` | string | Optional* | Required if enforcement="block". Use `{file_path}` placeholder |
-| `skipConditions` | object | Optional | Escape hatches and session tracking |
+| `type` | string | 예 | "guardrail"(강제) 또는 "domain"(안내) |
+| `enforcement` | string | 예 | "block"(PreToolUse), "suggest"(UserPromptSubmit), 또는 "warn" |
+| `priority` | string | 예 | "critical", "high", "medium", 또는 "low" |
+| `promptTriggers` | object | 선택 | UserPromptSubmit 훅 트리거 |
+| `fileTriggers` | object | 선택 | PreToolUse 훅 트리거 |
+| `blockMessage` | string | 선택* | enforcement="block"이면 필수. `{file_path}` 플레이스홀더 사용 |
+| `skipConditions` | object | 선택 | 우회(escape hatch) 및 세션 추적 |
 
-*Required for guardrails
+*가드레일(guardrail)에는 필수
 
-### promptTriggers Fields
+### promptTriggers 필드
 
-| Field | Type | Required | Description |
+| 필드 | 타입 | 필수 | 설명 |
 |-------|------|----------|-------------|
-| `keywords` | string[] | Optional | Exact substring matches (case-insensitive) |
-| `intentPatterns` | string[] | Optional | Regex patterns for intent detection |
+| `keywords` | string[] | 선택 | 부분 문자열 정확 매칭(대소문자 무시) |
+| `intentPatterns` | string[] | 선택 | 의도 감지를 위한 정규식 패턴 |
 
-### fileTriggers Fields
+### fileTriggers 필드
 
-| Field | Type | Required | Description |
+| 필드 | 타입 | 필수 | 설명 |
 |-------|------|----------|-------------|
-| `pathPatterns` | string[] | Yes* | Glob patterns for file paths |
-| `pathExclusions` | string[] | Optional | Glob patterns to exclude (e.g., test files) |
-| `contentPatterns` | string[] | Optional | Regex patterns to match file content |
-| `createOnly` | boolean | Optional | Only trigger when creating new files |
+| `pathPatterns` | string[] | 예* | 파일 경로용 glob 패턴 |
+| `pathExclusions` | string[] | 선택 | 제외할 glob 패턴(예: 테스트 파일) |
+| `contentPatterns` | string[] | 선택 | 파일 내용을 매칭하는 정규식 패턴 |
+| `createOnly` | boolean | 선택 | 새 파일 생성 시에만 트리거 |
 
-*Required if fileTriggers is present
+*fileTriggers가 있으면 필수
 
-### skipConditions Fields
+### skipConditions 필드
 
-| Field | Type | Required | Description |
+| 필드 | 타입 | 필수 | 설명 |
 |-------|------|----------|-------------|
-| `sessionSkillUsed` | boolean | Optional | Skip if skill already used this session |
-| `fileMarkers` | string[] | Optional | Skip if file contains comment marker |
-| `envOverride` | string | Optional | Environment variable name to disable skill |
+| `sessionSkillUsed` | boolean | 선택 | 이 세션에서 이미 스킬을 사용했으면 스킵 |
+| `fileMarkers` | string[] | 선택 | 파일에 코멘트 마커가 있으면 스킵 |
+| `envOverride` | string | 선택 | 스킬 비활성화를 위한 환경 변수 이름 |
 
 ---
 
-## Example: Guardrail Skill
+## 예시: 가드레일(Guardrail) 스킬
 
-Complete example of a blocking guardrail skill with all features:
+모든 기능을 포함한 차단형 가드레일 스킬 완전 예시:
 
 ```json
 {
@@ -182,7 +182,7 @@ Complete example of a blocking guardrail skill with all features:
 }
 ```
 
-### Key Points for Guardrails
+### 가드레일 핵심 포인트
 
 1. **type**: Must be "guardrail"
 2. **enforcement**: Must be "block"
@@ -194,9 +194,9 @@ Complete example of a blocking guardrail skill with all features:
 
 ---
 
-## Example: Domain Skill
+## 예시: 도메인(Domain) 스킬
 
-Complete example of a suggestion-based domain skill:
+제안(suggest) 기반 도메인 스킬의 완전 예시:
 
 ```json
 {
@@ -250,7 +250,7 @@ Complete example of a suggestion-based domain skill:
 }
 ```
 
-### Key Points for Domain Skills
+### 도메인 스킬 핵심 포인트
 
 1. **type**: Must be "domain"
 2. **enforcement**: Usually "suggest"
@@ -262,17 +262,17 @@ Complete example of a suggestion-based domain skill:
 
 ---
 
-## Validation
+## 검증
 
-### Check JSON Syntax
+### JSON 문법 확인
 
 ```bash
 cat .claude/skills/skill-rules.json | jq .
 ```
 
-If valid, jq will pretty-print the JSON. If invalid, it will show the error.
+정상이면 jq가 JSON을 보기 좋게 출력합니다. 비정상이면 오류를 표시합니다.
 
-### Common JSON Errors
+### 흔한 JSON 오류
 
 **Trailing comma:**
 ```json
@@ -295,7 +295,7 @@ If valid, jq will pretty-print the JSON. If invalid, it will show the error.
 }
 ```
 
-### Validation Checklist
+### 검증 체크리스트
 
 - [ ] JSON syntax valid (use `jq`)
 - [ ] All skill names match SKILL.md filenames
@@ -309,7 +309,7 @@ If valid, jq will pretty-print the JSON. If invalid, it will show the error.
 
 ---
 
-**Related Files:**
+**관련 파일:**
 - [SKILL.md](SKILL.md) - Main skill guide
 - [TRIGGER_TYPES.md](TRIGGER_TYPES.md) - Complete trigger documentation
 - [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging configuration issues

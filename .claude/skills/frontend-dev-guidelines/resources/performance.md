@@ -1,12 +1,12 @@
-# Performance Optimization
+# 성능 최적화
 
-Patterns for optimizing React component performance, preventing unnecessary re-renders, and avoiding memory leaks.
+React 컴포넌트 성능을 최적화하고, 불필요한 리렌더를 줄이며, 메모리 누수를 방지하는 패턴 모음입니다.
 
 ---
 
-## Memoization Patterns
+## 메모이제이션 패턴
 
-### useMemo for Expensive Computations
+### 비용이 큰 계산에는 useMemo
 
 ```typescript
 import { useMemo } from 'react';
@@ -31,22 +31,22 @@ export const DataDisplay: React.FC<{ items: Item[], searchTerm: string }> = ({
 };
 ```
 
-**When to use useMemo:**
-- Filtering/sorting large arrays
-- Complex calculations
-- Transforming data structures
-- Expensive computations (loops, recursion)
+**useMemo를 써야 하는 경우:**
+- 큰 배열의 필터/정렬
+- 복잡한 계산
+- 데이터 구조 변환
+- 비용이 큰 연산(루프, 재귀)
 
-**When NOT to use useMemo:**
-- Simple string concatenation
-- Basic arithmetic
-- Premature optimization (profile first!)
+**useMemo를 쓰지 말아야 하는 경우:**
+- 단순 문자열 결합
+- 기본 사칙연산
+- 성급한 최적화(먼저 프로파일링하세요!)
 
 ---
 
-## useCallback for Event Handlers
+## 이벤트 핸들러에는 useCallback
 
-### The Problem
+### 문제
 
 ```typescript
 // ❌ AVOID - Creates new function on every render
@@ -61,7 +61,7 @@ export const Parent: React.FC = () => {
 };
 ```
 
-### The Solution
+### 해결
 
 ```typescript
 import { useCallback } from 'react';
@@ -77,21 +77,21 @@ export const Parent: React.FC = () => {
 };
 ```
 
-**When to use useCallback:**
-- Functions passed as props to children
-- Functions used as dependencies in useEffect
-- Functions passed to memoized components
-- Event handlers in lists
+**useCallback을 써야 하는 경우:**
+- 자식에게 props로 전달하는 함수
+- useEffect 의존성으로 쓰이는 함수
+- 메모이제이션된 컴포넌트에 전달하는 함수
+- 리스트 안의 이벤트 핸들러
 
-**When NOT to use useCallback:**
-- Event handlers not passed to children
-- Simple inline handlers: `onClick={() => doSomething()}`
+**useCallback을 쓰지 말아야 하는 경우:**
+- 자식에게 전달하지 않는 이벤트 핸들러
+- 단순 인라인 핸들러: `onClick={() => doSomething()}`
 
 ---
 
-## React.memo for Component Memoization
+## 컴포넌트 메모이제이션을 위한 React.memo
 
-### Basic Usage
+### 기본 사용법
 
 ```typescript
 import React from 'react';
@@ -110,23 +110,23 @@ export const ExpensiveComponent = React.memo<ExpensiveComponentProps>(
 );
 ```
 
-**When to use React.memo:**
-- Component renders frequently
-- Component has expensive rendering
-- Props don't change often
-- Component is a list item
-- DataGrid cells/renderers
+**React.memo를 써야 하는 경우:**
+- 컴포넌트가 자주 렌더됨
+- 렌더 비용이 큼
+- props가 자주 바뀌지 않음
+- 컴포넌트가 리스트 아이템임
+- DataGrid 셀/렌더러
 
-**When NOT to use React.memo:**
-- Props change frequently anyway
-- Rendering is already fast
-- Premature optimization
+**React.memo를 쓰지 말아야 하는 경우:**
+- props가 어차피 자주 바뀜
+- 렌더링이 이미 충분히 빠름
+- 성급한 최적화
 
 ---
 
-## Debounced Search
+## 디바운스 검색
 
-### Using use-debounce Hook
+### use-debounce 훅 사용
 
 ```typescript
 import { useState } from 'react';
@@ -156,16 +156,16 @@ export const SearchComponent: React.FC = () => {
 };
 ```
 
-**Optimal Debounce Timing:**
-- **300-500ms**: Search/filtering
-- **1000ms**: Auto-save
-- **100-200ms**: Real-time validation
+**권장 디바운스 타이밍:**
+- **300-500ms**: 검색/필터링
+- **1000ms**: 자동 저장
+- **100-200ms**: 실시간 검증
 
 ---
 
-## Memory Leak Prevention
+## 메모리 누수 방지
 
-### Cleanup Timeouts/Intervals
+### timeout/interval 정리(cleanup)
 
 ```typescript
 import { useEffect, useState } from 'react';
@@ -199,7 +199,7 @@ export const MyComponent: React.FC = () => {
 };
 ```
 
-### Cleanup Event Listeners
+### 이벤트 리스너 정리(cleanup)
 
 ```typescript
 useEffect(() => {
@@ -215,7 +215,7 @@ useEffect(() => {
 }, []);
 ```
 
-### Abort Controllers for Fetch
+### fetch를 위한 AbortController
 
 ```typescript
 useEffect(() => {
@@ -236,13 +236,13 @@ useEffect(() => {
 }, []);
 ```
 
-**Note**: With TanStack Query, this is handled automatically.
+**참고**: TanStack Query를 쓰면 이 부분은 자동으로 처리됩니다.
 
 ---
 
-## Form Performance
+## 폼 성능
 
-### Watch Specific Fields (Not All)
+### 특정 필드만 watch(전체 watch 금지)
 
 ```typescript
 import { useForm } from 'react-hook-form';
@@ -275,9 +275,9 @@ export const MyForm: React.FC = () => {
 
 ---
 
-## List Rendering Optimization
+## 리스트 렌더링 최적화
 
-### Key Prop Usage
+### key prop 사용
 
 ```typescript
 // ✅ CORRECT - Stable unique keys
@@ -295,7 +295,7 @@ export const MyForm: React.FC = () => {
 ))}
 ```
 
-### Memoized List Items
+### 리스트 아이템 메모이제이션
 
 ```typescript
 const ListItem = React.memo<ListItemProps>(({ item, onAction }) => {
@@ -327,9 +327,9 @@ export const List: React.FC<{ items: Item[] }> = ({ items }) => {
 
 ---
 
-## Preventing Component Re-initialization
+## 컴포넌트 재초기화 방지
 
-### The Problem
+### 문제
 
 ```typescript
 // ❌ AVOID - Component recreated on every render
@@ -341,7 +341,7 @@ export const Parent: React.FC = () => {
 };
 ```
 
-### The Solution
+### 해결
 
 ```typescript
 // ✅ CORRECT - Define outside or use useMemo
@@ -363,9 +363,9 @@ export const Parent: React.FC<{ config: Config }> = ({ config }) => {
 
 ---
 
-## Lazy Loading Heavy Dependencies
+## 무거운 의존성 지연 로딩
 
-### Code Splitting
+### 코드 스플리팅(Code Splitting)
 
 ```typescript
 // ❌ AVOID - Import heavy libraries at top level
@@ -387,9 +387,9 @@ const handleExportExcel = async () => {
 
 ---
 
-## Summary
+## 요약
 
-**Performance Checklist:**
+**성능 체크리스트:**
 - ✅ `useMemo` for expensive computations (filter, sort, map)
 - ✅ `useCallback` for functions passed to children
 - ✅ `React.memo` for expensive components
@@ -400,7 +400,7 @@ const handleExportExcel = async () => {
 - ✅ Lazy load heavy libraries
 - ✅ Code splitting with React.lazy
 
-**See Also:**
+**함께 보기:**
 - [component-patterns.md](component-patterns.md) - Lazy loading
 - [data-fetching.md](data-fetching.md) - TanStack Query optimization
 - [complete-examples.md](complete-examples.md) - Performance patterns in context

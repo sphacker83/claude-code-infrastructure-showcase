@@ -1,360 +1,359 @@
-# Claude Code Infrastructure Showcase
+# Claude Code 인프라 쇼케이스 (한국어판)
 
-**A curated reference library of production-tested Claude Code infrastructure.**
+**실서비스에서 검증된 Claude Code 인프라를 모아둔 레퍼런스 라이브러리입니다.**
 
-Born from 6 months of real-world use managing a complex TypeScript microservices project, this showcase provides the patterns and systems that solved the "skills don't activate automatically" problem and scaled Claude Code for enterprise development.
+복잡한 TypeScript 마이크로서비스 프로젝트를 6개월간 실제 운영하며 쌓은 결과물을 바탕으로, "스킬이 자동으로 활성화되지 않는다"는 문제를 해결하고 Claude Code를 엔터프라이즈 개발에 맞게 확장한 패턴과 시스템을 제공합니다.
 
-> **This is NOT a working application** - it's a reference library. Copy what you need into your own projects.
-
----
-
-## What's Inside
-
-**Production-tested infrastructure for:**
-- ✅ **Auto-activating skills** via hooks
-- ✅ **Modular skill pattern** (500-line rule with progressive disclosure)
-- ✅ **Specialized agents** for complex tasks
-- ✅ **Dev docs system** that survives context resets
-- ✅ **Comprehensive examples** using generic blog domain
-
-**Time investment to build:** 6 months of iteration
-**Time to integrate into your project:** 15-30 minutes
+> **이 저장소는 동작하는 애플리케이션이 아닙니다.** 레퍼런스 라이브러리입니다. 필요한 것만 복사해서 여러분 프로젝트에 적용하세요.
 
 ---
 
-## Quick Start - Pick Your Path
+## 포함 내용
 
-### 🤖 Using Claude Code to Integrate?
+**실서비스 검증 완료 인프라:**
+- ✅ 훅(Hook)을 통한 **스킬 자동 활성화**
+- ✅ **모듈형 스킬 패턴** (500줄 규칙 + 점진적 공개)
+- ✅ 복잡한 작업을 위한 **전용 에이전트**
+- ✅ 컨텍스트 리셋 이후에도 유지되는 **개발 문서 시스템**
+- ✅ 일반 블로그 도메인을 사용한 **포괄적 예시**
 
-**Claude:** Read [`CLAUDE_INTEGRATION_GUIDE.md`](CLAUDE_INTEGRATION_GUIDE.md) for step-by-step integration instructions tailored for AI-assisted setup.
-
-### 🎯 I want skill auto-activation
-
-**The breakthrough feature:** Skills that actually activate when you need them.
-
-**What you need:**
-1. The skill-activation hooks (2 files)
-2. A skill or two relevant to your work
-3. 15 minutes
-
-**👉 [Setup Guide: .claude/hooks/README.md](.claude/hooks/README.md)**
-
-### 📚 I want to add ONE skill
-
-Browse the [skills catalog](.claude/skills/) and copy what you need.
-
-**Available:**
-- **backend-dev-guidelines** - Node.js/Express/TypeScript patterns
-- **frontend-dev-guidelines** - React/TypeScript/MUI v7 patterns
-- **skill-developer** - Meta-skill for creating skills
-- **route-tester** - Test authenticated API routes
-- **error-tracking** - Sentry integration patterns
-
-**👉 [Skills Guide: .claude/skills/README.md](.claude/skills/README.md)**
-
-### 🤖 I want specialized agents
-
-10 production-tested agents for complex tasks:
-- Code architecture review
-- Refactoring assistance
-- Documentation generation
-- Error debugging
-- And more...
-
-**👉 [Agents Guide: .claude/agents/README.md](.claude/agents/README.md)**
+**구축 투자 시간:** 6개월 반복 개선
+**프로젝트 통합 시간:** 15~30분
 
 ---
 
-## What Makes This Different?
+## 빠른 시작 - 원하는 경로 선택
 
-### The Auto-Activation Breakthrough
+### 🤖 Claude Code로 통합 중인가요?
 
-**Problem:** Claude Code skills just sit there. You have to remember to use them.
+**Claude:** AI 보조 설정에 맞춘 단계별 통합 가이드는 [`CLAUDE_INTEGRATION_GUIDE.md`](CLAUDE_INTEGRATION_GUIDE.md)를 읽으세요.
 
-**Solution:** UserPromptSubmit hook that:
-- Analyzes your prompts
-- Checks file context
-- Automatically suggests relevant skills
-- Works via `skill-rules.json` configuration
+### 🎯 스킬 자동 활성화가 필요해요
 
-**Result:** Skills activate when you need them, not when you remember them.
+**핵심 기능:** 필요할 때 실제로 켜지는 스킬.
 
-### Production-Tested Patterns
+**필요한 것:**
+1. 스킬 활성화 훅 2개 파일
+2. 작업과 관련된 스킬 1~2개
+3. 15분
 
-These aren't theoretical examples - they're extracted from:
-- ✅ 6 microservices in production
-- ✅ 50,000+ lines of TypeScript
-- ✅ React frontend with complex data grids
-- ✅ Sophisticated workflow engine
-- ✅ 6 months of daily Claude Code use
+**👉 [설정 가이드: .claude/hooks/README.md](.claude/hooks/README.md)**
 
-The patterns work because they solved real problems.
+### 📚 스킬 하나만 추가하고 싶어요
 
-### Modular Skills (500-Line Rule)
+[스킬 카탈로그](.claude/skills/)에서 필요한 것만 골라 복사하세요.
 
-Large skills hit context limits. The solution:
+**제공 스킬:**
+- **backend-dev-guidelines** - Node.js/Express/TypeScript 패턴
+- **frontend-dev-guidelines** - React/TypeScript/MUI v7 패턴
+- **skill-developer** - 스킬 제작용 메타 스킬
+- **route-tester** - 인증 API 라우트 테스트
+- **error-tracking** - Sentry 연동 패턴
+
+**👉 [스킬 가이드: .claude/skills/README.md](.claude/skills/README.md)**
+
+### 🤖 전용 에이전트를 쓰고 싶어요
+
+복잡한 작업을 위한 실전 검증 에이전트 10종:
+- 코드 아키텍처 리뷰
+- 리팩터링 지원
+- 문서 생성
+- 오류 디버깅
+- 그 외 다수
+
+**👉 [에이전트 가이드: .claude/agents/README.md](.claude/agents/README.md)**
+
+---
+
+## 무엇이 다른가?
+
+### 자동 활성화의 핵심 돌파구
+
+**문제:** Claude Code 스킬이 그냥 방치됩니다. 직접 기억해서 써야 합니다.
+
+**해결:** `UserPromptSubmit` 훅이 다음을 수행합니다.
+- 프롬프트 분석
+- 파일 컨텍스트 확인
+- 관련 스킬 자동 제안
+- `skill-rules.json` 설정 기반 동작
+
+**결과:** "기억날 때"가 아니라 "필요할 때" 스킬이 활성화됩니다.
+
+### 실서비스 검증 패턴
+
+이론 예제가 아니라 실제 환경에서 추출했습니다.
+- ✅ 운영 중인 마이크로서비스 6개
+- ✅ TypeScript 50,000줄 이상
+- ✅ 복잡한 데이터 그리드가 있는 React 프론트엔드
+- ✅ 고도화된 워크플로우 엔진
+- ✅ 6개월간의 일일 Claude Code 활용
+
+실문제를 해결했기 때문에 동작합니다.
+
+### 모듈형 스킬 (500줄 규칙)
+
+큰 스킬은 컨텍스트 한도에 걸립니다. 해결 구조는 다음과 같습니다.
 
 ```
 skill-name/
-  SKILL.md                  # <500 lines, high-level guide
+  SKILL.md                  # 500줄 미만, 상위 가이드
   resources/
-    topic-1.md              # <500 lines each
+    topic-1.md              # 각 파일 500줄 미만
     topic-2.md
     topic-3.md
 ```
 
-**Progressive disclosure:** Claude loads main skill first, loads resources only when needed.
+**점진적 공개:** Claude는 먼저 메인 스킬을 읽고, 필요할 때만 리소스 파일을 추가로 로드합니다.
 
 ---
 
-## Repository Structure
+## 저장소 구조
 
 ```
 .claude/
-├── skills/                 # 5 production skills
-│   ├── backend-dev-guidelines/  (12 resource files)
-│   ├── frontend-dev-guidelines/ (11 resource files)
-│   ├── skill-developer/         (7 resource files)
+├── skills/                 # 실전 스킬 5개
+│   ├── backend-dev-guidelines/  (리소스 파일 12개)
+│   ├── frontend-dev-guidelines/ (리소스 파일 11개)
+│   ├── skill-developer/         (리소스 파일 7개)
 │   ├── route-tester/
 │   ├── error-tracking/
-│   └── skill-rules.json    # Skill activation configuration
-├── hooks/                  # 6 hooks for automation
-│   ├── skill-activation-prompt.*  (ESSENTIAL)
-│   ├── post-tool-use-tracker.sh   (ESSENTIAL)
-│   ├── tsc-check.sh        (optional, needs customization)
-│   └── trigger-build-resolver.sh  (optional)
-├── agents/                 # 10 specialized agents
+│   └── skill-rules.json    # 스킬 활성화 설정
+├── hooks/                  # 자동화를 위한 훅 6개
+│   ├── skill-activation-prompt.*  (필수)
+│   ├── post-tool-use-tracker.sh   (필수)
+│   ├── tsc-check.sh        (선택, 커스터마이징 필요)
+│   └── trigger-build-resolver.sh  (선택)
+├── agents/                 # 전용 에이전트 10개
 │   ├── code-architecture-reviewer.md
 │   ├── refactor-planner.md
 │   ├── frontend-error-fixer.md
-│   └── ... 7 more
-└── commands/               # 3 slash commands
+│   └── ... 나머지 7개
+└── commands/               # 슬래시 명령어 3개
     ├── dev-docs.md
     └── ...
 
 dev/
-└── active/                 # Dev docs pattern examples
+└── active/                 # 개발 문서 패턴 예시
     └── public-infrastructure-repo/
 ```
 
 ---
 
-## Component Catalog
+## 구성요소 카탈로그
 
-### 🎨 Skills (5)
+### 🎨 스킬 (5)
 
-| Skill | Lines | Purpose | Best For |
+| 스킬 | 줄 수 | 목적 | 적합한 용도 |
 |-------|-------|---------|----------|
-| [**skill-developer**](.claude/skills/skill-developer/) | 426 | Creating and managing skills | Meta-development |
-| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Backend APIs |
-| [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React frontends |
-| [**route-tester**](.claude/skills/route-tester/) | 389 | Testing authenticated routes | API testing |
-| [**error-tracking**](.claude/skills/error-tracking/) | ~250 | Sentry integration | Error monitoring |
+| [**skill-developer**](.claude/skills/skill-developer/) | 426 | 스킬 생성 및 관리 | 메타 개발 |
+| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry 패턴 | 백엔드 API |
+| [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React 프론트엔드 |
+| [**route-tester**](.claude/skills/route-tester/) | 389 | 인증 라우트 테스트 | API 테스트 |
+| [**error-tracking**](.claude/skills/error-tracking/) | ~250 | Sentry 연동 | 오류 모니터링 |
 
-**All skills follow the modular pattern** - main file + resource files for progressive disclosure.
+**모든 스킬은 모듈형 패턴**(메인 파일 + 리소스 파일의 점진적 공개)을 따릅니다.
 
-**👉 [How to integrate skills →](.claude/skills/README.md)**
+**👉 [스킬 통합 방법 →](.claude/skills/README.md)**
 
-### 🪝 Hooks (6)
+### 🪝 훅 (6)
 
-| Hook | Type | Essential? | Customization |
+| 훅 | 타입 | 필수 여부 | 커스터마이징 |
 |------|------|-----------|---------------|
-| skill-activation-prompt | UserPromptSubmit | ✅ YES | ✅ None needed |
-| post-tool-use-tracker | PostToolUse | ✅ YES | ✅ None needed |
-| tsc-check | Stop | ⚠️ Optional | ⚠️ Heavy - monorepo only |
-| trigger-build-resolver | Stop | ⚠️ Optional | ⚠️ Heavy - monorepo only |
-| error-handling-reminder | Stop | ⚠️ Optional | ⚠️ Moderate |
-| stop-build-check-enhanced | Stop | ⚠️ Optional | ⚠️ Moderate |
+| skill-activation-prompt | UserPromptSubmit | ✅ 예 | ✅ 불필요 |
+| post-tool-use-tracker | PostToolUse | ✅ 예 | ✅ 불필요 |
+| tsc-check | Stop | ⚠️ 선택 | ⚠️ 무거움 - 모노레포 전용 |
+| trigger-build-resolver | Stop | ⚠️ 선택 | ⚠️ 무거움 - 모노레포 전용 |
+| error-handling-reminder | Stop | ⚠️ 선택 | ⚠️ 보통 |
+| stop-build-check-enhanced | Stop | ⚠️ 선택 | ⚠️ 보통 |
 
-**Start with the two essential hooks** - they enable skill auto-activation and work out of the box.
+**필수 훅 2개부터 시작**하세요. 기본으로 바로 동작하며 스킬 자동 활성화를 켭니다.
 
-**👉 [Hook setup guide →](.claude/hooks/README.md)**
+**👉 [훅 설정 가이드 →](.claude/hooks/README.md)**
 
-### 🤖 Agents (10)
+### 🤖 에이전트 (10)
 
-**Standalone - just copy and use!**
+**독립형이라 복사 후 바로 사용 가능합니다.**
 
-| Agent | Purpose |
+| 에이전트 | 목적 |
 |-------|---------|
-| code-architecture-reviewer | Review code for architectural consistency |
-| code-refactor-master | Plan and execute refactoring |
-| documentation-architect | Generate comprehensive documentation |
-| frontend-error-fixer | Debug frontend errors |
-| plan-reviewer | Review development plans |
-| refactor-planner | Create refactoring strategies |
-| web-research-specialist | Research technical issues online |
-| auth-route-tester | Test authenticated endpoints |
-| auth-route-debugger | Debug auth issues |
-| auto-error-resolver | Auto-fix TypeScript errors |
+| code-architecture-reviewer | 코드의 아키텍처 일관성 검토 |
+| code-refactor-master | 리팩터링 계획 및 실행 |
+| documentation-architect | 포괄적 문서 생성 |
+| frontend-error-fixer | 프론트엔드 오류 디버깅 |
+| plan-reviewer | 개발 계획 검토 |
+| refactor-planner | 리팩터링 전략 수립 |
+| web-research-specialist | 기술 이슈 웹 리서치 |
+| auth-route-tester | 인증 엔드포인트 테스트 |
+| auth-route-debugger | 인증 이슈 디버깅 |
+| auto-error-resolver | TypeScript 오류 자동 수정 |
 
-**👉 [How agents work →](.claude/agents/README.md)**
+**👉 [에이전트 동작 방식 →](.claude/agents/README.md)**
 
-### 💬 Slash Commands (3)
+### 💬 슬래시 명령어 (3)
 
-| Command | Purpose |
+| 명령어 | 목적 |
 |---------|---------|
-| /dev-docs | Create structured dev documentation |
-| /dev-docs-update | Update docs before context reset |
-| /route-research-for-testing | Research route patterns for testing |
+| /dev-docs | 구조화된 개발 문서 생성 |
+| /dev-docs-update | 컨텍스트 리셋 전 문서 업데이트 |
+| /route-research-for-testing | 테스트용 라우트 패턴 리서치 |
 
 ---
 
-## Key Concepts
+## 핵심 개념
 
-### Hooks + skill-rules.json = Auto-Activation
+### Hooks + skill-rules.json = 자동 활성화
 
-**The system:**
-1. **skill-activation-prompt hook** runs on every user prompt
-2. Checks **skill-rules.json** for trigger patterns
-3. Suggests relevant skills automatically
-4. Skills load only when needed
+**시스템 동작:**
+1. 모든 사용자 프롬프트마다 **skill-activation-prompt 훅** 실행
+2. **skill-rules.json**의 트리거 패턴 확인
+3. 관련 스킬 자동 제안
+4. 필요할 때만 스킬 로드
 
-**This solves the #1 problem** with Claude Code skills: they don't activate on their own.
+Claude Code 스킬의 1순위 문제인 "스스로 활성화되지 않음"을 해결합니다.
 
-### Progressive Disclosure (500-Line Rule)
+### 점진적 공개 (500줄 규칙)
 
-**Problem:** Large skills hit context limits
+**문제:** 큰 스킬은 컨텍스트 한도 초과
 
-**Solution:** Modular structure
-- Main SKILL.md <500 lines (overview + navigation)
-- Resource files <500 lines each (deep dives)
-- Claude loads incrementally as needed
+**해결:** 모듈 구조
+- 메인 `SKILL.md` < 500줄 (개요 + 내비게이션)
+- 리소스 파일 각각 < 500줄 (심화 내용)
+- 필요 시점에 맞춰 단계적으로 로드
 
-**Example:** backend-dev-guidelines has 12 resource files covering routing, controllers, services, repositories, testing, etc.
+**예시:** `backend-dev-guidelines`는 라우팅, 컨트롤러, 서비스, 리포지토리, 테스트 등 12개 리소스 파일로 구성됩니다.
 
-### Dev Docs Pattern
+### 개발 문서(Dev Docs) 패턴
 
-**Problem:** Context resets lose project context
+**문제:** 컨텍스트 리셋 시 프로젝트 맥락 손실
 
-**Solution:** Three-file structure
-- `[task]-plan.md` - Strategic plan
-- `[task]-context.md` - Key decisions and files
-- `[task]-tasks.md` - Checklist format
+**해결:** 3파일 구조
+- `[task]-plan.md` - 전략 계획
+- `[task]-context.md` - 핵심 의사결정과 파일
+- `[task]-tasks.md` - 체크리스트
 
-**Works with:** `/dev-docs` slash command to generate these automatically
+**연동:** `/dev-docs` 명령어로 자동 생성 가능
 
 ---
 
-## ⚠️ Important: What Won't Work As-Is
+## ⚠️ 중요: 그대로는 동작하지 않는 부분
 
 ### settings.json
-The included `settings.json` is an **example only**:
-- Stop hooks reference specific monorepo structure
-- Service names (blog-api, etc.) are examples
-- MCP servers may not exist in your setup
+포함된 `settings.json`은 **예시 전용**입니다.
+- Stop 훅이 특정 모노레포 구조를 참조
+- 서비스명(`blog-api` 등)은 예시
+- MCP 서버는 여러분 환경에 없을 수 있음
 
-**To use it:**
-1. Extract ONLY UserPromptSubmit and PostToolUse hooks
-2. Customize or skip Stop hooks
-3. Update MCP server list for your setup
+**사용 방법:**
+1. `UserPromptSubmit`, `PostToolUse` 훅만 우선 추출
+2. Stop 훅은 커스터마이징하거나 제외
+3. MCP 서버 목록을 환경에 맞게 수정
 
-### Blog Domain Examples
-Skills use generic blog examples (Post/Comment/User):
-- These are **teaching examples**, not requirements
-- Patterns work for any domain (e-commerce, SaaS, etc.)
-- Adapt the patterns to your business logic
+### 블로그 도메인 예시
+스킬 예시는 일반적인 블로그 모델(Post/Comment/User)을 사용합니다.
+- **학습용 예시**일 뿐 필수 아님
+- 패턴은 어떤 도메인에도 적용 가능(이커머스, SaaS 등)
+- 비즈니스 로직에 맞춰 변형 필요
 
-### Hook Directory Structures
-Some hooks expect specific structures:
-- `tsc-check.sh` expects service directories
-- Customize based on YOUR project layout
-
----
-
-## Integration Workflow
-
-**Recommended approach:**
-
-### Phase 1: Skill Activation (15 min)
-1. Copy skill-activation-prompt hook
-2. Copy post-tool-use-tracker hook
-3. Update settings.json
-4. Install hook dependencies
-
-### Phase 2: Add First Skill (10 min)
-1. Pick ONE relevant skill
-2. Copy skill directory
-3. Create/update skill-rules.json
-4. Customize path patterns
-
-### Phase 3: Test & Iterate (5 min)
-1. Edit a file - skill should activate
-2. Ask a question - skill should be suggested
-3. Add more skills as needed
-
-### Phase 4: Optional Enhancements
-- Add agents you find useful
-- Add slash commands
-- Customize Stop hooks (advanced)
+### 훅 디렉터리 구조
+일부 훅은 특정 구조를 가정합니다.
+- `tsc-check.sh`는 서비스 디렉터리 구조를 기대
+- 프로젝트 레이아웃에 맞게 수정 필요
 
 ---
 
-## Getting Help
+## 통합 워크플로우
 
-### For Users
-**Issues with integration?**
-1. Check [CLAUDE_INTEGRATION_GUIDE.md](CLAUDE_INTEGRATION_GUIDE.md)
-2. Ask Claude: "Why isn't [skill] activating?"
-3. Open an issue with your project structure
+**권장 순서:**
 
-### For Claude Code
-When helping users integrate:
-1. **Read CLAUDE_INTEGRATION_GUIDE.md FIRST**
-2. Ask about their project structure
-3. Customize, don't blindly copy
-4. Verify after integration
+### 1단계: 스킬 활성화 (15분)
+1. `skill-activation-prompt` 훅 복사
+2. `post-tool-use-tracker` 훅 복사
+3. `settings.json` 업데이트
+4. 훅 의존성 설치
 
----
+### 2단계: 첫 스킬 추가 (10분)
+1. 관련 스킬 1개 선택
+2. 스킬 디렉터리 복사
+3. `skill-rules.json` 생성/수정
+4. 경로 패턴 커스터마이징
 
-## What This Solves
+### 3단계: 테스트 및 반복 (5분)
+1. 파일 편집 시 스킬 활성화 확인
+2. 질문 시 스킬 제안 확인
+3. 필요에 따라 스킬 추가
 
-### Before This Infrastructure
-
-❌ Skills don't activate automatically
-❌ Have to remember which skill to use
-❌ Large skills hit context limits
-❌ Context resets lose project knowledge
-❌ No consistency across development
-❌ Manual agent invocation every time
-
-### After This Infrastructure
-
-✅ Skills suggest themselves based on context
-✅ Hooks trigger skills at the right time
-✅ Modular skills stay under context limits
-✅ Dev docs preserve knowledge across resets
-✅ Consistent patterns via guardrails
-✅ Agents streamline complex tasks
+### 4단계: 선택 고도화
+- 유용한 에이전트 추가
+- 슬래시 명령어 추가
+- Stop 훅 고급 커스터마이징
 
 ---
 
-## Community
+## 도움받기
 
-**Found this useful?**
+### 사용자용
+**통합이 잘 안 되나요?**
+1. [CLAUDE_INTEGRATION_GUIDE.md](CLAUDE_INTEGRATION_GUIDE.md) 확인
+2. Claude에게 질문: "왜 [skill]이 활성화되지 않지?"
+3. 프로젝트 구조와 함께 이슈 등록
 
-- ⭐ Star this repo
-- 🐛 Report issues or suggest improvements
-- 💬 Share your own skills/hooks/agents
-- 📝 Contribute examples from your domain
-
-**Background:**
-This infrastructure was detailed in a post I made to Reddit ["Claude Code is a Beast – Tips from 6 Months of Hardcore Use"](https://www.reddit.com/r/ClaudeAI/comments/1oivjvm/claude_code_is_a_beast_tips_from_6_months_of/). After hundreds of requests, this showcase was created to help the community implement these patterns.
-
-
----
-
-## License
-
-MIT License - Use freely in your projects, commercial or personal.
+### Claude Code용
+사용자 통합 지원 시:
+1. **먼저 `CLAUDE_INTEGRATION_GUIDE.md` 읽기**
+2. 프로젝트 구조 질문
+3. 무작정 복사하지 말고 맞춤 적용
+4. 통합 후 검증
 
 ---
 
-## Quick Links
+## 이 인프라가 해결하는 것
 
-- 📖 [Claude Integration Guide](CLAUDE_INTEGRATION_GUIDE.md) - For AI-assisted setup
-- 🎨 [Skills Documentation](.claude/skills/README.md)
-- 🪝 [Hooks Setup](.claude/hooks/README.md)
-- 🤖 [Agents Guide](.claude/agents/README.md)
-- 📝 [Dev Docs Pattern](dev/README.md)
+### 도입 전
 
-**Start here:** Copy the two essential hooks, add one skill, and see the auto-activation magic happen.
+❌ 스킬 자동 활성화 안 됨
+❌ 어떤 스킬을 써야 하는지 매번 기억해야 함
+❌ 큰 스킬이 컨텍스트 한도에 막힘
+❌ 컨텍스트 리셋 시 프로젝트 지식 손실
+❌ 개발 일관성 부족
+❌ 매번 에이전트를 수동 호출
+
+### 도입 후
+
+✅ 컨텍스트 기반으로 스킬이 스스로 제안됨
+✅ 훅이 적절한 타이밍에 스킬 활성화
+✅ 모듈형 스킬로 컨텍스트 한도 관리
+✅ Dev Docs로 리셋 사이 지식 유지
+✅ 가드레일로 일관된 개발 패턴 유지
+✅ 에이전트로 복잡 작업 처리 속도 향상
+
+---
+
+## 커뮤니티
+
+**도움이 되었다면:**
+
+- ⭐ 저장소 스타
+- 🐛 이슈/개선안 제보
+- 💬 여러분의 스킬/훅/에이전트 공유
+- 📝 도메인별 예시 기여
+
+**배경:**
+이 인프라는 제가 Reddit에 작성한 글 ["Claude Code is a Beast – Tips from 6 Months of Hardcore Use"](https://www.reddit.com/r/ClaudeAI/comments/1oivjvm/claude_code_is_a_beast_tips_from_6_months_of/)에서 자세히 소개했습니다. 수백 건의 요청 이후, 커뮤니티가 패턴을 쉽게 적용할 수 있도록 이 쇼케이스를 만들었습니다.
+
+---
+
+## 라이선스
+
+MIT 라이선스 - 개인/상업 프로젝트에서 자유롭게 사용하세요.
+
+---
+
+## 빠른 링크
+
+- 📖 [Claude 통합 가이드](CLAUDE_INTEGRATION_GUIDE.md) - AI 보조 설정용
+- 🎨 [스킬 문서](.claude/skills/README.md)
+- 🪝 [훅 설정](.claude/hooks/README.md)
+- 🤖 [에이전트 가이드](.claude/agents/README.md)
+- 📝 [Dev Docs 패턴](dev/README.md)
+
+**시작 방법:** 필수 훅 2개를 복사하고 스킬 1개를 추가한 뒤 자동 활성화를 확인하세요.

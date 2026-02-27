@@ -1,58 +1,58 @@
-# Dev Docs Pattern
+# Dev Docs 패턴
 
-A methodology for maintaining project context across Claude Code sessions and context resets.
-
----
-
-## The Problem
-
-**Context resets lose everything:**
-- Implementation decisions
-- Key files and their purposes
-- Task progress
-- Technical constraints
-- Why certain approaches were chosen
-
-**After a reset, Claude has to rediscover everything.**
+Claude Code 세션과 컨텍스트 리셋 사이에서도 프로젝트 맥락을 유지하기 위한 방법론입니다.
 
 ---
 
-## The Solution: Persistent Dev Docs
+## 문제
 
-A three-file structure that captures everything needed to resume work:
+**컨텍스트 리셋이 일어나면 다음이 모두 사라집니다:**
+- 구현 의사결정
+- 핵심 파일과 각 파일의 역할
+- 작업 진행 상황
+- 기술적 제약
+- 특정 접근 방식을 선택한 이유
+
+**리셋 이후 Claude는 모든 것을 다시 파악해야 합니다.**
+
+---
+
+## 해결책: 지속형 Dev Docs
+
+작업을 재개하는 데 필요한 정보를 3개 파일로 고정 저장합니다.
 
 ```
 dev/active/[task-name]/
-├── [task-name]-plan.md      # Strategic plan
-├── [task-name]-context.md   # Key decisions & files
-└── [task-name]-tasks.md     # Checklist format
+├── [task-name]-plan.md      # 전략 계획
+├── [task-name]-context.md   # 핵심 의사결정 및 파일
+└── [task-name]-tasks.md     # 체크리스트
 ```
 
-**These files survive context resets** - Claude reads them to get back up to speed instantly.
+**이 파일들은 컨텍스트 리셋 이후에도 남아있어** Claude가 즉시 상태를 복구할 수 있습니다.
 
 ---
 
-## Three-File Structure
+## 3파일 구조
 
 ### 1. [task-name]-plan.md
 
-**Purpose:** Strategic plan for the implementation
+**목적:** 구현을 위한 전략 계획
 
-**Contains:**
-- Executive summary
-- Current state analysis
-- Proposed future state
-- Implementation phases
-- Detailed tasks with acceptance criteria
-- Risk assessment
-- Success metrics
-- Timeline estimates
+**포함 내용:**
+- 요약
+- 현재 상태 분석
+- 목표 상태
+- 구현 단계
+- 수용 기준이 포함된 상세 작업
+- 리스크 평가
+- 성공 지표
+- 일정 추정
 
-**When to create:** At the start of a complex task
+**생성 시점:** 복잡한 작업 시작 시
 
-**When to update:** When scope changes or new phases discovered
+**업데이트 시점:** 범위 변경 또는 새 단계 발견 시
 
-**Example:**
+**예시:**
 ```markdown
 # Feature Name - Implementation Plan
 
@@ -78,22 +78,22 @@ Where we are now
 
 ### 2. [task-name]-context.md
 
-**Purpose:** Key information for resuming work
+**목적:** 작업 재개를 위한 핵심 정보 저장
 
-**Contains:**
-- SESSION PROGRESS section (updated frequently!)
-- What's completed vs in-progress
-- Key files and their purposes
-- Important decisions made
-- Technical constraints discovered
-- Links to related files
-- Quick resume instructions
+**포함 내용:**
+- `SESSION PROGRESS` 섹션(자주 업데이트 필수)
+- 완료/진행 중 상태
+- 핵심 파일과 역할
+- 중요한 의사결정
+- 발견된 기술적 제약
+- 관련 파일 링크
+- 빠른 재개 안내
 
-**When to create:** Start of task
+**생성 시점:** 작업 시작 시
 
-**When to update:** **FREQUENTLY** - after major decisions, completions, or discoveries
+**업데이트 시점:** **자주** - 주요 결정, 완료, 발견이 있을 때마다
 
-**Example:**
+**예시:**
 ```markdown
 # Feature Name - Context
 
@@ -129,26 +129,26 @@ To continue:
 3. See tasks file for remaining work
 ```
 
-**CRITICAL:** Update the SESSION PROGRESS section every time significant work is done!
+**중요:** 의미 있는 작업이 끝날 때마다 `SESSION PROGRESS`를 반드시 갱신하세요.
 
 ---
 
 ### 3. [task-name]-tasks.md
 
-**Purpose:** Checklist for tracking progress
+**목적:** 진행 상황 추적 체크리스트
 
-**Contains:**
-- Phases broken down by logical sections
-- Tasks in checkbox format
-- Status indicators (✅/🟡/⏳)
-- Acceptance criteria
-- Quick resume section
+**포함 내용:**
+- 논리적 단계별 페이즈
+- 체크박스 형식 작업 항목
+- 상태 표시(✅/🟡/⏳)
+- 수용 기준
+- 빠른 재개 섹션
 
-**When to create:** Start of task
+**생성 시점:** 작업 시작 시
 
-**When to update:** After completing each task or discovering new tasks
+**업데이트 시점:** 작업 완료 직후 또는 신규 작업 발견 시
 
-**Example:**
+**예시:**
 ```markdown
 # Feature Name - Task Checklist
 
@@ -171,254 +171,254 @@ To continue:
 
 ---
 
-## When to Use Dev Docs
+## Dev Docs를 써야 할 때
 
-**Use for:**
-- ✅ Complex multi-day tasks
-- ✅ Features with many moving parts
-- ✅ Tasks likely to span multiple sessions
-- ✅ Work that needs careful planning
-- ✅ Refactoring large systems
+**사용 권장:**
+- ✅ 며칠 이상 걸리는 복잡한 작업
+- ✅ 구성 요소가 많은 기능 개발
+- ✅ 여러 세션에 걸칠 가능성이 큰 작업
+- ✅ 계획 수립이 중요한 작업
+- ✅ 대규모 리팩터링
 
-**Skip for:**
-- ❌ Simple bug fixes
-- ❌ Single-file changes
-- ❌ Quick updates
-- ❌ Trivial modifications
+**생략 가능:**
+- ❌ 단순 버그 수정
+- ❌ 단일 파일 변경
+- ❌ 빠른 업데이트
+- ❌ 사소한 수정
 
-**Rule of thumb:** If it takes more than 2 hours or spans multiple sessions, use dev docs.
+**기준:** 2시간 이상 걸리거나 여러 세션에 걸치면 Dev Docs를 사용하세요.
 
 ---
 
-## Workflow with Dev Docs
+## Dev Docs 워크플로우
 
-### Starting a New Task
+### 새 작업 시작
 
-1. **Use /dev-docs slash command:**
+1. **`/dev-docs` 명령 실행:**
    ```
    /dev-docs refactor authentication system
    ```
 
-2. **Claude creates the three files:**
-   - Analyzes requirements
-   - Examines codebase
-   - Creates comprehensive plan
-   - Generates context and tasks files
+2. **Claude가 3개 파일 생성:**
+   - 요구사항 분석
+   - 코드베이스 확인
+   - 종합 계획 생성
+   - context/tasks 파일 생성
 
-3. **Review and adjust:**
-   - Check if plan makes sense
-   - Add any missing considerations
-   - Adjust timeline estimates
+3. **검토 및 조정:**
+   - 계획 타당성 확인
+   - 누락된 고려사항 추가
+   - 일정 추정 보정
 
-### During Implementation
+### 구현 중
 
-1. **Refer to plan** for overall strategy
-2. **Update context.md** frequently:
-   - Mark completed work
-   - Note decisions made
-   - Add blockers
-3. **Check off tasks** in tasks.md as you complete them
+1. 전체 전략은 `plan` 참고
+2. `context.md`를 자주 업데이트
+   - 완료 항목 표시
+   - 의사결정 기록
+   - 블로커 추가
+3. `tasks.md` 체크박스를 진행에 맞게 갱신
 
-### After Context Reset
+### 컨텍스트 리셋 후
 
-1. **Claude reads all three files**
-2. **Understands complete state** in seconds
-3. **Resumes exactly where you left off**
+1. **Claude가 3개 파일을 모두 읽고**
+2. **수초 내 전체 상태를 파악한 뒤**
+3. **중단 지점부터 정확히 재개합니다.**
 
-No need to explain what you were doing - it's all documented!
+무엇을 하던 중이었는지 다시 설명할 필요가 없습니다.
 
 ---
 
-## Integration with Slash Commands
+## 슬래시 명령어 연동
 
 ### /dev-docs
-**Creates:** New dev docs for a task
+**기능:** 작업용 새 Dev Docs 생성
 
-**Usage:**
+**사용 예:**
 ```
 /dev-docs implement real-time notifications
 ```
 
-**Generates:**
+**생성 결과:**
 - `dev/active/implement-real-time-notifications/`
   - implement-real-time-notifications-plan.md
   - implement-real-time-notifications-context.md
   - implement-real-time-notifications-tasks.md
 
 ### /dev-docs-update
-**Updates:** Existing dev docs before context reset
+**기능:** 컨텍스트 리셋 전 기존 Dev Docs 갱신
 
-**Usage:**
+**사용 예:**
 ```
 /dev-docs-update
 ```
 
-**Updates:**
-- Marks completed tasks
-- Adds new tasks discovered
-- Updates context with session progress
-- Captures current state
+**갱신 내용:**
+- 완료 작업 반영
+- 새로 발견한 작업 추가
+- 세션 진행 상황으로 context 업데이트
+- 현재 상태 스냅샷 저장
 
-**Use when:** Approaching context limits or ending session
+**권장 시점:** 컨텍스트 한도에 가까워지거나 세션 종료 직전
 
 ---
 
-## File Organization
+## 파일 구성
 
 ```
 dev/
-├── README.md              # This file
-├── active/                # Current work
+├── README.md              # 이 파일
+├── active/                # 진행 중 작업
 │   ├── task-1/
 │   │   ├── task-1-plan.md
 │   │   ├── task-1-context.md
 │   │   └── task-1-tasks.md
 │   └── task-2/
 │       └── ...
-└── archive/               # Completed work (optional)
+└── archive/               # 완료 작업(선택)
     └── old-task/
         └── ...
 ```
 
-**active/**: Work in progress
-**archive/**: Completed tasks (for reference)
+`active/`: 진행 중 작업
+`archive/`: 완료 작업(참고용)
 
 ---
 
-## Example: Real Usage
+## 실제 사용 예시
 
-See **dev/active/public-infrastructure-repo/** in this repository for a real example:
-- **plan.md** - 700+ line strategic plan for creating this showcase
-- **context.md** - Tracks what's completed, decisions made, what's next
-- **tasks.md** - Checklist of all phases and tasks
+이 저장소의 **`dev/active/public-infrastructure-repo/`**를 보면 실제 예시를 확인할 수 있습니다.
+- `plan.md` - 이 쇼케이스 제작 전략(700줄+)
+- `context.md` - 완료/의사결정/다음 작업 추적
+- `tasks.md` - 전체 단계 체크리스트
 
-This is the actual dev docs used to build this showcase!
+실제로 이 쇼케이스를 만들 때 사용한 Dev Docs입니다.
 
 ---
 
-## Best Practices
+## 모범 사례
 
-### Update Context Frequently
+### Context를 자주 갱신
 
-**Bad:** Update only at end of session
-**Good:** Update after each major milestone
+**나쁜 예:** 세션 끝에서만 업데이트
+**좋은 예:** 주요 마일스톤마다 업데이트
 
-**SESSION PROGRESS section should always reflect reality:**
+`SESSION PROGRESS`는 항상 실제 상태를 반영해야 합니다.
 ```markdown
 ## SESSION PROGRESS (YYYY-MM-DD)
 
-### ✅ COMPLETED (list everything done)
-### 🟡 IN PROGRESS (what you're working on RIGHT NOW)
-### ⚠️ BLOCKERS (what's preventing progress)
+### ✅ COMPLETED (완료한 작업 전체)
+### 🟡 IN PROGRESS (지금 진행 중인 작업)
+### ⚠️ BLOCKERS (진행을 막는 요인)
 ```
 
-### Make Tasks Actionable
+### 작업 항목을 실행 가능하게 작성
 
-**Bad:** "Fix the authentication"
-**Good:** "Implement JWT token validation in AuthMiddleware.ts (Acceptance: Tokens validated, errors to Sentry)"
+**나쁜 예:** "인증 수정"
+**좋은 예:** "AuthMiddleware.ts에 JWT 토큰 검증 구현 (수용 기준: 토큰 검증 성공, 오류는 Sentry 전송)"
 
-**Include:**
-- Specific file names
-- Clear acceptance criteria
-- Dependencies on other tasks
+**포함 권장:**
+- 구체적 파일명
+- 명확한 수용 기준
+- 선행/의존 작업 정보
 
-### Keep Plan Current
+### Plan을 최신 상태로 유지
 
-If scope changes:
-- Update the plan
-- Add new phases
-- Adjust timeline estimates
-- Note why scope changed
-
----
-
-## For Claude Code
-
-**When user asks to create dev docs:**
-
-1. **Use the /dev-docs slash command** if available
-2. **Or create manually:**
-   - Ask about the task scope
-   - Analyze relevant codebase files
-   - Create comprehensive plan
-   - Generate context and tasks
-
-3. **Structure the plan with:**
-   - Clear phases
-   - Actionable tasks
-   - Acceptance criteria
-   - Risk assessment
-
-4. **Make context file resumable:**
-   - SESSION PROGRESS at top
-   - Quick resume instructions
-   - Key files list with explanations
-
-**When resuming from dev docs:**
-
-1. **Read all three files** (plan, context, tasks)
-2. **Start with context.md** - has current state
-3. **Check tasks.md** - see what's done and what's next
-4. **Refer to plan.md** - understand overall strategy
-
-**Update frequently:**
-- Mark tasks complete immediately
-- Update SESSION PROGRESS after significant work
-- Add new tasks as discovered
+범위가 바뀌면:
+- 계획 업데이트
+- 단계 추가
+- 일정 추정 조정
+- 범위 변경 이유 기록
 
 ---
 
-## Creating Dev Docs Manually
+## Claude Code용 안내
 
-If you don't have the /dev-docs command:
+**사용자가 Dev Docs 생성을 요청하면:**
 
-**1. Create directory:**
+1. 가능하면 **`/dev-docs` 명령어 사용**
+2. 없으면 수동 생성
+   - 작업 범위 질문
+   - 관련 코드 분석
+   - 종합 계획 작성
+   - context/tasks 생성
+
+3. 계획 문서는 다음을 포함
+   - 명확한 단계
+   - 실행 가능한 작업
+   - 수용 기준
+   - 리스크 평가
+
+4. context 파일은 재개 친화적으로 구성
+   - 상단 `SESSION PROGRESS`
+   - 빠른 재개 안내
+   - 설명이 있는 핵심 파일 목록
+
+**Dev Docs로 재개할 때:**
+
+1. 3개 파일(plan/context/tasks) 모두 읽기
+2. `context.md`부터 확인(현재 상태)
+3. `tasks.md`로 완료/다음 작업 확인
+4. `plan.md`로 전체 전략 파악
+
+**자주 업데이트:**
+- 작업 완료 즉시 체크
+- 의미 있는 작업 후 `SESSION PROGRESS` 갱신
+- 새로 발견한 작업 즉시 추가
+
+---
+
+## Dev Docs 수동 생성
+
+`/dev-docs` 명령어가 없으면:
+
+**1. 디렉터리 생성:**
 ```bash
 mkdir -p dev/active/your-task-name
 ```
 
-**2. Create plan.md:**
-- Executive summary
-- Implementation phases
-- Detailed tasks
-- Timeline estimates
+**2. `plan.md` 생성:**
+- 요약
+- 구현 단계
+- 상세 작업
+- 일정 추정
 
-**3. Create context.md:**
-- SESSION PROGRESS section
-- Key files
-- Important decisions
-- Quick resume instructions
+**3. `context.md` 생성:**
+- `SESSION PROGRESS`
+- 핵심 파일
+- 중요 의사결정
+- 빠른 재개 안내
 
-**4. Create tasks.md:**
-- Phases with checkboxes
-- [ ] Task format
-- Acceptance criteria
-
----
-
-## Benefits
-
-**Before dev docs:**
-- Context reset = start over
-- Forget why decisions were made
-- Lose track of progress
-- Repeat work
-
-**After dev docs:**
-- Context reset = read 3 files, resume instantly
-- Decisions documented
-- Progress tracked
-- No repeated work
-
-**Time saved:** Hours per context reset
+**4. `tasks.md` 생성:**
+- 단계별 체크박스
+- `[ ]` 작업 형식
+- 수용 기준
 
 ---
 
-## Next Steps
+## 효과
 
-1. **Try the pattern** on your next complex task
-2. **Use /dev-docs** slash command (if available)
-3. **Update frequently** - especially context.md
-4. **See it in action** - Browse dev/active/public-infrastructure-repo/
+**Dev Docs 이전:**
+- 컨텍스트 리셋 = 처음부터 재시작
+- 의사결정 이유를 잊음
+- 진행 상황 추적 실패
+- 작업 반복
 
-**Questions?** See [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)
+**Dev Docs 이후:**
+- 컨텍스트 리셋 = 파일 3개 읽고 즉시 재개
+- 의사결정 기록 유지
+- 진행률 추적 가능
+- 중복 작업 감소
+
+**절약 시간:** 컨텍스트 리셋마다 수시간
+
+---
+
+## 다음 단계
+
+1. 다음 복잡한 작업에 패턴 적용
+2. 가능하면 `/dev-docs` 명령 사용
+3. 특히 `context.md`를 자주 갱신
+4. 실제 예시 확인: `dev/active/public-infrastructure-repo/`
+
+**질문이 있다면:** [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)

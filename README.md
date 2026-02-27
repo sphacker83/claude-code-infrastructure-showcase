@@ -1,4 +1,5 @@
 # Claude Code 인프라 쇼케이스 (한국어판)
+**이 문서는 https://github.com/diet103/claude-code-infrastructure-showcase를 한국어로 번역한 것입니다.**
 
 **실서비스에서 검증된 Claude Code 인프라를 모아둔 레퍼런스 라이브러리입니다.**
 

@@ -42,159 +42,52 @@
 
 ---
 
-## 의존성 주입(Dependency Injection) 패턴
+## 의존성 주입(Dependency Injection)과 NestJS
+
+NestJS는 강력한 IoC(Inversion of Control) 컨테이너를 내장하고 있습니다. 수동으로 의존성을 연결할 필요 없이, `@Injectable()` 데코레이터를 붙이고 생성자에 타입을 지정하면 됩니다.
 
 ### 왜 의존성 주입인가?
 
 **장점:**
-- 테스트가 쉬움(mock 주입)
-- 의존성이 명확함
-- 유연한 설정
-- 느슨한 결합(loose coupling) 촉진
+- 테스트가 쉬움 (Mocking)
+- 생성 주기를 프레임워크가 보장함 (기본적으로 싱글턴)
+- 유연한 모듈화
 
 ### 훌륭한 예시: NotificationService
 
-**File:** `/blog-api/src/services/NotificationService.ts`
+**File:** `src/notifications/notification.service.ts`
 
 ```typescript
-// Define dependencies interface for clarity
-export interface NotificationServiceDependencies {
-    prisma: PrismaClient;
-    batchingService: BatchingService;
-    emailComposer: EmailComposer;
-}
+import { Injectable, Logger } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { BatchingService } from '../batching/batching.service';
+import { EmailComposer } from '../email/email-composer.service';
 
-// Service with dependency injection
+@Injectable()
 export class NotificationService {
-    private prisma: PrismaClient;
-    private batchingService: BatchingService;
-    private emailComposer: EmailComposer;
-    private preferencesCache: Map<string, { preferences: UserPreference; timestamp: number }> = new Map();
-    private CACHE_TTL = (notificationConfig.preferenceCacheTTLMinutes || 5) * 60 * 1000;
+    private readonly logger = new Logger(NotificationService.name);
 
-    // Dependencies injected via constructor
-    constructor(dependencies: NotificationServiceDependencies) {
-        this.prisma = dependencies.prisma;
-        this.batchingService = dependencies.batchingService;
-        this.emailComposer = dependencies.emailComposer;
-    }
+    // Dependencies injected via constructor automatically by NestJS
+    constructor(
+        private prisma: PrismaService,
+        private batchingService: BatchingService,
+        private emailComposer: EmailComposer,
+    ) {}
 
     /**
      * Create a notification and route it appropriately
      */
     async createNotification(params: CreateNotificationParams) {
-        const { recipientID, type, title, message, link, context = {}, channel = 'both', priority = NotificationPriority.NORMAL } = params;
-
+        // ... 비즈니스 로직
         try {
-            // Get template and render content
-            const template = getNotificationTemplate(type);
-            const rendered = renderNotificationContent(template, context);
-
-            // Create in-app notification record
-            const notificationId = await createNotificationRecord({
-                instanceId: parseInt(context.instanceId || '0', 10),
-                template: type,
-                recipientUserId: recipientID,
-                channel: channel === 'email' ? 'email' : 'inApp',
-                contextData: context,
-                title: finalTitle,
-                message: finalMessage,
-                link: finalLink,
-            });
-
-            // Route notification based on channel
-            if (channel === 'email' || channel === 'both') {
-                await this.routeNotification({
-                    notificationId,
-                    userId: recipientID,
-                    type,
-                    priority,
-                    title: finalTitle,
-                    message: finalMessage,
-                    link: finalLink,
-                    context,
-                });
-            }
-
+            const notification = await this.prisma.notification.create({ ... });
+            
+            // ... 라우팅 로직
             return notification;
         } catch (error) {
-            ErrorLogger.log(error, {
-                context: {
-                    '[NotificationService] createNotification': {
-                        type: params.type,
-                        recipientID: params.recipientID,
-                    },
-                },
-            });
+            this.logger.error('Failed to create notification', error.stack);
             throw error;
         }
-    }
-
-    /**
-     * Route notification based on user preferences
-     */
-    private async routeNotification(params: { notificationId: number; userId: string; type: string; priority: NotificationPriority; title: string; message: string; link?: string; context?: Record<string, any> }) {
-        // Get user preferences with caching
-        const preferences = await this.getUserPreferences(params.userId);
-
-        // Check if we should batch or send immediately
-        if (this.shouldBatchEmail(preferences, params.type, params.priority)) {
-            await this.batchingService.queueNotificationForBatch({
-                notificationId: params.notificationId,
-                userId: params.userId,
-                userPreference: preferences,
-                priority: params.priority,
-            });
-        } else {
-            // Send immediately via EmailComposer
-            await this.sendImmediateEmail({
-                userId: params.userId,
-                title: params.title,
-                message: params.message,
-                link: params.link,
-                context: params.context,
-                type: params.type,
-            });
-        }
-    }
-
-    /**
-     * Determine if email should be batched
-     */
-    shouldBatchEmail(preferences: UserPreference, notificationType: string, priority: NotificationPriority): boolean {
-        // HIGH priority always immediate
-        if (priority === NotificationPriority.HIGH) {
-            return false;
-        }
-
-        // Check batch mode
-        const batchMode = preferences.emailBatchMode || BatchMode.IMMEDIATE;
-        return batchMode !== BatchMode.IMMEDIATE;
-    }
-
-    /**
-     * Get user preferences with caching
-     */
-    async getUserPreferences(userId: string): Promise<UserPreference> {
-        // Check cache first
-        const cached = this.preferencesCache.get(userId);
-        if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
-            return cached.preferences;
-        }
-
-        const preference = await this.prisma.userPreference.findUnique({
-            where: { userID: userId },
-        });
-
-        const finalPreferences = preference || DEFAULT_PREFERENCES;
-
-        // Update cache
-        this.preferencesCache.set(userId, {
-            preferences: finalPreferences,
-            timestamp: Date.now(),
-        });
-
-        return finalPreferences;
     }
 }
 ```
@@ -202,150 +95,52 @@ export class NotificationService {
 **컨트롤러에서 사용:**
 
 ```typescript
-// Instantiate with dependencies
-const notificationService = new NotificationService({
-    prisma: PrismaService.main,
-    batchingService: new BatchingService(PrismaService.main),
-    emailComposer: new EmailComposer(),
-});
+import { Controller, Post, Body } from '@nestjs/common';
+import { NotificationService } from './notification.service';
 
-// Use in controller
-const notification = await notificationService.createNotification({
-    recipientID: 'user-123',
-    type: 'AFRLWorkflowNotification',
-    context: { workflowName: 'AFRL Monthly Report' },
-});
+@Controller('notifications')
+export class NotificationController {
+    // Controller에도 동일하게 DI 패턴 사용
+    constructor(private readonly notificationService: NotificationService) {}
+
+    @Post()
+    async create(@Body() params: CreateNotificationParams) {
+        return this.notificationService.createNotification(params);
+    }
+}
 ```
 
 **핵심 정리:**
-- 의존성은 생성자(constructor)로 전달
-- 필요한 의존성을 명확한 인터페이스로 정의
-- 테스트가 쉬움(mock 주입)
-- 캐싱 로직이 캡슐화됨
-- 비즈니스 규칙이 HTTP로부터 분리됨
+- `@Injectable()`이 붙은 클래스는 NestJS 컴포넌트로 인식됨
+- 의존성은 생성자(constructor)로 주입
+- `new` 키워드로 수동 인스턴스화를 하지 않음
 
 ---
 
 ## 싱글턴(Singleton) 패턴
 
-### 싱글턴을 사용해야 하는 경우
+NestJS에서는 제공하는 `@Injectable()` 프로바이더가 기본적으로 싱글턴으로 인스턴스화됩니다. 따라서 수동으로 `static instance`를 다룰 필요가 전혀 없습니다.
 
-**사용 대상:**
-- 초기화 비용이 큰 서비스
-- 공유 상태(캐싱)가 있는 서비스
-- 여러 곳에서 접근하는 서비스
-- 권한(permissions) 서비스
-- 설정(configuration) 서비스
-
-### 예시: PermissionService(싱글턴)
-
-**File:** `/blog-api/src/services/permissionService.ts`
+### 모범 사례: PermissionService
 
 ```typescript
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
 
-class PermissionService {
-    private static instance: PermissionService;
-    private prisma: PrismaClient;
-    private permissionCache: Map<string, { canAccess: boolean; timestamp: number }> = new Map();
-    private CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+@Injectable()
+export class PermissionService {
+    // NestJS가 자동으로 하나의 인스턴스만 생성하여 컨테이너에 관리함
+    constructor(private prisma: PrismaService) {}
 
-    // Private constructor prevents direct instantiation
-    private constructor() {
-        this.prisma = PrismaService.main;
-    }
-
-    // Get singleton instance
-    public static getInstance(): PermissionService {
-        if (!PermissionService.instance) {
-            PermissionService.instance = new PermissionService();
-        }
-        return PermissionService.instance;
-    }
-
-    /**
-     * Check if user can complete a workflow step
-     */
     async canCompleteStep(userId: string, stepInstanceId: number): Promise<boolean> {
-        const cacheKey = `${userId}:${stepInstanceId}`;
-
-        // Check cache
-        const cached = this.permissionCache.get(cacheKey);
-        if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
-            return cached.canAccess;
-        }
-
-        try {
-            const post = await this.prisma.post.findUnique({
-                where: { id: postId },
-                include: {
-                    author: true,
-                    comments: {
-                        include: {
-                            user: true,
-                        },
-                    },
-                },
-            });
-
-            if (!post) {
-                return false;
-            }
-
-            // Check if user has permission
-            const canEdit = post.authorId === userId ||
-                await this.isUserAdmin(userId);
-
-            // Cache result
-            this.permissionCache.set(cacheKey, {
-                canAccess: isAssigned,
-                timestamp: Date.now(),
-            });
-
-            return isAssigned;
-        } catch (error) {
-            console.error('[PermissionService] Error checking step permission:', error);
-            return false;
-        }
+        // ...비즈니스 로직
+        return true;
     }
-
-    /**
-     * Clear cache for user
-     */
-    clearUserCache(userId: string): void {
-        for (const [key] of this.permissionCache) {
-            if (key.startsWith(`${userId}:`)) {
-                this.permissionCache.delete(key);
-            }
-        }
-    }
-
-    /**
-     * Clear all cache
-     */
-    clearCache(): void {
-        this.permissionCache.clear();
-    }
-}
-
-// Export singleton instance
-export const permissionService = PermissionService.getInstance();
-```
-
-**사용법:**
-
-```typescript
-import { permissionService } from '../services/permissionService';
-
-// Use anywhere in the codebase
-const canComplete = await permissionService.canCompleteStep(userId, stepId);
-
-if (!canComplete) {
-    throw new ForbiddenError('You do not have permission to complete this step');
 }
 ```
 
----
+**주의할 점:**
+- NestJS에서는 `Scope.REQUEST`나 `Scope.TRANSIENT` 옵션을 주입할 때 지정하지 않는 이상 100% 싱글턴입니다. 따라서 싱글턴 클래스의 내부 전역 상태(state) 변경에는 각별한 주의가 필요합니다. 캐시 등은 Redis 같은 외부 스토리지나 공통 캐시 모듈을 사용하는 것을 권장합니다.
 
 ## 리포지토리 패턴
 
@@ -611,21 +406,18 @@ async createUser(data) {}  // No types!
 
 ### 4. 에러 처리
 
-서비스는 의미 있는 에러를 던져야 합니다:
+서비스 단위에서 비즈니스적인 문제가 발견되면 즉시 NestJS 기본 내장 HttpException 파생 클래스를 던집니다:
 
 ```typescript
-// ✅ GOOD - Meaningful errors
+import { NotFoundException, ConflictException } from '@nestjs/common';
+
+// ✅ GOOD - NestJS Exceptions
 if (!user) {
-    throw new NotFoundError(`User not found: ${userId}`);
+    throw new NotFoundException(`User not found: ${userId}`);
 }
 
 if (emailExists) {
-    throw new ConflictError('Email already exists');
-}
-
-// ❌ BAD - Generic errors
-if (!user) {
-    throw new Error('Error');  // What error?
+    throw new ConflictException('Email already exists');
 }
 ```
 
@@ -721,60 +513,48 @@ class UserService {
 ### 유닛 테스트
 
 ```typescript
-// tests/userService.test.ts
-import { UserService } from '../services/userService';
-import { userRepository } from '../repositories/UserRepository';
-import { ConflictError } from '../utils/errors';
-
-// Mock repository
-jest.mock('../repositories/UserRepository');
+// src/users/user.service.spec.ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { UserService } from './user.service';
+import { UserRepository } from './repositories/user.repository';
+import { ConflictException } from '@nestjs/common';
 
 describe('UserService', () => {
-    let userService: UserService;
+    let service: UserService;
+    let repository: jest.Mocked<UserRepository>;
 
-    beforeEach(() => {
-        userService = new UserService();
-        jest.clearAllMocks();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                UserService,
+                {
+                    provide: UserRepository,
+                    useValue: {
+                        emailExists: jest.fn(),
+                        create: jest.fn(),
+                    },
+                },
+            ],
+        }).compile();
+
+        service = module.get<UserService>(UserService);
+        repository = module.get(UserRepository);
     });
 
     describe('createUser', () => {
-        it('should create user when email does not exist', async () => {
-            // Arrange
-            const userData = {
-                email: 'test@example.com',
-                name: 'Test User',
-                roles: ['user'],
-            };
+        it('should create user', async () => {
+            repository.emailExists.mockResolvedValue(false);
+            repository.create.mockResolvedValue({ id: '1', email: 'test@test.com' } as any);
 
-            (userRepository.emailExists as jest.Mock).mockResolvedValue(false);
-            (userRepository.create as jest.Mock).mockResolvedValue({
-                userID: '123',
-                ...userData,
-            });
-
-            // Act
-            const user = await userService.createUser(userData);
-
-            // Assert
-            expect(user).toBeDefined();
-            expect(user.email).toBe(userData.email);
-            expect(userRepository.emailExists).toHaveBeenCalledWith(userData.email);
-            expect(userRepository.create).toHaveBeenCalled();
+            const result = await service.createUser({ email: 'test@test.com', name: 'Test' });
+            expect(result).toBeDefined();
         });
 
-        it('should throw ConflictError when email exists', async () => {
-            // Arrange
-            const userData = {
-                email: 'existing@example.com',
-                name: 'Test User',
-                roles: ['user'],
-            };
+        it('should throw ConflictException if email exists', async () => {
+            repository.emailExists.mockResolvedValue(true);
 
-            (userRepository.emailExists as jest.Mock).mockResolvedValue(true);
-
-            // Act & Assert
-            await expect(userService.createUser(userData)).rejects.toThrow(ConflictError);
-            expect(userRepository.create).not.toHaveBeenCalled();
+            await expect(service.createUser({ email: 'existing@test.com', name: 'Test' }))
+                .rejects.toThrow(ConflictException);
         });
     });
 });

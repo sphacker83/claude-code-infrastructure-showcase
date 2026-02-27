@@ -15,7 +15,7 @@
 
 ## 파일 위치
 
-**Path:** `.claude/skills/skill-rules.json`
+**경로(Path):** `.claude/skills/skill-rules.json`
 
 이 JSON 파일은 자동 활성화 시스템을 위해, 모든 스킬과 트리거 조건을 정의합니다.
 
@@ -36,22 +36,22 @@ interface SkillRule {
 
     promptTriggers?: {
         keywords?: string[];
-        intentPatterns?: string[];  // Regex strings
+        intentPatterns?: string[];  // 정규식 문자열(Regex strings)
     };
 
     fileTriggers?: {
-        pathPatterns: string[];     // Glob patterns
-        pathExclusions?: string[];  // Glob patterns
-        contentPatterns?: string[]; // Regex strings
-        createOnly?: boolean;       // Only trigger on file creation
+        pathPatterns: string[];     // glob 패턴(Glob patterns)
+        pathExclusions?: string[];  // glob 패턴(Glob patterns)
+        contentPatterns?: string[]; // 정규식 문자열(Regex strings)
+        createOnly?: boolean;       // 파일 생성 시에만 트리거
     };
 
-    blockMessage?: string;  // For guardrails, {file_path} placeholder
+    blockMessage?: string;  // 가드레일용, {file_path} 플레이스홀더
 
     skipConditions?: {
-        sessionSkillUsed?: boolean;      // Skip if used in session
-        fileMarkers?: string[];          // e.g., ["@skip-validation"]
-        envOverride?: string;            // e.g., "SKIP_DB_VERIFICATION"
+        sessionSkillUsed?: boolean;      // 세션에서 이미 사용했으면 스킵
+        fileMarkers?: string[];          // 예: ["@skip-validation"]
+        envOverride?: string;            // 예: "SKIP_DB_VERIFICATION"
     };
 }
 ```
@@ -169,7 +169,7 @@ interface SkillRule {
       ]
     },
 
-    "blockMessage": "⚠️ BLOCKED - Database Operation Detected\n\n📋 REQUIRED ACTION:\n1. Use Skill tool: 'database-verification'\n2. Verify ALL table and column names against schema\n3. Check database structure with DESCRIBE commands\n4. Then retry this edit\n\nReason: Prevent column name errors in Prisma queries\nFile: {file_path}\n\n💡 TIP: Add '// @skip-validation' comment to skip future checks",
+    "blockMessage": "⚠️ BLOCKED - 데이터베이스 작업 감지\n\n📋 REQUIRED ACTION(필수 조치):\n1. Skill 툴 사용: 'database-verification'\n2. 스키마 기준으로 모든 테이블/컬럼명 검증\n3. DESCRIBE 명령으로 DB 구조 확인\n4. 그 다음 이 편집을 재시도\n\nReason: Prisma 쿼리에서 컬럼명 오류를 방지\nFile: {file_path}\n\n💡 TIP: 향후 검사를 스킵하려면 '// @skip-validation' 주석을 추가하세요",
 
     "skipConditions": {
       "sessionSkillUsed": true,
@@ -184,13 +184,13 @@ interface SkillRule {
 
 ### 가드레일 핵심 포인트
 
-1. **type**: Must be "guardrail"
-2. **enforcement**: Must be "block"
-3. **priority**: Usually "critical" or "high"
-4. **blockMessage**: Required, clear actionable steps
-5. **skipConditions**: Session tracking prevents repeated nagging
-6. **fileTriggers**: Usually has both path and content patterns
-7. **contentPatterns**: Catch actual usage of technology
+1. **type**: "guardrail"이어야 함
+2. **enforcement**: "block"이어야 함
+3. **priority**: 보통 "critical" 또는 "high"
+4. **blockMessage**: 필수, 명확하고 실행 가능한 단계(actionable steps)
+5. **skipConditions**: 세션 추적으로 반복 차단/잔소리 방지
+6. **fileTriggers**: 보통 path/content 패턴을 모두 포함
+7. **contentPatterns**: 기술의 실제 사용을 포착
 
 ---
 
@@ -252,13 +252,13 @@ interface SkillRule {
 
 ### 도메인 스킬 핵심 포인트
 
-1. **type**: Must be "domain"
-2. **enforcement**: Usually "suggest"
-3. **priority**: "high" or "medium"
-4. **blockMessage**: Not needed (doesn't block)
-5. **skipConditions**: Optional (less critical)
-6. **promptTriggers**: Usually has extensive keywords
-7. **fileTriggers**: May have only path patterns (content less important)
+1. **type**: "domain"이어야 함
+2. **enforcement**: 보통 "suggest"
+3. **priority**: "high" 또는 "medium"
+4. **blockMessage**: 불필요(차단하지 않음)
+5. **skipConditions**: 선택(상대적으로 덜 중요)
+6. **promptTriggers**: 보통 많은 키워드를 포함
+7. **fileTriggers**: path 패턴만 가질 수 있음(content는 덜 중요)
 
 ---
 
@@ -274,42 +274,42 @@ cat .claude/skills/skill-rules.json | jq .
 
 ### 흔한 JSON 오류
 
-**Trailing comma:**
+**끝의 쉼표(Trailing comma):**
 ```json
 {
-  "keywords": ["one", "two",]  // ❌ Trailing comma
+  "keywords": ["one", "two",]  // ❌ 끝의 쉼표(trailing comma)
 }
 ```
 
-**Missing quotes:**
+**따옴표 누락(Missing quotes):**
 ```json
 {
-  type: "guardrail"  // ❌ Missing quotes on key
+  type: "guardrail"  // ❌ 키에 따옴표 누락
 }
 ```
 
-**Single quotes (invalid JSON):**
+**작은따옴표(유효하지 않은 JSON):**
 ```json
 {
-  'type': 'guardrail'  // ❌ Must use double quotes
+  'type': 'guardrail'  // ❌ 큰따옴표를 사용해야 함
 }
 ```
 
 ### 검증 체크리스트
 
-- [ ] JSON syntax valid (use `jq`)
-- [ ] All skill names match SKILL.md filenames
-- [ ] Guardrails have `blockMessage`
-- [ ] Block messages use `{file_path}` placeholder
-- [ ] Intent patterns are valid regex (test on regex101.com)
-- [ ] File path patterns use correct glob syntax
-- [ ] Content patterns escape special characters
-- [ ] Priority matches enforcement level
-- [ ] No duplicate skill names
+- [ ] JSON 문법이 유효함(`jq` 사용)
+- [ ] 모든 스킬 이름이 SKILL.md 프론트매터와 일치함
+- [ ] 가드레일(guardrail)에 `blockMessage`가 있음
+- [ ] blockMessage에 `{file_path}` 플레이스홀더를 사용함
+- [ ] 의도 패턴이 유효한 정규식(regex)임( regex101.com 에서 테스트)
+- [ ] 파일 경로 패턴이 올바른 glob 문법을 사용함
+- [ ] 콘텐츠 패턴에서 특수 문자를 escape함
+- [ ] priority가 enforcement 레벨과 일치함
+- [ ] 중복된 스킬 이름이 없음
 
 ---
 
 **관련 파일:**
-- [SKILL.md](SKILL.md) - Main skill guide
-- [TRIGGER_TYPES.md](TRIGGER_TYPES.md) - Complete trigger documentation
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Debugging configuration issues
+- [SKILL.md](SKILL.md) - 메인 스킬 가이드
+- [TRIGGER_TYPES.md](TRIGGER_TYPES.md) - 트리거 문서 전체
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - 설정 이슈 디버깅

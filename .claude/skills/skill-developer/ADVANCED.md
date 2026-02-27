@@ -11,15 +11,15 @@
 **향후 개선:** 재시작 없이 설정을 핫 리로드(hot-reload)
 
 **구현 아이디어:**
-- Watch skill-rules.json for changes
-- Reload on file modification
-- Invalidate cached compiled regexes
-- Notify user of reload
+- skill-rules.json 변경 감지(감시)
+- 파일 수정 시 리로드
+- 캐시된 컴파일 regex 무효화
+- 리로드 사실을 사용자에게 알림
 
 **장점:**
-- Faster iteration during skill development
-- No need to restart Claude Code
-- Better developer experience
+- 스킬 개발 반복 속도 향상
+- Claude Code 재시작 불필요
+- 개발자 경험 개선
 
 ---
 
@@ -41,14 +41,14 @@
 ```
 
 **사용 사례:**
-- Advanced skill builds on base skill knowledge
-- Ensure foundational skills loaded first
-- Chain skills for complex workflows
+- 고급 스킬이 기본 스킬 지식을 기반으로 동작
+- 기초 스킬을 먼저 로드하도록 보장
+- 복잡한 워크플로를 위해 스킬을 체이닝(연결)
 
 **장점:**
-- Better skill composition
-- Clearer skill relationships
-- Progressive disclosure
+- 더 나은 스킬 조합(composition)
+- 더 명확한 스킬 관계
+- 점진적 공개(progressive disclosure)
 
 ---
 
@@ -73,14 +73,14 @@
 ```
 
 **사용 사례:**
-- Stricter enforcement in production
-- Relaxed rules during development
-- CI/CD pipeline requirements
+- 프로덕션에서는 더 엄격한 enforcement
+- 개발 환경에서는 규칙 완화
+- CI/CD 파이프라인 요구사항 반영
 
 **장점:**
-- Environment-appropriate enforcement
-- Flexible rule application
-- Context-aware guardrails
+- 환경에 맞는 enforcement
+- 유연한 규칙 적용
+- 컨텍스트 인지 가드레일
 
 ---
 
@@ -91,23 +91,23 @@
 **향후 개선:** 스킬 사용 패턴 및 효과 추적
 
 **수집할 지표:**
-- Skill trigger frequency
-- False positive rate
-- False negative rate
-- Time to skill usage after suggestion
-- User override rate (skip markers, env vars)
-- Performance metrics (execution time)
+- 스킬 트리거 빈도
+- 오탐(false positive) 비율
+- 미탐(false negative) 비율
+- 제안 이후 스킬 사용까지 걸린 시간
+- 사용자 오버라이드 비율(스킵 마커, 환경 변수)
+- 성능 지표(실행 시간)
 
 **대시보드 아이디어:**
-- Most/least used skills
-- Skills with highest false positive rate
-- Performance bottlenecks
-- Skill effectiveness scores
+- 가장 많이/적게 사용된 스킬
+- 오탐 비율이 가장 높은 스킬
+- 성능 병목
+- 스킬 효과 점수
 
 **장점:**
-- Data-driven skill improvement
-- Identify problems early
-- Optimize patterns based on real usage
+- 데이터 기반 스킬 개선
+- 문제 조기 발견
+- 실제 사용 데이터를 기반으로 패턴 최적화
 
 ---
 
@@ -130,10 +130,10 @@
 ```
 
 **장점:**
-- Track skill evolution
-- Ensure compatibility
-- Document changes
-- Support migration paths
+- 스킬 진화(evolution) 추적
+- 호환성 보장
+- 변경 사항 문서화
+- 마이그레이션 경로 지원
 
 ---
 
@@ -144,14 +144,14 @@
 **향후 개선:** 스킬 콘텐츠 다국어 지원
 
 **구현 아이디어:**
-- Language-specific SKILL.md variants
-- Automatic language detection
-- Fallback to English
+- 언어별 SKILL.md 변형(variant)
+- 자동 언어 감지
+- 영어로 폴백(fallback)
 
 **사용 사례:**
-- International teams
-- Localized documentation
-- Multi-language projects
+- 국제 팀
+- 로컬라이즈된 문서
+- 다국어 프로젝트
 
 ---
 
@@ -162,10 +162,10 @@
 **향후 개선:** 자동화된 스킬 테스트
 
 **기능:**
-- Test cases for trigger patterns
-- Assertion framework
-- CI/CD integration
-- Coverage reports
+- 트리거 패턴용 테스트 케이스
+- assertion 프레임워크
+- CI/CD 통합
+- 커버리지 리포트
 
 **예시 테스트:**
 ```typescript
@@ -184,14 +184,14 @@ describe('database-verification', () => {
 ```
 
 **장점:**
-- Prevent regressions
-- Validate patterns before deployment
-- Confidence in changes
+- 회귀(regression) 방지
+- 배포 전에 패턴 검증
+- 변경에 대한 신뢰도 향상
 
 ---
 
 ## 관련 파일
 
-- [SKILL.md](SKILL.md) - Main skill guide
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Current debugging guide
-- [HOOK_MECHANISMS.md](HOOK_MECHANISMS.md) - How hooks work today
+- [SKILL.md](SKILL.md) - 메인 스킬 가이드
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - 현재 디버깅 가이드
+- [HOOK_MECHANISMS.md](HOOK_MECHANISMS.md) - 현재 훅 동작 방식

@@ -24,36 +24,38 @@
 ####  1. 키워드가 매칭되지 않음
 
 **확인:**
-- Look at `promptTriggers.keywords` in skill-rules.json
-- Are the keywords actually in your prompt?
-- Remember: case-insensitive substring matching
+- skill-rules.json의 `promptTriggers.keywords` 확인
+- 사용자 프롬프트에 해당 키워드가 실제로 들어있는지 확인
+- 대소문자 무시(case-insensitive) 부분 문자열(substring) 매칭임을 기억
 
 **예시:**
 ```json
 "keywords": ["layout", "grid"]
 ```
-- "how does the layout work?" → ✅ Matches "layout"
-- "how does the grid system work?" → ✅ Matches "grid"
-- "how do layouts work?" → ✅ Matches "layout"
-- "how does it work?" → ❌ No match
+- "how does the layout work?" → ✅ "layout" 매칭
+- "how does the grid system work?" → ✅ "grid" 매칭
+- "how do layouts work?" → ✅ "layout" 매칭
+- "how does it work?" → ❌ 매칭 없음
+ 
+- "Matches" = 매칭됨, "No match" = 매칭되지 않음
 
 **해결:** skill-rules.json에 더 많은 키워드 변형을 추가하세요.
 
 #### 2. 의도 패턴이 너무 구체적임
 
-**Check:**
-- Look at `promptTriggers.intentPatterns`
-- Test regex at https://regex101.com/
-- May need broader patterns
+**확인:**
+- `promptTriggers.intentPatterns` 확인
+- https://regex101.com/ 에서 정규식 테스트
+- 더 넓은 패턴이 필요할 수 있음
 
-**Example:**
+**예시:**
 ```json
 "intentPatterns": [
-  "(create|add).*?(database.*?table)"  // Too specific
+  "(create|add).*?(database.*?table)"  // 너무 구체적
 ]
 ```
-- "create a database table" → ✅ Matches
-- "add new table" → ❌ Doesn't match (missing "database")
+- "create a database table" → ✅ 매칭됨
+- "add new table" → ❌ 매칭되지 않음("database"가 없음)
 
 **해결:** 패턴을 더 넓히세요:
 ```json
@@ -64,12 +66,12 @@
 
 #### 3. 스킬 이름 오타
 
-**Check:**
-- Skill name in SKILL.md frontmatter
-- Skill name in skill-rules.json
-- Must match exactly
+**확인:**
+- SKILL.md 프론트매터의 스킬 이름(name)
+- skill-rules.json의 스킬 이름(키)
+- 두 값이 정확히 일치해야 함
 
-**Example:**
+**예시:**
 ```yaml
 # SKILL.md
 name: project-catalog-developer
@@ -85,7 +87,7 @@ name: project-catalog-developer
 
 #### 4. JSON 문법 오류
 
-**Check:**
+**확인:**
 ```bash
 cat .claude/skills/skill-rules.json | jq .
 ```
@@ -93,10 +95,10 @@ cat .claude/skills/skill-rules.json | jq .
 JSON이 유효하지 않으면 jq가 오류를 표시합니다.
 
 **흔한 오류:**
-- Trailing commas
-- Missing quotes
-- Single quotes instead of double
-- Unescaped characters in strings
+- 끝의 쉼표(trailing comma)
+- 따옴표 누락
+- 큰따옴표 대신 작은따옴표 사용
+- 문자열 내 이스케이프되지 않은 문자
 
 **해결:** JSON 문법을 수정하고 jq로 검증하세요.
 
@@ -117,78 +119,78 @@ echo '{"session_id":"debug","prompt":"your test prompt here"}' | \
 
 **증상:** 가드레일이 트리거되어야 하는 파일을 편집했는데 차단이 발생하지 않습니다.
 
-**Common Causes:**
+**흔한 원인:**
 
 #### 1. 파일 경로가 패턴과 매칭되지 않음
 
-**Check:**
-- File path being edited
-- `fileTriggers.pathPatterns` in skill-rules.json
-- Glob pattern syntax
+**확인:**
+- 편집 중인 파일 경로
+- skill-rules.json의 `fileTriggers.pathPatterns`
+- glob 패턴 문법
 
-**Example:**
+**예시:**
 ```json
 "pathPatterns": [
   "frontend/src/**/*.tsx"
 ]
 ```
-- Editing: `frontend/src/components/Dashboard.tsx` → ✅ Matches
-- Editing: `frontend/tests/Dashboard.test.tsx` → ✅ Matches (add exclusion!)
-- Editing: `backend/src/app.ts` → ❌ Doesn't match
+- 편집: `frontend/src/components/Dashboard.tsx` → ✅ 매칭됨
+- 편집: `frontend/tests/Dashboard.test.tsx` → ✅ 매칭됨(exclusion 추가 필요!)
+- 편집: `backend/src/app.ts` → ❌ 매칭되지 않음
 
 **해결:** glob 패턴을 조정하거나 누락된 경로를 추가하세요.
 
-#### 2. Excluded by pathExclusions
+#### 2. pathExclusions로 제외됨
 
-**Check:**
-- Are you editing a test file?
-- Look at `fileTriggers.pathExclusions`
+**확인:**
+- 테스트 파일을 편집하고 있나요?
+- `fileTriggers.pathExclusions` 확인
 
-**Example:**
+**예시:**
 ```json
 "pathExclusions": [
   "**/*.test.ts",
   "**/*.spec.ts"
 ]
 ```
-- Editing: `services/user.test.ts` → ❌ Excluded
-- Editing: `services/user.ts` → ✅ Not excluded
+- 편집: `services/user.test.ts` → ❌ 제외됨
+- 편집: `services/user.ts` → ✅ 제외되지 않음
 
-**Fix:** If test exclusion too broad, narrow it or remove
+**해결:** 테스트 제외가 너무 광범위하면 범위를 좁히거나 제거하세요
 
-#### 3. Content Pattern Not Found
+#### 3. 콘텐츠 패턴이 발견되지 않음
 
-**Check:**
-- Does the file actually contain the pattern?
-- Look at `fileTriggers.contentPatterns`
-- Is the regex correct?
+**확인:**
+- 파일에 해당 패턴이 실제로 존재하나요?
+- `fileTriggers.contentPatterns` 확인
+- 정규식(regex)이 올바른가요?
 
-**Example:**
+**예시:**
 ```json
 "contentPatterns": [
   "import.*[Pp]risma"
 ]
 ```
-- File has: `import { PrismaService } from './prisma'` → ✅ Matches
-- File has: `import { Database } from './db'` → ❌ Doesn't match
+- 파일에 다음이 있음: `import { PrismaService } from './prisma'` → ✅ 매칭됨
+- 파일에 다음이 있음: `import { Database } from './db'` → ❌ 매칭되지 않음
 
-**Debug:**
+**디버그:**
 ```bash
 # 파일에 패턴이 존재하는지 확인
 grep -i "prisma" path/to/file.ts
 ```
 
-**Fix:** Adjust content patterns or add missing imports
+**해결:** 콘텐츠 패턴을 조정하거나 필요한 import를 추가하세요
 
-#### 4. Session Already Used Skill
+#### 4. 세션에서 이미 스킬을 사용함
 
-**Check session state:**
+**세션 상태 확인:**
 ```bash
 ls .claude/hooks/state/
 cat .claude/hooks/state/skills-used-{session-id}.json
 ```
 
-**Example:**
+**예시:**
 ```json
 {
   "skills_used": ["database-verification"],
@@ -196,42 +198,42 @@ cat .claude/hooks/state/skills-used-{session-id}.json
 }
 ```
 
-If the skill is in `skills_used`, it won't block again in this session.
+`skills_used`에 해당 스킬이 있으면, 같은 세션에서는 다시 차단하지 않습니다.
 
-**Fix:** Delete the state file to reset:
+**해결:** 초기화하려면 상태 파일을 삭제하세요:
 ```bash
 rm .claude/hooks/state/skills-used-{session-id}.json
 ```
 
-#### 5. File Marker Present
+#### 5. 파일 마커가 존재함
 
-**Check file for skip marker:**
+**스킵 마커가 있는지 확인:**
 ```bash
 grep "@skip-validation" path/to/file.ts
 ```
 
-If found, the file is permanently skipped.
+있다면 해당 파일은 영구적으로 스킵됩니다.
 
-**Fix:** Remove the marker if verification is needed again
+**해결:** 다시 검증이 필요하면 마커를 제거하세요
 
-#### 6. Environment Variable Override
+#### 6. 환경 변수 오버라이드
 
-**Check:**
+**확인:**
 ```bash
 echo $SKIP_DB_VERIFICATION
 echo $SKIP_SKILL_GUARDRAILS
 ```
 
-If set, the skill is disabled.
+설정되어 있으면 해당 스킬(또는 가드레일)이 비활성화됩니다.
 
-**Fix:** Unset the environment variable:
+**해결:** 환경 변수를 해제(unset)하세요:
 ```bash
 unset SKIP_DB_VERIFICATION
 ```
 
-#### Debug Command
+#### 디버그 명령
 
-Test the hook manually:
+훅을 수동으로 테스트하세요:
 
 ```bash
 cat <<'EOF' | npx tsx .claude/hooks/skill-verification-guard.ts 2>&1
@@ -244,27 +246,27 @@ EOF
 echo "Exit code: $?"
 ```
 
-Expected:
-- Exit code 2 + stderr message if should block
-- Exit code 0 + no output if should allow
+기대 결과:
+- 차단되어야 한다면: 종료 코드 2 + stderr 메시지
+- 허용되어야 한다면: 종료 코드 0 + 출력 없음
 
 ---
 
 ## 오탐(False Positives)
 
-**Symptoms:** Skill triggers when it shouldn't.
+**증상:** 스킬이 트리거되면 안 되는 상황에서 트리거됩니다.
 
-**Common Causes & Solutions:**
+**흔한 원인 & 해결책:**
 
-### 1. Keywords Too Generic
+### 1. 키워드가 너무 일반적임
 
-**Problem:**
+**문제:**
 ```json
 "keywords": ["user", "system", "create"]  // Too broad
 ```
-- Triggers on: "user manual", "file system", "create directory"
+- 다음에서도 트리거됨: "user manual", "file system", "create directory"
 
-**Solution:** Make keywords more specific
+**해결:** 키워드를 더 구체적으로 만드세요
 ```json
 "keywords": [
   "user authentication",
@@ -273,39 +275,39 @@ Expected:
 ]
 ```
 
-### 2. Intent Patterns Too Broad
+### 2. 의도 패턴이 너무 넓음
 
-**Problem:**
+**문제:**
 ```json
 "intentPatterns": [
-  "(create)"  // Matches everything with "create"
+  "(create)"  // "create"가 들어가면 전부 매칭됨
 ]
 ```
-- Triggers on: "create file", "create folder", "create account"
+- 다음에서도 트리거됨: "create file", "create folder", "create account"
 
-**Solution:** Add context to patterns
+**해결:** 패턴에 컨텍스트를 추가하세요
 ```json
 "intentPatterns": [
   "(create|add).*?(database|table|feature)"  // More specific
 ]
 ```
 
-**Advanced:** Use negative lookaheads to exclude
+**고급:** 부정형 전방 탐색(negative lookahead)으로 제외 조건을 추가
 ```regex
 (create)(?!.*test).*?(feature)  // Don't match if "test" appears
 ```
 
-### 3. File Paths Too Generic
+### 3. 파일 경로 패턴이 너무 일반적임
 
-**Problem:**
+**문제:**
 ```json
 "pathPatterns": [
-  "form/**"  // Matches everything in form/
+  "form/**"  // form/ 아래는 전부 매칭됨
 ]
 ```
-- Triggers on: test files, config files, everything
+- 테스트 파일, 설정 파일 등 모든 것에서 트리거됨
 
-**Solution:** Use narrower patterns
+**해결:** 더 좁은 패턴을 사용하세요
 ```json
 "pathPatterns": [
   "form/src/services/**/*.ts",  // Only service files
@@ -313,18 +315,18 @@ Expected:
 ]
 ```
 
-### 4. Content Patterns Catching Unrelated Code
+### 4. 콘텐츠 패턴이 무관한 코드까지 잡음
 
-**Problem:**
+**문제:**
 ```json
 "contentPatterns": [
-  "Prisma"  // Matches in comments, strings, etc.
+  "Prisma"  // 주석/문자열 등에서도 매칭됨
 ]
 ```
-- Triggers on: `// Don't use Prisma here`
-- Triggers on: `const note = "Prisma is cool"`
+- `// Don't use Prisma here` 같은 주석에서도 트리거됨
+- `const note = "Prisma is cool"` 같은 문자열에서도 트리거됨
 
-**Solution:** Make patterns more specific
+**해결:** 패턴을 더 구체적으로 만드세요
 ```json
 "contentPatterns": [
   "import.*[Pp]risma",        // Only imports
@@ -333,9 +335,9 @@ Expected:
 ]
 ```
 
-### 5. Adjust Enforcement Level
+### 5. Enforcement 레벨 조정
 
-**Last resort:** If false positives are frequent:
+**최후의 수단:** 오탐이 잦다면:
 
 ```json
 {
@@ -343,17 +345,17 @@ Expected:
 }
 ```
 
-This makes it advisory instead of blocking.
+이렇게 하면 차단(block) 대신 안내(suggest)로 동작합니다.
 
 ---
 
 ## 훅이 실행되지 않음
 
-**Symptoms:** Hook doesn't run at all - no suggestion, no block.
+**증상:** 훅이 아예 실행되지 않습니다(제안도 없고, 차단도 없음).
 
-**Common Causes:**
+**흔한 원인:**
 
-### 1. Hook Not Registered
+### 1. 훅이 등록되지 않음
 
 **Check `.claude/settings.json`:**
 ```bash
@@ -361,9 +363,9 @@ cat .claude/settings.json | jq '.hooks.UserPromptSubmit'
 cat .claude/settings.json | jq '.hooks.PreToolUse'
 ```
 
-Expected: Hook entries present
+기대 결과: 훅 엔트리가 존재해야 함
 
-**Fix:** Add missing hook registration:
+**해결:** 누락된 훅 등록을 추가하세요:
 ```json
 {
   "hooks": {
@@ -381,91 +383,91 @@ Expected: Hook entries present
 }
 ```
 
-### 2. Bash Wrapper Not Executable
+### 2. Bash 래퍼가 실행 불가(executable 아님)
 
-**Check:**
+**확인:**
 ```bash
 ls -l .claude/hooks/*.sh
 ```
 
-Expected: `-rwxr-xr-x` (executable)
+기대 결과: `-rwxr-xr-x` (실행 가능)
 
-**Fix:**
+**해결:**
 ```bash
 chmod +x .claude/hooks/*.sh
 ```
 
-### 3. Incorrect Shebang
+### 3. shebang이 올바르지 않음
 
-**Check:**
+**확인:**
 ```bash
 head -1 .claude/hooks/skill-activation-prompt.sh
 ```
 
-Expected: `#!/bin/bash`
+기대 결과: `#!/bin/bash`
 
-**Fix:** Add correct shebang to first line
+**해결:** 첫 줄에 올바른 shebang을 추가하세요
 
-### 4. npx/tsx Not Available
+### 4. npx/tsx를 사용할 수 없음
 
-**Check:**
+**확인:**
 ```bash
 npx tsx --version
 ```
 
-Expected: Version number
+기대 결과: 버전 번호 출력
 
-**Fix:** Install dependencies:
+**해결:** 의존성을 설치하세요:
 ```bash
 cd .claude/hooks
 npm install
 ```
 
-### 5. TypeScript Compilation Error
+### 5. TypeScript 컴파일 에러
 
-**Check:**
+**확인:**
 ```bash
 cd .claude/hooks
 npx tsc --noEmit skill-activation-prompt.ts
 ```
 
-Expected: No output (no errors)
+기대 결과: 출력 없음(에러 없음)
 
-**Fix:** Correct TypeScript syntax errors
+**해결:** TypeScript 문법 에러를 수정하세요
 
 ---
 
 ## 성능 이슈
 
-**Symptoms:** Hooks are slow, noticeable delay before prompt/edit.
+**증상:** 훅이 느려서 프롬프트/편집 전에 지연이 체감됩니다.
 
-**Common Causes:**
+**흔한 원인:**
 
-### 1. Too Many Patterns
+### 1. 패턴이 너무 많음
 
-**Check:**
-- Count patterns in skill-rules.json
-- Each pattern = regex compilation + matching
+**확인:**
+- skill-rules.json의 패턴 개수
+- 패턴 1개 = regex 컴파일 + 매칭 비용
 
-**Solution:** Reduce patterns
-- Combine similar patterns
-- Remove redundant patterns
-- Use more specific patterns (faster matching)
+**해결:** 패턴 수를 줄이세요
+- 유사한 패턴은 합치기
+- 중복 패턴 제거
+- 더 구체적인 패턴 사용(더 빠른 매칭)
 
-### 2. Complex Regex
+### 2. 복잡한 정규식(regex)
 
 **Problem:**
 ```regex
 (create|add|modify|update|implement|build).*?(feature|endpoint|route|service|controller|component|UI|page)
 ```
-- Long alternations = slow
+- 긴 alternation(대안 목록)은 느립니다
 
-**Solution:** Simplify
+**해결:** 단순화
 ```regex
 (create|add).*?(feature|endpoint)  // Fewer alternatives
 ```
 
-### 3. Too Many Files Checked
+### 3. 검사 대상 파일이 너무 많음
 
 **Problem:**
 ```json
@@ -484,11 +486,11 @@ Expected: No output (no errors)
 
 ### 4. Large Files
 
-Content pattern matching reads entire file - slow for large files.
+콘텐츠 패턴 매칭은 파일 전체를 읽기 때문에, 큰 파일에서는 느릴 수 있습니다.
 
-**Solution:**
-- Only use content patterns when necessary
-- Consider file size limits (future enhancement)
+**해결:**
+- 꼭 필요할 때만 콘텐츠 패턴 사용
+- 파일 크기 제한을 고려(향후 개선)
 
 ### 성능 측정
 
@@ -502,13 +504,13 @@ time cat <<'EOF' | npx tsx .claude/hooks/skill-verification-guard.ts
 EOF
 ```
 
-**Target metrics:**
+**목표 지표(Target metrics):**
 - UserPromptSubmit: < 100ms
 - PreToolUse: < 200ms
 
 ---
 
-**Related Files:**
-- [SKILL.md](SKILL.md) - Main skill guide
-- [HOOK_MECHANISMS.md](HOOK_MECHANISMS.md) - How hooks work
-- [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) - Configuration reference
+**관련 파일:**
+- [SKILL.md](SKILL.md) - 메인 스킬 가이드
+- [HOOK_MECHANISMS.md](HOOK_MECHANISMS.md) - 훅 동작 방식
+- [SKILL_RULES_REFERENCE.md](SKILL_RULES_REFERENCE.md) - 설정 레퍼런스

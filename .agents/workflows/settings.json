@@ -15,11 +15,7 @@
         "hooks": [
           {
             "type": "command",
-<<<<<<< HEAD:.agents/workflows/settings.json
             "command": "${GEMINI_PROJECT_DIR:-$PWD}/.agents/workflows/hooks/skill-activation-prompt.sh"
-=======
-            "command": "${GEMINI_PROJECT_DIR:-$PWD}/.gemini/hooks/skill-activation-prompt.sh"
->>>>>>> 2aa8f18 (fix: playwright-mcp 설정 수정 및 가이드라인 문서 업데이트):.gemini/settings.json
           }
         ]
       }
@@ -30,11 +26,7 @@
         "hooks": [
           {
             "type": "command",
-<<<<<<< HEAD:.agents/workflows/settings.json
             "command": "${GEMINI_PROJECT_DIR:-$PWD}/.agents/workflows/hooks/post-tool-use-tracker.sh"
-=======
-            "command": "${GEMINI_PROJECT_DIR:-$PWD}/.gemini/hooks/post-tool-use-tracker.sh"
->>>>>>> 2aa8f18 (fix: playwright-mcp 설정 수정 및 가이드라인 문서 업데이트):.gemini/settings.json
           }
         ]
       }
@@ -44,11 +36,7 @@
         "hooks": [
           {
             "type": "command",
-<<<<<<< HEAD:.agents/workflows/settings.json
             "command": "${GEMINI_PROJECT_DIR:-$PWD}/.agents/workflows/hooks/error-handling-reminder.sh"
-=======
-            "command": "${GEMINI_PROJECT_DIR:-$PWD}/.gemini/hooks/error-handling-reminder.sh"
->>>>>>> 2aa8f18 (fix: playwright-mcp 설정 수정 및 가이드라인 문서 업데이트):.gemini/settings.json
           }
         ]
       }

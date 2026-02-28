@@ -112,6 +112,47 @@ chmod +x your-project/.codex/hooks/post-tool-use-tracker.sh
 
 ## 선택 훅(커스터마이징 필요)
 
+### agent-instruction-guard (PreToolUse)
+
+**목적:** `Task/spawn_agent` 호출 시 `.codex/agents/*.md` 규격이 실제로 주입되었는지 강제
+
+**동작 방식:**
+1. 에이전트 호출 도구(`Task|spawn_agent`)를 감지
+2. 호출 입력에 `AGENT_SPEC_BEGIN ... AGENT_SPEC_END` 마커 존재 여부 검사
+3. 누락 시 `exit code 2`로 차단하고 compile -> 주입 절차를 안내
+
+**권장 사용 시점:**
+- 팀에서 커스텀 에이전트 md를 표준 운영할 때
+- “에이전트 이름만 호출”로 규격 누락이 자주 발생할 때
+
+**통합:**
+```bash
+cp agent-instruction-guard.sh your-project/.codex/hooks/
+cp agent-instruction-guard.ts your-project/.codex/hooks/
+chmod +x your-project/.codex/hooks/agent-instruction-guard.sh
+```
+
+**settings.json에 추가:**
+```json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Task|spawn_agent|SpawnAgent|Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CODEX_PROJECT_DIR/.codex/hooks/agent-instruction-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**커스터마이징:** ⚠️ 도구 이름(`matcher`)은 Codex 런타임에 맞게 조정할 수 있습니다.
+
 ### tsc-check (Stop)
 
 **목적:** 사용자가 중지할 때 TypeScript 컴파일 체크

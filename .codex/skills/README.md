@@ -30,7 +30,7 @@
 
 ## 제공되는 스킬
 
-현재 기준 **6개 스킬**이 포함되어 있습니다.
+현재 기준 **10개 스킬**이 포함되어 있습니다.
 
 ### skill-developer (메타 스킬)
 **목적:** Roo Codex 스킬 생성 및 관리
@@ -126,56 +126,74 @@
 
 ---
 
-### flutter-dev-guidelines
-**목적:** Flutter/Dart 모바일 앱 개발 패턴
-
-**파일:** 메인 파일 1개(실무 체크리스트 포함)
-
-**포함 내용:**
-- 최신 stable Flutter/Dart 기준 개발 원칙
-- MVVM + Clean Architecture(`presentation/viewmodel/domain/data/core`) 강제 구조
-- 모델 경계 규칙(Entity/DTO/Model/Mapper/Value Object)과 immutable 우선 설계
-- Widget 설계 및 계층 분리 원칙
-- 상태 관리(Riverpod/Bloc/Provider) 선택 및 운영 기준
-- `repository`/`usecase`/`viewmodel` 경계 규칙
-- DI 원칙(Composition Root, Constructor Injection, 추상화 바인딩, 테스트 교체 주입)
-- 성능 최적화(const, rebuild 최소화, DevTools 측정)
-- 테스트 전략(Unit/Widget/Integration)
-- Android/iOS 빌드 및 배포(apk/ipa)
-- 디버깅(Flutter Inspector, DevTools, 권한/플러그인 이슈)
-- 패키지 정책: 공식 Flutter/Dart 우선 + pub.dev Flutter Favorite 배지 패키지만 허용
-- 완료 게이트: 레이어/모델/DI/테스트 미충족 시 완료 아님
+### flutter-dev-guidelines (기본 진입 + 라우터)
+**목적:** Flutter 신규 개발 기본 가이드이자 아키텍처/테스트/디버깅/검증 게이트 분류 인덱스
 
 **사용 시점:**
-- Flutter 화면/기능을 구현할 때
-- MVVM/Clean Architecture 구조를 적용하거나 점검할 때
-- repository/usecase/viewmodel 레이어를 분리할 때
-- model/entity/dto/mapper 설계와 매핑 규칙을 정리할 때
-- DI 구성(composition root, 바인딩, 주입 교체)을 설계할 때
-- 상태 관리 구조를 변경할 때
-- 렌더링 성능을 개선할 때
-- 앱 배포 준비를 할 때
+- Flutter/플러터가 단독으로 언급되거나 신규 개발을 시작할 때
+- 어떤 Flutter 하위 스킬을 병행할지 먼저 분류할 때
+- 전체 작업 플로우(구현 -> 테스트 -> 게이트 검증)를 잡을 때
 
-**커스터마이징:** ⚠️ Flutter 프로젝트 구조에 맞게 `pathPatterns`를 조정하세요
-
-**pathPatterns 예시:**
-```json
-{
-  "pathPatterns": [
-    "lib/**/*.dart",
-    "test/**/*.dart",
-    "integration_test/**/*.dart",
-    "android/**",
-    "ios/**"
-  ]
-}
-```
+**하위 스킬 라우팅:**
+- 설계/레이어/모델/DI/패키지 선정 -> `flutter-architecture-guidelines`
+- unit/widget/integration 테스트 설계 -> `flutter-testing-guidelines`
+- Inspector/DevTools/플랫폼/성능 디버깅 -> `flutter-debugging-guidelines`
+- G1~G5(+G4b) 판정/증빙 -> `flutter-validation-gates`
 
 **[스킬 보기 →](flutter-dev-guidelines/)**
 
 ---
 
+### flutter-architecture-guidelines
+**목적:** MVVM + Clean Architecture, 모델 경계(Entity/DTO/Model/Mapper/VO), DI(단일 Composition Root), Flutter Favorite 정책 강제
+
+**사용 시점:**
+- 신규 feature 구조를 설계/구현할 때
+- Entity/DTO/Mapper 분리나 DI 바인딩을 정리할 때
+- 패키지 도입 전 아키텍처 영향도를 검토할 때
+
+**[스킬 보기 →](flutter-architecture-guidelines/)**
+
+---
+
+### flutter-testing-guidelines
+**목적:** unit/widget/integration 테스트 전략과 ViewModel 테스트 책임(상태 전이 assertion) 표준화
+
+**사용 시점:**
+- 테스트 코드를 신규 작성/수정할 때
+- ViewModel 변경에 대응하는 단위 테스트를 보강할 때
+- CI 테스트 명령 및 패턴을 정리할 때
+
+**[스킬 보기 →](flutter-testing-guidelines/)**
+
+---
+
+### flutter-debugging-guidelines
+**목적:** Flutter Inspector/DevTools 기반 디버깅, lifecycle/플랫폼 이슈 분석, 성능 병목 추적 흐름 제공
+
+**사용 시점:**
+- 재현은 되지만 원인이 불명확한 버그를 추적할 때
+- Android/iOS 권한/설정/플러그인 이슈를 조사할 때
+- 프레임 드랍/메모리 증가 같은 성능 문제를 분석할 때
+
+**[스킬 보기 →](flutter-debugging-guidelines/)**
+
+---
+
+### flutter-validation-gates
+**목적:** G1~G5(+G4b) 게이트, 증빙 규칙, PASS/FAIL 판정 명령 표준화
+
+**사용 시점:**
+- PR/릴리스 전 완료 판정을 실행할 때
+- `dev/evidence/flutter/<task-name>/` 증빙을 생성/검토할 때
+- CI 게이트 자동화 기준을 맞출 때
+
+**[스킬 보기 →](flutter-validation-gates/)**
+
+---
+
 ### route-tester
+
 **목적:** JWT 쿠키 인증으로 보호된 API 라우트 테스트
 
 **파일:** 메인 파일 1개(389줄)

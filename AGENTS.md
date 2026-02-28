@@ -81,6 +81,7 @@
   - `code-architecture-reviewer`
   - `code-refactor-master`
   - `documentation-architect`
+  - `flutter-developer` (Flutter 코드 작업일 때)
   - `frontend-architecture-designer`
   - `frontend-error-fixer`
   - `refactor-planner`
@@ -89,6 +90,14 @@
   - `auth-route-tester`
   - `auth-route-debugger`
 - 에이전트 파일에 하드코딩 경로가 있으면 현재 프로젝트 경로로 치환한다.
+
+### 6-2. Codex 에이전트 호출 표준(필수)
+
+- Codex에서는 `.codex/agents/*.md`가 서브 에이전트 호출 시 자동 주입되지 않는다.
+- 따라서 에이전트 호출 전에 반드시 스펙을 컴파일해 `Task/spawn_agent` 메시지에 주입한다.
+  - `node .codex/agents/compile-agent-prompt.mjs --agent <name> --task "<task>" --ownership "<scope>"`
+  - 위 출력의 `AGENT_SPEC_BEGIN ... AGENT_SPEC_END` 블록을 그대로 포함해야 한다.
+- `PreToolUse`의 `agent-instruction-guard`가 spec 누락 호출을 차단하므로, 이름만 호출하는 방식은 금지한다.
 
 ### 6-1. 멀티 에이전트 오케스트레이션 원칙
 
@@ -115,6 +124,7 @@
 - 계획 수립 시작: `/dev-docs`
 - 컨텍스트 압축/세션 마감 전 정리: `/dev-docs-update`
 - 인증 라우트 연구/테스트 보조: `/route-research-for-testing`
+- 에이전트 표준 실행: `compile-agent-prompt`로 스펙 생성 후 `Task/spawn_agent`에 주입
 
 명령어 사용 시 경로 가정(`dev/active`, API 경로)을 현재 저장소 구조와 맞춘다.
 
@@ -142,6 +152,7 @@
 ## 10) 빠른 실행 가이드
 
 - 프론트 UI 버그 수정: `frontend-dev-guidelines` 확인 -> 구현 -> 필요 시 `frontend-error-fixer` 에이전트
+- Flutter 기능 구현/리팩터링: `flutter-dev-guidelines` 확인 -> 필요 시 `flutter-developer` 에이전트(스펙 주입 호출)
 - API/인증 라우트 검증: `route-tester` 확인 -> 인증 전제 확인 -> 테스트
 - 스킬 트리거 이상: `skill-developer` 확인 -> `skill-rules.json`/훅 설정 점검
 - 장기 작업 시작: `/dev-docs`로 3파일 생성 후 구현 시작

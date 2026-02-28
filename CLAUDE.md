@@ -79,6 +79,7 @@
   - `code-architecture-reviewer`
   - `code-refactor-master`
   - `documentation-architect`
+  - `flutter-developer` (Flutter 코드 작업일 때)
   - `frontend-error-fixer`
   - `refactor-planner`
   - `plan-reviewer`
@@ -88,6 +89,16 @@
   - `auth-route-tester`
   - `auth-route-debugger`
 - 에이전트 파일에 하드코딩 경로가 있으면 현재 프로젝트 경로로 치환한다.
+
+### 6-2. 에이전트 스펙 주입 원칙(필수)
+
+- 에이전트 호출 시 이름만 전달하지 않는다.
+- 실행 전에 반드시 해당 에이전트 파일(`.claude/agents/<agent-name>.md`)을 읽고, 핵심 규칙/절차/출력 형식을 호출 메시지에 반영한다.
+- 최소 포함 요소:
+  - 책임 범위(파일/기능)
+  - 강제 규칙(아키텍처/테스트/DI/문서화 등)
+  - 기대 산출 형식
+- 요약 주입이 아닌 원문 기반 주입이 필요한 작업(고난도/규칙 엄수)은 에이전트 스펙 블록을 그대로 포함해 호출한다.
 
 ### 6-1. 멀티 에이전트 오케스트레이션 원칙
 
@@ -141,6 +152,7 @@
 ## 10) 빠른 실행 가이드
 
 - 프론트 UI 버그 수정: `frontend-dev-guidelines` 확인 -> 구현 -> 필요 시 `frontend-error-fixer` 에이전트
+- Flutter 기능 구현/리팩터링: `flutter-dev-guidelines` 확인 -> 필요 시 `flutter-developer` 에이전트
 - API/인증 라우트 검증: `route-tester` 확인 -> 인증 전제 확인 -> 테스트
 - 스킬 트리거 이상: `skill-developer` 확인 -> `skill-rules.json`/훅 설정 점검
 - 장기 작업 시작: `/dev-docs`로 3파일 생성 후 구현 시작

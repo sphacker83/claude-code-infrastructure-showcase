@@ -26,6 +26,17 @@
         ]
       }
     ],
+    "PreToolUse": [
+      {
+        "matcher": "Task|spawn_agent|SpawnAgent|Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CODEX_PROJECT_DIR/.codex/hooks/agent-instruction-guard.sh"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|MultiEdit|Write",

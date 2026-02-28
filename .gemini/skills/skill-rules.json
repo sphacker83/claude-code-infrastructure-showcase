@@ -1,0 +1,231 @@
+{
+  "version": "1.1",
+  "description": "Skill activation triggers customized for this project (Next.js App Router + TypeScript).",
+  "skills": {
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Meta skill for Gemini skill/hooks/rules setup and debugging.",
+      "promptTriggers": {
+        "keywords": [
+          "skill",
+          "skills",
+          "스킬",
+          "skill-rules.json",
+          "hook",
+          "hooks",
+          "훅",
+          "에이전트",
+          "agent",
+          "코덱스 설정",
+          "codex settings"
+        ],
+        "intentPatterns": [
+          "(스킬|skill).*(추가|생성|수정|트리거|규칙|활성화|디버깅)",
+          "(훅|hook).*(설정|수정|추가|디버깅)",
+          "(create|add|modify|debug|update).*(skill|hook|skill-rules|codex settings)",
+          "(how|explain).*(skill|hook|trigger|activation)"
+        ]
+      }
+    },
+    "frontend-dev-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Frontend patterns for this Next.js App Router + React + TypeScript project.",
+      "promptTriggers": {
+        "keywords": [
+          "frontend",
+          "프론트엔드",
+          "next",
+          "next.js",
+          "app router",
+          "react",
+          "component",
+          "컴포넌트",
+          "ui",
+          "페이지",
+          "page",
+          "styling",
+          "스타일"
+        ],
+        "intentPatterns": [
+          "(만들|추가|수정|구현|리팩터링).*(컴포넌트|페이지|ui|프론트엔드)",
+          "(create|add|build|update|edit|implement).*(component|page|ui|frontend|next)",
+          "(스타일|레이아웃|디자인).*(컴포넌트|페이지|ui)",
+          "(style|layout|design).*(component|page|ui)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "app/**/*.ts",
+          "app/**/*.tsx",
+          "components/**/*.ts",
+          "components/**/*.tsx",
+          "lib/**/*.ts",
+          "types/**/*.ts"
+        ],
+        "pathExclusions": [
+          "**/*.test.ts",
+          "**/*.test.tsx",
+          "**/*.spec.ts",
+          "**/*.spec.tsx",
+          "**/*.d.ts"
+        ],
+        "contentPatterns": [
+          "'use client'",
+          "from 'next/",
+          "from \"next/",
+          "use(State|Effect|Memo|Callback|Ref)",
+          "export default function"
+        ]
+      }
+    },
+    "backend-dev-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Backend/API patterns for route handlers, services, validation, and data access.",
+      "promptTriggers": {
+        "keywords": [
+          "backend",
+          "백엔드",
+          "api",
+          "endpoint",
+          "엔드포인트",
+          "route",
+          "라우트",
+          "controller",
+          "service",
+          "middleware",
+          "validation",
+          "prisma",
+          "zod"
+        ],
+        "intentPatterns": [
+          "(백엔드|api|엔드포인트|라우트).*(추가|수정|구현|테스트|리팩터링)",
+          "(create|add|implement|build|fix).*(route|endpoint|api|controller|service|middleware)",
+          "(error|예외|에러).*(처리|핸들링|모니터링|sentry)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "app/api/**/*.ts",
+          "app/api/**/route.ts",
+          "backend/**/*.ts",
+          "server/**/*.ts",
+          "api/**/*.ts"
+        ],
+        "pathExclusions": [
+          "**/*.test.ts",
+          "**/*.spec.ts"
+        ],
+        "contentPatterns": [
+          "Next(Request|Response)",
+          "router\\.",
+          "app\\.(get|post|put|delete|patch)",
+          "export\\s+class\\s+.*(Controller|Service)",
+          "prisma\\.",
+          "zod"
+        ]
+      }
+    },
+    "route-tester": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Guidelines for testing authenticated routes (JWT/cookie style auth).",
+      "promptTriggers": {
+        "keywords": [
+          "route test",
+          "test route",
+          "endpoint test",
+          "api test",
+          "라우트 테스트",
+          "엔드포인트 테스트",
+          "api 테스트",
+          "인증 테스트",
+          "jwt",
+          "cookie auth"
+        ],
+        "intentPatterns": [
+          "(라우트|엔드포인트|api).*(테스트|검증|디버깅)",
+          "(test|verify|debug).*(route|endpoint|api|auth|jwt|cookie)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "app/api/**/route.ts",
+          "**/routes/**/*.ts",
+          "scripts/test-*.js",
+          "scripts/test-*.ts"
+        ],
+        "contentPatterns": [
+          "router\\.(get|post|put|delete|patch)",
+          "app\\.(get|post|put|delete|patch)",
+          "cookies?\\(",
+          "authorization"
+        ]
+      }
+    },
+    "error-tracking": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Error handling and monitoring patterns, including Sentry integration.",
+      "promptTriggers": {
+        "keywords": [
+          "error handling",
+          "에러 처리",
+          "예외 처리",
+          "exception",
+          "monitoring",
+          "모니터링",
+          "sentry",
+          "captureexception",
+          "error tracking"
+        ],
+        "intentPatterns": [
+          "(에러|예외).*(추적|모니터링|sentry|핸들링)",
+          "(add|setup|implement|fix).*(sentry|error handling|monitoring|exception)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "app/api/**/*.ts",
+          "app/**/instrument.ts",
+          "lib/**/*.ts",
+          "server/**/*.ts",
+          "backend/**/*.ts"
+        ],
+        "contentPatterns": [
+          "@sentry",
+          "Sentry\\.",
+          "captureException",
+          "captureMessage",
+          "try\\s*\\{",
+          "throw\\s+new\\s+Error"
+        ]
+      }
+    }
+  },
+  "notes": {
+    "enforcement_types": {
+      "suggest": "Suggests a relevant skill without blocking execution.",
+      "block": "Blocks action until the required skill is used.",
+      "warn": "Shows a low-priority warning only."
+    },
+    "priority_levels": {
+      "critical": "Always show when matched.",
+      "high": "Show for strong matches.",
+      "medium": "Show for clear but less urgent matches.",
+      "low": "Show for optional context."
+    },
+    "customization": {
+      "pathPatterns": "Keep these aligned with actual project folders.",
+      "keywords": "Include both Korean and English user prompt styles.",
+      "intentPatterns": "Use broad regex first, then tighten if false positives appear."
+    }
+  }
+}

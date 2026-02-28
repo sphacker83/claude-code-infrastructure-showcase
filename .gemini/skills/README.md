@@ -132,19 +132,24 @@
 **포함 내용:**
 - 최신 stable Flutter/Dart 기준 개발 원칙
 - MVVM + Clean Architecture(`presentation/viewmodel/domain/data/core`) 강제 구조
+- 모델 경계 규칙(Entity/DTO/Model/Mapper/Value Object)과 immutable 우선 설계
 - Widget 설계 및 계층 분리 원칙
 - 상태 관리(Riverpod/Bloc/Provider) 선택 및 운영 기준
 - `repository`/`usecase`/`viewmodel` 경계 규칙
+- DI 원칙(Composition Root, Constructor Injection, 추상화 바인딩, 테스트 교체 주입)
 - 성능 최적화(const, rebuild 최소화, DevTools 측정)
 - 테스트 전략(Unit/Widget/Integration)
 - Android/iOS 빌드 및 배포(apk/ipa)
 - 디버깅(Flutter Inspector, DevTools, 권한/플러그인 이슈)
 - 패키지 정책: 공식 Flutter/Dart 우선 + pub.dev Flutter Favorite 배지 패키지만 허용
+- 완료 게이트: 레이어/모델/DI/테스트 미충족 시 완료 아님
 
 **사용 시점:**
 - Flutter 화면/기능을 구현할 때
 - MVVM/Clean Architecture 구조를 적용하거나 점검할 때
 - repository/usecase/viewmodel 레이어를 분리할 때
+- model/entity/dto/mapper 설계와 매핑 규칙을 정리할 때
+- DI 구성(composition root, 바인딩, 주입 교체)을 설계할 때
 - 상태 관리 구조를 변경할 때
 - 렌더링 성능을 개선할 때
 - 앱 배포 준비를 할 때

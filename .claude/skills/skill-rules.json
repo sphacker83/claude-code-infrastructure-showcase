@@ -186,7 +186,19 @@
                     "usecase",
                     "use case",
                     "viewmodel",
-                    "view model"
+                    "view model",
+                    "model",
+                    "entity",
+                    "dto",
+                    "mapper",
+                    "value object",
+                    "immutable",
+                    "dependency injection",
+                    "di",
+                    "get_it",
+                    "injectable",
+                    "composition root",
+                    "service locator"
                 ],
                 "intentPatterns": [
                     "(flutter|dart|플러터|다트).*(구현|개발|수정|리팩터링|디버깅|최적화|테스트)",
@@ -195,7 +207,11 @@
                     "(create|add|implement|update|refactor|debug|optimize).*(flutter|dart|widget|riverpod|bloc|provider|ios|android)",
                     "(mvvm|clean architecture|클린 아키텍처).*(적용|설계|구현|리팩터링)",
                     "(repository|use ?case|view ?model).*(구현|분리|설계|테스트)",
-                    "(flutter favorite|pub\\.dev).*(패키지|의존성|선정|검토|추가)"
+                    "(flutter favorite|pub\\.dev).*(패키지|의존성|선정|검토|추가)",
+                    "(model|entity|dto|mapper|value object|immutable).*(설계|분리|매핑|변환|직렬화|역직렬화|마이그레이션)",
+                    "(모델|엔티티|dto|매퍼|값 객체|불변).*(설계|분리|매핑|변환|호환성|마이그레이션)",
+                    "(dependency injection|\\bdi\\b|get_it|injectable|composition root|service locator).*(구성|설정|주입|바인딩|교체|테스트)",
+                    "(의존성 주입|컴포지션 루트|서비스 로케이터).*(구성|설정|주입|바인딩|교체|테스트)"
                 ]
             },
             "fileTriggers": {
@@ -218,7 +234,18 @@
                     "StatelessWidget",
                     "StatefulWidget",
                     "Riverpod|Bloc|Provider",
-                    "pubspec.yaml"
+                    "pubspec.yaml",
+                    "fromJson\\(",
+                    "toJson\\(",
+                    "class\\s+\\w*Model",
+                    "class\\s+\\w*Dto",
+                    "class\\s+\\w*Entity",
+                    "class\\s+\\w*Mapper",
+                    "Repository",
+                    "UseCase",
+                    "GetIt",
+                    "@injectable",
+                    "serviceLocator|service_locator"
                 ]
             }
         },

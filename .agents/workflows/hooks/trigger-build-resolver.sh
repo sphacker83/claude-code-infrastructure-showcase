@@ -6,7 +6,7 @@ set -u
 # Instead, it surfaces a concise hint about which repos changed.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="${GEMINI_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}}"
+PROJECT_DIR="${GEMINI_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../../.." && pwd)}}"
 export GEMINI_PROJECT_DIR="$PROJECT_DIR"
 
 if ! command -v jq >/dev/null 2>&1; then

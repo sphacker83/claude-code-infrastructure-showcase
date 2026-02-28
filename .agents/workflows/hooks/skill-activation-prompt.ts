@@ -68,19 +68,19 @@ function findProjectDir(input: HookInput): string {
         process.env.GEMINI_PROJECT_DIR,
         process.env.CODEX_PROJECT_DIR,
         input.cwd,
-        resolve(scriptDir, '../..'),
+        resolve(scriptDir, '../../..'),
         process.cwd()
     ].filter(Boolean) as string[];
 
     for (const candidate of candidates) {
         const normalized = resolve(candidate);
-        const rulesPath = join(normalized, '.agents/workflows', 'skills', 'skill-rules.json');
+        const rulesPath = join(normalized, '.agents', 'skills', 'skill-rules.json');
         if (existsSync(rulesPath)) {
             return normalized;
         }
     }
 
-    return resolve(scriptDir, '../..');
+    return resolve(scriptDir, '../../..');
 }
 
 function globToRegex(glob: string): RegExp {
@@ -266,7 +266,7 @@ async function main() {
         const prompt = (data.prompt ?? '').toLowerCase();
 
         const projectDir = findProjectDir(data);
-        const rulesPath = join(projectDir, '.agents/workflows', 'skills', 'skill-rules.json');
+        const rulesPath = join(projectDir, '.agents', 'skills', 'skill-rules.json');
         if (!existsSync(rulesPath)) {
             process.exit(0);
             return;

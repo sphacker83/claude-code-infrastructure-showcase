@@ -2,7 +2,7 @@
 set -u
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_DIR="${GEMINI_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}}"
+PROJECT_DIR="${GEMINI_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../../.." && pwd)}}"
 export GEMINI_PROJECT_DIR="$PROJECT_DIR"
 HOOK_TS="$PROJECT_DIR/.agents/workflows/hooks/skill-activation-prompt.ts"
 HOOK_DIR="$PROJECT_DIR/.agents/workflows/hooks"

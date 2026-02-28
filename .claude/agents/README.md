@@ -16,7 +16,7 @@
 
 ---
 
-## 사용 가능한 에이전트 (10)
+## 사용 가능한 에이전트 (11)
 
 ### code-architecture-reviewer
 **목적:** 아키텍처 일관성과 베스트 프랙티스 관점에서 코드를 리뷰
@@ -52,6 +52,22 @@
 - API 문서를 만들 때
 - 개발자 가이드를 작성할 때
 - 아키텍처 개요를 생성할 때
+
+**통합:** ✅ 그대로 복사
+
+---
+
+### flutter-developer
+**목적:** 최신 stable Flutter/Dart 기반의 Flutter 개발, MVVM + Clean Architecture 적용, 네이티브 연동 및 상태 관리 문제 해결
+
+**사용 시점:**
+- 새로운 Flutter UI 화면과 컴포넌트를 구현할 때
+- MVVM + Clean Architecture(`presentation/viewmodel/domain/data/core`)를 설계/적용할 때
+- `repository`/`usecase`/`viewmodel` 경계를 정리할 때
+- Provider, Riverpod, BLoC 등 상태 관리 로직을 구현하거나 디버깅할 때
+- iOS/Android 네이티브 연동(MethodChannel) 관련 에러를 해결할 때
+- Flutter 앱의 렌더링 성능을 최적화할 때
+- 패키지 선정 시 Flutter Favorite 배지(pub.dev)와 유지보수 상태를 검증할 때
 
 **통합:** ✅ 그대로 복사
 
@@ -210,6 +226,7 @@ Claude에게 요청: "[agent-name] 에이전트를 사용해서 [task] 해줘"
 | code-architecture-reviewer | 중간 | ✅ 없음 | 아니오 |
 | code-refactor-master | 높음 | ✅ 없음 | 아니오 |
 | documentation-architect | 중간 | ✅ 없음 | 아니오 |
+| flutter-developer | 높음 | ✅ 없음 | 아니오 |
 | frontend-error-fixer | 중간 | ⚠️ 스크린샷 경로 | 아니오 |
 | plan-reviewer | 낮음 | ✅ 없음 | 아니오 |
 | refactor-planner | 중간 | ✅ 없음 | 아니오 |

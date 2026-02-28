@@ -148,6 +148,80 @@
                 "envOverride": "SKIP_FRONTEND_GUIDELINES"
             }
         },
+        "flutter-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Flutter + Dart development patterns for widget architecture, state management, performance, testing, and mobile release.",
+            "promptTriggers": {
+                "keywords": [
+                    "flutter",
+                    "플러터",
+                    "dart",
+                    "다트",
+                    "widget",
+                    "위젯",
+                    "riverpod",
+                    "bloc",
+                    "provider",
+                    "state management",
+                    "상태 관리",
+                    "상태관리",
+                    "ios",
+                    "iOS",
+                    "android",
+                    "apk",
+                    "ipa",
+                    "pubspec",
+                    "pub.dev",
+                    "materialapp",
+                    "MaterialApp",
+                    "cupertinoapp",
+                    "CupertinoApp",
+                    "mvvm",
+                    "clean architecture",
+                    "클린 아키텍처",
+                    "flutter favorite",
+                    "repository",
+                    "usecase",
+                    "use case",
+                    "viewmodel",
+                    "view model"
+                ],
+                "intentPatterns": [
+                    "(flutter|dart|플러터|다트).*(구현|개발|수정|리팩터링|디버깅|최적화|테스트)",
+                    "(widget|위젯|화면|state management|상태관리).*(추가|수정|구현|최적화)",
+                    "(ios|android|apk|ipa|pubspec).*(빌드|배포|설정|오류|에러)",
+                    "(create|add|implement|update|refactor|debug|optimize).*(flutter|dart|widget|riverpod|bloc|provider|ios|android)",
+                    "(mvvm|clean architecture|클린 아키텍처).*(적용|설계|구현|리팩터링)",
+                    "(repository|use ?case|view ?model).*(구현|분리|설계|테스트)",
+                    "(flutter favorite|pub\\.dev).*(패키지|의존성|선정|검토|추가)"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "**/*.dart",
+                    "lib/**/*.dart",
+                    "test/**/*.dart",
+                    "integration_test/**/*.dart",
+                    "android/**",
+                    "ios/**"
+                ],
+                "pathExclusions": [
+                    "**/*.g.dart",
+                    "**/*.freezed.dart"
+                ],
+                "contentPatterns": [
+                    "MaterialApp",
+                    "CupertinoApp",
+                    "Widget build\\(BuildContext",
+                    "StatelessWidget",
+                    "StatefulWidget",
+                    "Riverpod|Bloc|Provider",
+                    "pubspec.yaml"
+                ]
+            }
+        },
         "route-tester": {
             "type": "domain",
             "enforcement": "suggest",

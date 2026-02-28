@@ -68,13 +68,16 @@
 ---
 
 ### flutter-developer
-**목적:** Flutter 애플리케이션 개발, 네이티브 연동 및 상태 관리 문제 해결
+**목적:** 최신 stable Flutter/Dart 기반의 Flutter 개발, MVVM + Clean Architecture 적용, 네이티브 연동 및 상태 관리 문제 해결
 
 **사용 시점:**
 - 새로운 Flutter UI 화면과 컴포넌트를 구현할 때
+- MVVM + Clean Architecture(`presentation/viewmodel/domain/data/core`)를 설계/적용할 때
+- `repository`/`usecase`/`viewmodel` 경계를 정리할 때
 - Provider, Riverpod, BLoC 등 상태 관리 로직을 구현하거나 디버깅할 때
 - iOS/Android 네이티브 연동(MethodChannel) 관련 에러를 해결할 때
 - Flutter 앱의 렌더링 성능을 최적화할 때
+- 패키지 선정 시 Flutter Favorite 배지(pub.dev)와 유지보수 상태를 검증할 때
 
 **통합:** ✅ 그대로 복사
 

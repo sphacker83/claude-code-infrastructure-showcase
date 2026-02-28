@@ -124,6 +124,50 @@
 
 ---
 
+### flutter-dev-guidelines
+**목적:** Flutter/Dart 모바일 앱 개발 패턴
+
+**파일:** 메인 파일 1개(실무 체크리스트 포함)
+
+**포함 내용:**
+- 최신 stable Flutter/Dart 기준 개발 원칙
+- MVVM + Clean Architecture(`presentation/viewmodel/domain/data/core`) 강제 구조
+- Widget 설계 및 계층 분리 원칙
+- 상태 관리(Riverpod/Bloc/Provider) 선택 및 운영 기준
+- `repository`/`usecase`/`viewmodel` 경계 규칙
+- 성능 최적화(const, rebuild 최소화, DevTools 측정)
+- 테스트 전략(Unit/Widget/Integration)
+- Android/iOS 빌드 및 배포(apk/ipa)
+- 디버깅(Flutter Inspector, DevTools, 권한/플러그인 이슈)
+- 패키지 정책: 공식 Flutter/Dart 우선 + pub.dev Flutter Favorite 배지 패키지만 허용
+
+**사용 시점:**
+- Flutter 화면/기능을 구현할 때
+- MVVM/Clean Architecture 구조를 적용하거나 점검할 때
+- repository/usecase/viewmodel 레이어를 분리할 때
+- 상태 관리 구조를 변경할 때
+- 렌더링 성능을 개선할 때
+- 앱 배포 준비를 할 때
+
+**커스터마이징:** ⚠️ Flutter 프로젝트 구조에 맞게 `pathPatterns`를 조정하세요
+
+**pathPatterns 예시:**
+```json
+{
+  "pathPatterns": [
+    "lib/**/*.dart",
+    "test/**/*.dart",
+    "integration_test/**/*.dart",
+    "android/**",
+    "ios/**"
+  ]
+}
+```
+
+**[스킬 보기 →](flutter-dev-guidelines/)**
+
+---
+
 ### route-tester
 **목적:** JWT 쿠키 인증으로 보호된 API 라우트 테스트
 

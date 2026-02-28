@@ -10,7 +10,7 @@
     "defaultMode": "acceptEdits"
   },
   "hooks": {
-    "UserPromptSubmit": [
+    "BeforeAgent": [
       {
         "hooks": [
           {
@@ -20,7 +20,7 @@
         ]
       }
     ],
-    "PostToolUse": [
+    "AfterTool": [
       {
         "matcher": "Edit|MultiEdit|Write",
         "hooks": [
@@ -31,7 +31,7 @@
         ]
       }
     ],
-    "Stop": [
+    "AfterAgent": [
       {
         "hooks": [
           {

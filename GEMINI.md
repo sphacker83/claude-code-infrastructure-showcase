@@ -69,7 +69,7 @@
 
 원칙:
 
-- 훅/설정 작업 시 `CODEX_INTEGRATION_GUIDE.md` 절차를 따른다.
+- 훅/설정 작업 시 `GEMINI_INTEGRATION_GUIDE.md` 절차를 따른다.
 - `settings.json`을 통째로 덮어쓰지 않고 필요한 훅 섹션만 병합한다.
 - 훅 복사 후 실행 권한을 확인한다(`chmod +x`).
 - TypeScript 훅은 의존성 설치 여부를 확인한다(`.gemini/hooks/package.json`, `npm install`).
@@ -112,7 +112,7 @@
 
 명령어 사용 시 경로 가정(`dev/active`, API 경로)을 현재 저장소 구조와 맞춘다.
 
-## 8) 통합/수정 작업 공통 체크리스트 (`CODEX_INTEGRATION_GUIDE.md`)
+## 8) 통합/수정 작업 공통 체크리스트 (`GEMINI_INTEGRATION_GUIDE.md`)
 
 스킬/훅/에이전트/명령어를 손댈 때 아래를 기본으로 확인한다.
 

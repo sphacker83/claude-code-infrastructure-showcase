@@ -38,7 +38,7 @@ dev/active/[task-name]/
 |---|---|---|---|---|
 | Claude Code | `.claude/` | [CLAUDE.md](../CLAUDE.md) | [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md) | [`.claude/commands/dev-docs.md`](../.claude/commands/dev-docs.md), [`.claude/commands/dev-docs-update.md`](../.claude/commands/dev-docs-update.md) |
 | Codex CLI | `.codex/` | [AGENTS.md](../AGENTS.md) | [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md) | [`.codex/commands/dev-docs.md`](../.codex/commands/dev-docs.md), [`.codex/commands/dev-docs-update.md`](../.codex/commands/dev-docs-update.md) |
-| Gemini CLI | `.gemini/` | [GEMINI.md](../GEMINI.md) | [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md) (공통 절차 참고) | [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml), [`.gemini/commands/dev-docs-update.toml`](../.gemini/commands/dev-docs-update.toml) |
+| Gemini CLI | `.gemini/` | [GEMINI.md](../GEMINI.md) | [GEMINI_INTEGRATION_GUIDE.md](../GEMINI_INTEGRATION_GUIDE.md) | [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml), [`.gemini/commands/dev-docs-update.toml`](../.gemini/commands/dev-docs-update.toml) |
 
 **스코프 원칙:**
 - `dev/`는 CLI와 무관한 공통 작업 스코프입니다.
@@ -442,4 +442,4 @@ mkdir -p dev/active/your-task-name
 **참고 링크:**
 - Claude: [CLAUDE.md](../CLAUDE.md), [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)
 - Codex: [AGENTS.md](../AGENTS.md), [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md)
-- Gemini: [GEMINI.md](../GEMINI.md), [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md)
+- Gemini: [GEMINI.md](../GEMINI.md), [GEMINI_INTEGRATION_GUIDE.md](../GEMINI_INTEGRATION_GUIDE.md)

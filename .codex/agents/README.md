@@ -12,8 +12,7 @@
 - 특화된 도구 접근 권한을 가짐
 - 완료 시 종합 보고서를 반환함
 
-**핵심 장점:** 에이전트는 **독립형 규격 파일**입니다.  
-단, Codex에서는 `.md`가 자동 주입되지 않으므로 호출 시 명시적으로 주입해야 합니다.
+**핵심 장점:** 에이전트는 **독립형**입니다 — `.md` 파일을 그대로 복사하면 즉시 사용할 수 있습니다!
 
 ---
 
@@ -217,21 +216,10 @@ cp showcase/.codex/agents/agent-name.md \\
 grep -n "~/git/\\|/root/git/\\|/Users/" your-project/.codex/agents/agent-name.md
 ```
 
-**3단계: 호출 표준화(필수)**
+**3단계: 사용**
+Codex에게 요청: "[agent-name] 에이전트를 사용해서 [task] 해줘"
 
-Codex는 `agent-name.md`를 자동으로 서브 에이전트 프롬프트에 넣지 않습니다.  
-반드시 아래 방식으로 호출하세요.
-
-```bash
-node .codex/agents/compile-agent-prompt.mjs \
-  --agent "<agent-name>" \
-  --task "<task>" \
-  --ownership "<scope>"
-```
-
-위 출력( `AGENT_SPEC_BEGIN ... AGENT_SPEC_END` )을 `spawn_agent`/`Task`의 `message`에 그대로 넣어 호출합니다.
-
-**권장:** compile 스크립트 출력을 그대로 `Task/spawn_agent` 메시지에 주입
+끝입니다! 에이전트는 바로 동작합니다.
 
 ---
 
@@ -293,17 +281,15 @@ node .codex/agents/compile-agent-prompt.mjs \
 **사용자에게 에이전트를 통합해 줄 때:**
 
 1. **[CODEX_INTEGRATION_GUIDE.md](../../CODEX_INTEGRATION_GUIDE.md)을 읽기**
-2. **.md 파일 + manifest + compile 스크립트를 함께 복사**
-   - `.codex/agents/*.md`
-   - `.codex/agents/manifest.json`
-   - `.codex/agents/compile-agent-prompt.mjs`
+2. **.md 파일을 그대로 복사** - 에이전트는 독립형
 3. **하드코딩된 경로 확인:**
    ```bash
    grep "~/git/\\|/root/" agent-name.md
    ```
 4. **발견되면 경로를** `$CODEX_PROJECT_DIR` **또는** `.` **로 업데이트**
 5. **인증 에이전트의 경우:** 먼저 JWT 쿠키 인증을 사용하는지 질문
-6. **호출 시에는 compile 스크립트 결과를 `Task/spawn_agent`에 spec 주입**
+
+**끝!** 에이전트는 통합하기 가장 쉬운 구성요소입니다.
 
 ---
 
@@ -363,8 +349,8 @@ sed -i 's|~/git/.*project|$CODEX_PROJECT_DIR|g' .codex/agents/[agent-name].md
 ## 다음 단계
 
 1. **위 에이전트를 둘러보기** - 작업에 유용한 것 찾기
-2. **필요한 것만 복사하기** - `.md + manifest + compile 스크립트`
-3. **compile-agent-prompt로 spec 생성 후 실행하기** - spec 주입 후 서브 에이전트 호출
+2. **필요한 것만 복사하기** - .md 파일만
+3. **Codex에게 사용 요청하기** - "[agent] 를 사용해서 [task] 해줘"
 4. **직접 만들기** - 내 요구에 맞는 패턴을 따라가기
 
 **질문이 있나요?** [CODEX_INTEGRATION_GUIDE.md](../../CODEX_INTEGRATION_GUIDE.md)를 참고하세요

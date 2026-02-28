@@ -1,6 +1,6 @@
 # Dev Docs 패턴
 
-Claude Code 세션과 컨텍스트 리셋 사이에서도 프로젝트 맥락을 유지하기 위한 방법론입니다.
+Claude Code, Gemini CLI, Codex CLI처럼 컨텍스트 기반 에이전트 CLI에서 세션 리셋 사이에도 프로젝트 맥락을 유지하기 위한 방법론입니다.
 
 ---
 
@@ -13,7 +13,7 @@ Claude Code 세션과 컨텍스트 리셋 사이에서도 프로젝트 맥락을
 - 기술적 제약
 - 특정 접근 방식을 선택한 이유
 
-**리셋 이후 Claude는 모든 것을 다시 파악해야 합니다.**
+**리셋 이후에는 에이전트가 전체 상황을 다시 파악해야 합니다.**
 
 ---
 
@@ -28,7 +28,22 @@ dev/active/[task-name]/
 └── [task-name]-tasks.md     # 체크리스트
 ```
 
-**이 파일들은 컨텍스트 리셋 이후에도 남아있어** Claude가 즉시 상태를 복구할 수 있습니다.
+**이 파일들은 컨텍스트 리셋 이후에도 남아있어** 새 세션에서 즉시 상태를 복구할 수 있습니다.
+
+---
+
+## CLI별 링크와 스코프
+
+| CLI | 자산 루트 | 운영 규칙 파일 | 통합/참고 가이드 | Dev Docs 명령 정의 |
+|---|---|---|---|---|
+| Claude Code | `.claude/` | [CLAUDE.md](../CLAUDE.md) | [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md) | [`.claude/commands/dev-docs.md`](../.claude/commands/dev-docs.md), [`.claude/commands/dev-docs-update.md`](../.claude/commands/dev-docs-update.md) |
+| Codex CLI | `.codex/` | [AGENTS.md](../AGENTS.md) | [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md) | [`.codex/commands/dev-docs.md`](../.codex/commands/dev-docs.md), [`.codex/commands/dev-docs-update.md`](../.codex/commands/dev-docs-update.md) |
+| Gemini CLI | `.gemini/` | [GEMINI.md](../GEMINI.md) | [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md) (공통 절차 참고) | [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml), [`.gemini/commands/dev-docs-update.toml`](../.gemini/commands/dev-docs-update.toml) |
+
+**스코프 원칙:**
+- `dev/`는 CLI와 무관한 공통 작업 스코프입니다.
+- 설정/훅/스킬/명령 수정은 현재 사용 중인 CLI 루트(`.claude`/`.codex`/`.gemini`)만 기본 스코프로 잡습니다.
+- 다른 CLI 루트까지 함께 수정해야 하면 작업 범위에 명시하고 동기화합니다.
 
 ---
 
@@ -194,18 +209,17 @@ To continue:
 
 ### 새 작업 시작
 
-1. **`/dev-docs` 명령 실행:**
-   ```
-   /dev-docs refactor authentication system
-   ```
+1. **CLI에서 `dev-docs` 명령 템플릿 실행**
+   - `/dev-docs` 스타일을 지원하면 그대로 사용
+   - 지원하지 않으면 각 CLI의 명령 정의 파일 내용을 프롬프트 템플릿으로 사용
 
-2. **Claude가 3개 파일 생성:**
+2. **현재 CLI 에이전트가 3개 파일 생성**
    - 요구사항 분석
    - 코드베이스 확인
    - 종합 계획 생성
    - context/tasks 파일 생성
 
-3. **검토 및 조정:**
+3. **검토 및 조정**
    - 계획 타당성 확인
    - 누락된 고려사항 추가
    - 일정 추정 보정
@@ -221,20 +235,20 @@ To continue:
 
 ### 컨텍스트 리셋 후
 
-1. **Claude가 3개 파일을 모두 읽고**
-2. **수초 내 전체 상태를 파악한 뒤**
-3. **중단 지점부터 정확히 재개합니다.**
+1. 새 세션 에이전트가 3개 파일(plan/context/tasks)을 모두 읽고
+2. 수초 내 전체 상태를 파악한 뒤
+3. 중단 지점부터 정확히 재개합니다.
 
 무엇을 하던 중이었는지 다시 설명할 필요가 없습니다.
 
 ---
 
-## 슬래시 명령어 연동
+## 명령어 연동
 
-### /dev-docs
+### dev-docs
 **기능:** 작업용 새 Dev Docs 생성
 
-**사용 예:**
+**예시(슬래시 명령 지원 시):**
 ```
 /dev-docs implement real-time notifications
 ```
@@ -245,10 +259,10 @@ To continue:
   - implement-real-time-notifications-context.md
   - implement-real-time-notifications-tasks.md
 
-### /dev-docs-update
+### dev-docs-update
 **기능:** 컨텍스트 리셋 전 기존 Dev Docs 갱신
 
-**사용 예:**
+**예시(슬래시 명령 지원 시):**
 ```
 /dev-docs-update
 ```
@@ -285,14 +299,18 @@ dev/
 
 ---
 
-## 실제 사용 예시
+## 실제 사용 시작 방법
 
-이 저장소의 **`dev/active/public-infrastructure-repo/`**를 보면 실제 예시를 확인할 수 있습니다.
-- `plan.md` - 이 쇼케이스 제작 전략(700줄+)
-- `context.md` - 완료/의사결정/다음 작업 추적
-- `tasks.md` - 전체 단계 체크리스트
+이 저장소에는 `dev/active/*` 샘플 작업 디렉터리가 항상 포함되어 있지 않을 수 있습니다. 없으면 첫 복잡 작업에서 바로 생성해 시작하세요.
 
-실제로 이 쇼케이스를 만들 때 사용한 Dev Docs입니다.
+```bash
+mkdir -p dev/active/your-task-name
+```
+
+필요하면 아래 명령 정의를 템플릿으로 사용하세요:
+- Claude: [`.claude/commands/dev-docs.md`](../.claude/commands/dev-docs.md)
+- Codex: [`.codex/commands/dev-docs.md`](../.codex/commands/dev-docs.md)
+- Gemini: [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml)
 
 ---
 
@@ -332,13 +350,13 @@ dev/
 
 ---
 
-## Claude Code용 안내
+## CLI 공통 실행 안내
 
 **사용자가 Dev Docs 생성을 요청하면:**
 
-1. 가능하면 **`/dev-docs` 명령어 사용**
-2. 없으면 수동 생성
-   - 작업 범위 질문
+1. 현재 CLI를 확인하고 해당 스코프의 명령 정의를 우선 사용
+2. 명령이 없거나 실행 불가면 수동으로 3파일 생성
+   - 작업 범위 확인
    - 관련 코드 분석
    - 종합 계획 작성
    - context/tasks 생성
@@ -370,7 +388,7 @@ dev/
 
 ## Dev Docs 수동 생성
 
-`/dev-docs` 명령어가 없으면:
+`dev-docs` 명령이 없으면:
 
 **1. 디렉터리 생성:**
 ```bash
@@ -417,8 +435,11 @@ mkdir -p dev/active/your-task-name
 ## 다음 단계
 
 1. 다음 복잡한 작업에 패턴 적용
-2. 가능하면 `/dev-docs` 명령 사용
+2. 가능하면 `dev-docs` 명령 템플릿 사용
 3. 특히 `context.md`를 자주 갱신
-4. 실제 예시 확인: `dev/active/public-infrastructure-repo/`
+4. 운영 규칙/가이드에서 현재 CLI 스코프 확인
 
-**질문이 있다면:** [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)
+**참고 링크:**
+- Claude: [CLAUDE.md](../CLAUDE.md), [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)
+- Codex: [AGENTS.md](../AGENTS.md), [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md)
+- Gemini: [GEMINI.md](../GEMINI.md), [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md)

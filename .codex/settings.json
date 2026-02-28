@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CODEX_PROJECT_DIR/.codex/hooks/skill-activation-prompt.sh"
+            "command": "$CODEX_PROJECT_DIR/.agents/workflows/hooks/skill-activation-prompt.sh"
           }
         ]
       }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CODEX_PROJECT_DIR/.codex/hooks/post-tool-use-tracker.sh"
+            "command": "$CODEX_PROJECT_DIR/.agents/workflows/hooks/post-tool-use-tracker.sh"
           }
         ]
       }
@@ -42,15 +42,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$CODEX_PROJECT_DIR/.codex/hooks/error-handling-reminder.sh"
+            "command": "$CODEX_PROJECT_DIR/.agents/workflows/hooks/error-handling-reminder.sh"
           },
           {
             "type": "command",
-            "command": "$CODEX_PROJECT_DIR/.codex/hooks/tsc-check.sh"
+            "command": "$CODEX_PROJECT_DIR/.agents/workflows/hooks/tsc-check.sh"
           },
           {
             "type": "command",
-            "command": "$CODEX_PROJECT_DIR/.codex/hooks/trigger-build-resolver.sh"
+            "command": "$CODEX_PROJECT_DIR/.agents/workflows/hooks/trigger-build-resolver.sh"
           }
         ]
       }

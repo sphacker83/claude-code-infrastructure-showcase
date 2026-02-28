@@ -1,6 +1,6 @@
 # Dev Docs 패턴
 
-Claude Code, Gemini CLI, Codex CLI처럼 컨텍스트 기반 에이전트 CLI에서 세션 리셋 사이에도 프로젝트 맥락을 유지하기 위한 방법론입니다.
+Claude Code, Agent Workflows, Codex CLI처럼 컨텍스트 기반 에이전트 CLI에서 세션 리셋 사이에도 프로젝트 맥락을 유지하기 위한 방법론입니다.
 
 ---
 
@@ -38,11 +38,11 @@ dev/active/[task-name]/
 |---|---|---|---|---|
 | Claude Code | `.claude/` | [CLAUDE.md](../CLAUDE.md) | [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md) | [`.claude/commands/dev-docs.md`](../.claude/commands/dev-docs.md), [`.claude/commands/dev-docs-update.md`](../.claude/commands/dev-docs-update.md) |
 | Codex CLI | `.codex/` | [AGENTS.md](../AGENTS.md) | [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md) | [`.codex/commands/dev-docs.md`](../.codex/commands/dev-docs.md), [`.codex/commands/dev-docs-update.md`](../.codex/commands/dev-docs-update.md) |
-| Gemini CLI | `.gemini/` | [GEMINI.md](../GEMINI.md) | [GEMINI_INTEGRATION_GUIDE.md](../GEMINI_INTEGRATION_GUIDE.md) | [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml), [`.gemini/commands/dev-docs-update.toml`](../.gemini/commands/dev-docs-update.toml) |
+| Agent Workflows | `.agents/workflows/` | [AGENT_WORKFLOWS.md](../AGENT_WORKFLOWS.md) | [AGENT_WORKFLOWS_INTEGRATION_GUIDE.md](../AGENT_WORKFLOWS_INTEGRATION_GUIDE.md) | [`.agents/workflows/commands/dev-docs.toml`](../.agents/workflows/commands/dev-docs.toml), [`.agents/workflows/commands/dev-docs-update.toml`](../.agents/workflows/commands/dev-docs-update.toml) |
 
 **스코프 원칙:**
 - `dev/`는 CLI와 무관한 공통 작업 스코프입니다.
-- 설정/훅/스킬/명령 수정은 현재 사용 중인 CLI 루트(`.claude`/`.codex`/`.gemini`)만 기본 스코프로 잡습니다.
+- 설정/훅/스킬/명령 수정은 현재 사용 중인 CLI 루트(`.claude`/`.codex`/`.agents/workflows`)만 기본 스코프로 잡습니다.
 - 다른 CLI 루트까지 함께 수정해야 하면 작업 범위에 명시하고 동기화합니다.
 
 ---
@@ -310,7 +310,7 @@ mkdir -p dev/active/your-task-name
 필요하면 아래 명령 정의를 템플릿으로 사용하세요:
 - Claude: [`.claude/commands/dev-docs.md`](../.claude/commands/dev-docs.md)
 - Codex: [`.codex/commands/dev-docs.md`](../.codex/commands/dev-docs.md)
-- Gemini: [`.gemini/commands/dev-docs.toml`](../.gemini/commands/dev-docs.toml)
+- Agent Workflows: [`.agents/workflows/commands/dev-docs.toml`](../.agents/workflows/commands/dev-docs.toml)
 
 ---
 
@@ -442,4 +442,4 @@ mkdir -p dev/active/your-task-name
 **참고 링크:**
 - Claude: [CLAUDE.md](../CLAUDE.md), [CLAUDE_INTEGRATION_GUIDE.md](../CLAUDE_INTEGRATION_GUIDE.md)
 - Codex: [AGENTS.md](../AGENTS.md), [CODEX_INTEGRATION_GUIDE.md](../CODEX_INTEGRATION_GUIDE.md)
-- Gemini: [GEMINI.md](../GEMINI.md), [GEMINI_INTEGRATION_GUIDE.md](../GEMINI_INTEGRATION_GUIDE.md)
+- Agent Workflows: [AGENT_WORKFLOWS.md](../AGENT_WORKFLOWS.md), [AGENT_WORKFLOWS_INTEGRATION_GUIDE.md](../AGENT_WORKFLOWS_INTEGRATION_GUIDE.md)

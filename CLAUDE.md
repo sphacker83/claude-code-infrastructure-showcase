@@ -1,14 +1,13 @@
 # CLAUDE.md
 
 이 파일은 이 저장소에서 **Claude Code**가 참고할 운영 규칙입니다.  
-기본 내용은 `AGENTS.md`를 기준으로 하며, 두 문서가 충돌하면 `AGENTS.md`를 우선합니다.
 
 ## 1) 기본 원칙
 
 - 모든 응답은 기본적으로 한국어로 작성한다.
 - 프로젝트 구조를 추측하지 않는다. 필요 정보가 없으면 먼저 확인한다.
 - 단순 수정은 빠르게 처리하고, 복잡한 작업은 문서화부터 시작한다.
-- `.codex`는 "있으면 참고"가 아니라 "기본 워크플로우"로 사용한다.
+- `.claude`는 "있으면 참고"가 아니라 "기본 워크플로우"로 사용한다.
 
 ## 2) 작업 시작 체크리스트
 
@@ -18,11 +17,11 @@
 4. 복잡 작업이면 `dev/active/...` 3파일(plan/context/tasks)부터 만들거나 갱신한다.
 5. 구현 후에는 `context/tasks`를 최신 상태로 업데이트한다.
 
-## 3) 스킬 사용 규칙 (`.codex/skills`)
+## 3) 스킬 사용 규칙 (`.claude/skills`)
 
 ### 3-1. 스킬 선택 우선순위
 
-- 스킬/훅/트리거/`skill-rules.json`/Codex 설정 작업: `skill-developer`
+- 스킬/훅/트리거/`skill-rules.json`/Claude 설정 작업: `skill-developer`
 - 프론트엔드(Next.js/React/TS/UI) 작업: `frontend-dev-guidelines`
 - 백엔드/API/검증/서비스 계층 작업: `backend-dev-guidelines`
 - 인증 라우트 테스트/디버깅: `route-tester`
@@ -58,32 +57,33 @@
 - 별도 디렉터리와 3파일을 동일 규칙으로 유지한다.
 - 우선순위는 `P0/P1/P2`로 명시한다.
 
-## 5) 훅 사용 규칙 (`.codex/hooks`, `.codex/settings.json`)
+## 5) 훅 사용 규칙 (`.claude/hooks`, `.claude/settings.json`)
 
-현재 기본 훅 구성:
+현재 기본 훅 구성(`.claude/settings.json` 기준):
 
 - `UserPromptSubmit`: `skill-activation-prompt.sh`
 - `PostToolUse`: `post-tool-use-tracker.sh`
-- `Stop`: `error-handling-reminder.sh`
+- `Stop`: `tsc-check.sh`, `trigger-build-resolver.sh`
 
 원칙:
 
-- 훅/설정 작업 시 `CODEX_INTEGRATION_GUIDE.md` 절차를 따른다.
+- 훅/설정 작업 시 `CLAUDE_INTEGRATION_GUIDE.md` 절차를 따른다.
 - `settings.json`을 통째로 덮어쓰지 않고 필요한 훅 섹션만 병합한다.
 - 훅 복사 후 실행 권한을 확인한다(`chmod +x`).
-- TypeScript 훅은 의존성 설치 여부를 확인한다(`.codex/hooks/package.json`, `npm install`).
+- TypeScript 훅은 의존성 설치 여부를 확인한다(`.claude/hooks/package.json`, `npm install`).
 
-## 6) 에이전트 사용 규칙 (`.codex/agents`)
+## 6) 에이전트 사용 규칙 (`.claude/agents`)
 
 - 복잡하고 다단계인 작업은 전용 에이전트 사용을 우선 검토한다.
 - 일반적으로 바로 사용 가능한 에이전트:
   - `code-architecture-reviewer`
   - `code-refactor-master`
   - `documentation-architect`
-  - `frontend-architecture-designer`
   - `frontend-error-fixer`
   - `refactor-planner`
   - `plan-reviewer`
+  - `web-research-specialist`
+  - `auto-error-resolver`
 - 인증 전제(JWT 쿠키)가 필요한 작업에서만:
   - `auth-route-tester`
   - `auth-route-debugger`
@@ -103,7 +103,7 @@
 - 서브 에이전트에 작업을 줄 때는 반드시 책임 범위(파일/기능 단위)를 명시한다.
 - 예외는 사용자의 명시적 요청이 있는 경우에만 허용한다(예: "메인이 직접 즉시 수정").
 
-## 7) 슬래시 명령어 활용 (`.codex/commands`)
+## 7) 슬래시 명령어 활용 (`.claude/commands`)
 
 - 계획 수립 시작: `/dev-docs`
 - 컨텍스트 압축/세션 마감 전 정리: `/dev-docs-update`
@@ -111,23 +111,23 @@
 
 명령어 사용 시 경로 가정(`dev/active`, API 경로)을 현재 저장소 구조와 맞춘다.
 
-## 8) 통합/수정 작업 공통 체크리스트 (`CODEX_INTEGRATION_GUIDE.md`)
+## 8) 통합/수정 작업 공통 체크리스트 (`CLAUDE_INTEGRATION_GUIDE.md`)
 
 스킬/훅/에이전트/명령어를 손댈 때 아래를 기본으로 확인한다.
 
 1. 구조 확인 질문(단일 앱/모노레포, 코드 위치, 스택)
 2. 필요한 항목만 선별 적용(초기에는 과도한 일괄 적용 금지)
 3. JSON 유효성 검증
-   - `cat .codex/skills/skill-rules.json | jq .`
-   - `cat .codex/settings.json | jq .`
+   - `cat .claude/skills/skill-rules.json | jq .`
+   - `cat .claude/settings.json | jq .`
 4. 훅 실행 권한 검증
-   - `ls -la .codex/hooks/*.sh`
+   - `ls -la .claude/hooks/*.sh`
 5. 훅 의존성 검증(필요 시)
-   - `ls .codex/hooks/node_modules/`
+   - `ls .claude/hooks/node_modules/`
 
 ## 9) 금지/주의
 
-- `.codex/settings.json` 전체를 예시 파일로 덮어쓰지 않는다.
+- `.claude/settings.json` 전체를 예시 파일로 덮어쓰지 않는다.
 - 스킬을 한 번에 전부 추가하지 않는다.
 - `tsc-check` 계열 Stop 훅은 검증 없이 추가하지 않는다.
 - 스택 불일치(예: React 스킬을 Vue 프로젝트에 그대로 적용) 상태로 강행하지 않는다.

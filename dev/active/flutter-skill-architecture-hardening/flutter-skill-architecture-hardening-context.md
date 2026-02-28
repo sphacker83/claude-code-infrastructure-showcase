@@ -32,30 +32,25 @@
 - D13: G4/G4b `BASE_SHA` 실패 처리 정책을 fail-fast로 고정(`HEAD` 폴백 금지, 사용자 액션 메시지 필수)
 
 ## 현재 변경 사항 (이번 세션)
-- `SKILL.md`
-  - 아키텍처 경로를 `presentation/viewmodel` 하위 구조로 통일
-  - 직접 의존 금지(`presentation/pages|widgets -> domain`) 정책 추가
-  - 단일 Composition Root 정책 명문화
-  - G2/G2b/G3/G4/G5 표 및 명령 예시 전면 강화
-  - G3: `import|export|part` + app 레이어 위반 검사 추가
-  - G4: 모델 경계 5종 추적 + 실행 테스트 0건 통과 방지 추가
-  - G5: `test -s`, 성공 토큰, `.exit` 검증 추가
-- `SKILL.md` (추가 보강)
-  - G3: import/export/part 인용부 경로 정규식으로 교체, `as/show/hide` 변형 포함
-  - G3: `count_violations` 함수로 0건 케이스를 안전 처리(`set -euo pipefail` 중간 실패 방지)
-  - G3: `presentation/pages|widgets -> domain`/`-> data`를 분리 집계해 금지 규칙 실효성 강화
-  - G3: `lib/app/di/composition_root.dart` 외 DI 등록 API/어노테이션 사용 시 FAIL 규칙 추가
-  - G4: `git diff HEAD` 제거, `BASE_SHA...HEAD` + merge-base 검증 + 재귀 pathspec(`**/*.dart`) 적용
-  - G4: 변경 대상 수 계산을 `wc -l` 기반으로 안정화
-  - G4b: ViewModel 변경 감지 시 대응 Unit Test 파일 존재 + 상태 전이 토큰(`loading -> data|error`) 검증 게이트 추가
-  - G5: G4b 증빙/상태/성공 토큰 재검증 항목 추가
-- `SKILL.md` (재보강)
-  - G3: 단일 Composition Root 양성 검증 추가(`lib/app/di/composition_root.dart` 비어있지 않음 검사 + main/bootstrap 초기화 호출 토큰 검사)
-  - G3: 양성 검증 실패를 `TOTAL_VIOLATIONS`에 포함해 `G3 FAIL`로 강제
-  - G4/G4b: `BASE_SHA` 미결정/merge-base 계산 실패 시 즉시 실패(`HEAD`/`HEAD~1` 폴백 제거)
-  - G4/G4b: merge-base/유효성 실패 로그에 사용자 액션(`BASE_SHA` 수동 지정 또는 `git fetch origin main` 재실행) 명시
-- `resources/*.md`
-  - `dependency-injection.md`, `debugging.md`, `state-management.md`, `testing.md`, `widget-patterns.md`, `build-and-release.md`에 정책/용어 일관화 반영
+- `SKILL.md` (flutter-validation-gates)
+  - G3: `count_violations` 함수 도입, `import|export|part` 및 `as/show/hide` 정규식 적용
+  - G3: `presentation/pages|widgets -> domain`/`-> data` 분리 집계 및 단일 Composition Root 위반 탐지
+  - G3: `lib/app/di/composition_root.dart` 양성 검증(Positive Validation) 및 `TOTAL_VIOLATIONS` 집계 로직 구현
+  - G4/G4b: `BASE_SHA` 폴백 제거 및 fail-fast 에러 핸들링/사용자 액션 가이드 추가
+  - G4/G4b: 재귀 pathspec(`**/*.dart`) 및 `wc -l` 기반 안정화
+  - G5: 모든 `.exit` 파일 완결성 및 성공 토큰 재검증 루프 구현
+- `SKILL.md` (추가 정책)
+  - CI 파이프라인 연동 가이드(GitHub Actions/GitLab CI) 및 `BASE_SHA` 주입 전략 추가 (R3 해결)
+  - G3 DI 탐지 허용 목록(Allow-list) 정책 명시 (R4 해결)
+- `dependency-injection.md`
+  - App Layer 예외 허용 경로(`main.dart`, `bootstrap.dart`) 명시 (R2 해결)
+- 전반적인 리소스 문서 (`widget-patterns.md` 등)
+  - `presentation/viewmodel` 경로 및 직접 의존 금지 규칙 일관성 확인 및 보완 (R1 해결)
+
+## 최종 상태
+- 모든 아키텍처 가이드 및 검증 게이트 "Hardening" 완료
+- T1-T14 및 R1-R4 모든 태스크 완결
+- `flutter-validation-gates/SKILL.md`가 이제 실제 동작 가능한 검증 스크립트 가이드를 포함함
 
 ## 열린 이슈
 - O1: 일부 프로젝트는 테스트 출력 문자열이 다를 수 있어 성공 토큰 정규식 미세 조정이 필요할 수 있음

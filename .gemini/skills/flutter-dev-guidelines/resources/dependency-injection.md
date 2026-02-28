@@ -17,9 +17,12 @@
 
 - 기본 위치: `lib/app/di/composition_root.dart`
 - `app` 레이어는 조립 전용이며 `core/**`, `features/**` import를 허용한다.
+- **예외 허용 경로 (App Layer)**:
+  - `lib/main.dart`, `lib/app/bootstrap.dart`: Composition Root 초기화 호출 목적의 import 허용
+  - `lib/app/di/composition_root.dart`: 전체 feature 의존성 조립 권한 보유
 - `core/**`는 Feature 독립 레이어이므로 `features/**` import를 금지한다.
 - feature 내부(`features/<feature_name>/{presentation/viewmodel,domain,data}`)는 `Composition Root`를 import하지 않는다.
-- `lib/app/di/composition_root.dart` 이외 `app/**` 파일에서 `features/**`를 직접 import하지 않는다.
+- `lib/app/di/composition_root.dart` 이외 `app/**` 파일에서 `features/**`를 직접 import하거나 조립하지 않는다.
 
 ## 의존 방향(컴파일 타임) vs 호출 흐름(런타임)
 
